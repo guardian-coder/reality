@@ -28,7 +28,7 @@ Humans can begin with [the founding memo](company/FOUNDING_MEMO.md). AI agents m
 - Customer, payer, product, geography, and business model: unresolved
 - Architecture-level primitive: unresolved
 - Product code: intentionally premature
-- GitHub target: new public repository `guardian-coder/reality` (creation pending GitHub sign-in)
+- GitHub repository: `guardian-coder/reality` (public)
 
 ## Operating rule
 
