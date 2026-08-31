@@ -47,7 +47,7 @@
 
 ## D-008 — Create a new GitHub repository
 
-- **Status:** Decided; publication pending
+- **Status:** Completed
 - **Decision:** Create a completely new repository under the `guardian-coder` account.
-- **Working repository name:** `reality`, inferred from the project name; no conflicting repository was found locally. GitHub availability must be confirmed during creation.
+- **Repository:** `guardian-coder/reality`
 - **Visibility:** Public, based on the user's earlier request for an open repository.
