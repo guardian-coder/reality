@@ -1,0 +1,8 @@
+# Local and editor artifacts
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.tmp
+*.log
+
