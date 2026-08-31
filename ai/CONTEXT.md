@@ -24,7 +24,7 @@ Then read, in order:
 - **Constraint:** do not optimize the thesis around solo execution, current skills, current capital, Tanzania, or any other assumed geography. These may inform entry only after structural importance is assessed.
 - **Product status:** no product, customer, payer, business model, or geography is selected.
 - **Implementation status:** substantial product code is premature.
-- **GitHub status:** publish as a completely new public repository under `guardian-coder`; working target is `guardian-coder/reality`. Creation is pending GitHub authentication.
+- **GitHub status:** published as the public repository `guardian-coder/reality`.
 
 ## Epistemic rules
 
