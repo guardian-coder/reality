@@ -8,6 +8,7 @@ No research files are currently synced into this workspace. The referenced conve
 
 ## Repository research artifacts
 
+- [2026-09-01 — Invariant Falsification: The 100× AI Test](2026-09-01_INVARIANT_FALSIFICATION.md) — Cross-domain attack finds that missing observations, identity binding, adversarial evidence, and post-action state changes survive stronger inference, while market value and horizontal repeatability remain unproven.
 - [2026-09-01 — Trace Reconstruction Falsification: Test Design](../validation/2026-09-01_TRACE_RECONSTRUCTION_DESIGN.md) — Primary-source desk research finds transaction-based SME scoring already demonstrated; reframes the test around incremental decision value from verified economic context.
 - [2026-09-01 — Validation Participant Recruitment Shortlist](../validation/2026-09-01_RECRUITMENT_SHORTLIST.md) — Ranked public introduction routes for SMEs, lenders, and qualified accountants; first outreach wave sent.
 - [Validation Outreach Log](../validation/OUTREACH_LOG.md) — Contact status and follow-up actions without personal contact details or private correspondence.
@@ -24,12 +25,4 @@ No research files are currently synced into this workspace. The referenced conve
 
 ## Next research artifact
 
-Create `research/YYYY-MM-DD_TRACE_RECONSTRUCTION.md` covering:
-
-1. a specific SME archetype and decision;
-2. available traces;
-3. observable, inferable, unverifiable, and externally verifiable facts;
-4. baseline AI reconstruction;
-5. expert judgment and decision threshold;
-6. gaps, contradictions, and incumbent capabilities;
-7. citations to primary sources and clearly separated inference.
+Document the first completed four-stage SME evidence experiment, including the lender's actual decision threshold, blinded outputs, expert reference, costs, and disconfirming evidence.

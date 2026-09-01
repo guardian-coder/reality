@@ -25,6 +25,7 @@ Then read, in order:
 - **First laboratory:** Decision-Grade Financial Truth for SMEs.
 - **Laboratory status:** selected for falsification, not validated. SMEs test the primitive; they do not define the company identity or final market.
 - **Immediate falsification:** whether existing digital traces plus modern AI already reconstruct SME economic truth well enough. If yes, the wedge may be an analytics feature rather than infrastructure.
+- **100× AI test:** cross-domain desk research provisionally finds that stronger inference does not create missing observations or prove post-action state change. The surviving candidate concerns fit-for-purpose, provenance-bearing observation in dynamic, physical, identity-sensitive, or adversarial settings. Market value and horizontal repeatability remain unproven; read `research/2026-09-01_INVARIANT_FALSIFICATION.md`.
 - **Architecture-level fork:** Decision-Grade Truth versus Trusted Execution / Delegated Authority. Their relationship is unresolved.
 - **Cross-domain hypothesis:** the primitive may apply to actionable intelligence, health, insurance, supply chains, robotics, and other domains. This is unproven and must not be presented as validated portability.
 - **Constraint:** do not optimize the thesis around solo execution, current skills, current capital, Tanzania, or any other assumed geography. These may inform entry only after structural importance is assessed.
@@ -52,6 +53,6 @@ Then read, in order:
 
 ## Current next actions
 
-1. Select a concrete SME archetype and consequential decision.
-2. Benchmark what is observable, inferable, unverifiable, and dependent on real-world evidence using lawful, consented samples.
-3. Use that workflow to compare Decision-Grade Truth with Trusted Execution / Delegated Authority and log the architecture decision.
+1. Recruit one consenting inventory-based SME, one accountable lender, and an independent accountant for the staged evidence test.
+2. Run the same lending case through transactions, accounting records, external evidence, and reconciled ground truth; measure when the lender is prepared to risk real capital.
+3. Use the pre-decision and post-action evidence requirements to compare Decision-Grade Truth with Trusted Execution / Delegated Authority; do not resolve the fork without observed evidence.

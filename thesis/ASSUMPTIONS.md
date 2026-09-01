@@ -17,6 +17,8 @@ Every item below is a hypothesis until evidence changes its status.
 | A-11 | State estimation and decision-grade verification remain scarce even as information extraction and inference improve sharply. | Critical unknown | Search for counterexamples and compare model-only inference with external verification |
 | A-12 | Actors bearing the cost of uncertainty will pay or commit resources for defensibility, not merely better prediction. | Critical unknown | Observe purchasing, workflow, or adoption commitments in concrete decisions |
 | A-13 | The evidence-to-state process can be standardized across cases enough to become infrastructure. | Unknown | Test reproducibility across reviewers, firms, and later unrelated domains |
+| A-14 | Even 100× better inference cannot remove the need for fit-for-purpose observation in dynamic, physical, identity-sensitive, or adversarial states. | Provisionally supported by cross-domain desk research; literal counterfactual untestable | Seek high-consequence workflows that succeed without fresh or independently attributable observations |
+| A-15 | Outcome verification may be the bridge between Decision-Grade Truth and Trusted Execution. | New inference; unresolved | Compare pre-decision state claims with post-action verification in concrete closed-loop workflows |
 
 ## Assumptions explicitly rejected as planning rules
 

@@ -57,7 +57,9 @@ The package must be de-identified before use outside the authorized validation t
 
 ## Experiment
 
-### Baseline A — Transactions only
+Run the same case as four cumulative, blinded evidence stages. Freeze the requested output and decision standard before revealing the next stage.
+
+### Stage 1 — Transactions only
 
 Give a current model only bank/mobile-money transaction records. Require it to produce:
 
@@ -68,13 +70,21 @@ Give a current model only bank/mobile-money transaction records. Require it to p
 - contradictions and unresolved questions;
 - provenance for every material conclusion.
 
-### Baseline B — Existing lender approach
+### Stage 2 — Transactions plus accounting records
+
+Add the sales and purchase ledgers, financial statements where available, receivables, payables, loan records, and owner-capital records. Record every material change in classification, confidence, and lending recommendation.
+
+### Stage 3 — External commercial and physical evidence
+
+Add independently attributable supplier/customer evidence, invoice or delivery corroboration, inventory movement records, and a physical stock observation. Record which unresolved claims become decision-grade and which remain uncertain.
+
+### Stage 4 — Reconciled ground truth
+
+Reveal the ground truth assembled by the consenting business, accountant, and test organizers. This is a reference with documented limits, not a claim of perfect omniscience. Score every earlier stage against it.
+
+### Existing lender baseline
 
 Apply the lender's present scorecard, rules, bureau inputs, and standard diligence. This is the commercial baseline; an AI-only comparison is insufficient.
-
-### Test C — Evidence-enriched reconstruction
-
-Add invoices, sales, supplier, inventory, debt, and physical/counterparty evidence. Measure which conclusions change and which decision errors are prevented.
 
 ### Expert reference
 
@@ -94,6 +104,8 @@ Measure:
 - false-positive and false-negative decision changes;
 - acquisition cost, processing cost, latency, and refreshability.
 
+At each stage also ask the accountable lender: **Is the evidence now sufficient to put real money at risk?** Record the answer, required conditions, proposed amount and terms, and reasons. A model's internal confidence is not a substitute for this decision threshold.
+
 Numeric thresholds are intentionally unset until a real lender defines the decision standard. Invented thresholds would create false precision.
 
 ## Decision rule
@@ -105,4 +117,3 @@ Numeric thresholds are intentionally unset until a real lender defines the decis
 ## Current conclusion
 
 The first falsification does not kill the umbrella AI-to-reality vision. It does substantially weaken the idea that transaction aggregation and AI scoring alone form a scarce layer. The next empirical work must test the incremental value of verified economic context against an actual lender process—not against no system at all.
-
