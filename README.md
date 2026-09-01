@@ -2,7 +2,7 @@
 
 Reality is a knowledge repository for a company thesis, not primarily a codebase.
 
-We are exploring infrastructure that lets intelligent systems interact with reality reliably. Our current working wedge is **Decision-Grade Financial Truth for SMEs**: a defensible representation of a business's economic state, grounded in evidence rather than raw transaction data alone.
+We are exploring infrastructure that lets intelligent systems interact with reality reliably. The candidate primitive is a repeatable evidence-to-state process that produces a defensible real-world claim sufficient for a specified consequential decision. Our first laboratory is **Decision-Grade Financial Truth for SMEs**.
 
 This wedge is a hypothesis, not a validated product. The immediate falsification question is whether existing digital traces plus modern AI can already reconstruct SME economic truth well enough. If they can, the wedge may be only an analytics feature.
 
@@ -24,7 +24,8 @@ Humans can begin with [the founding memo](company/FOUNDING_MEMO.md). AI agents m
 ## Current status
 
 - Umbrella vision: selected
-- Working wedge: selected for testing, not validated
+- Candidate primitive: conceptually defined, not empirically validated
+- SME laboratory: selected for testing, not a permanent market commitment
 - Customer, payer, product, geography, and business model: unresolved
 - Architecture-level primitive: unresolved
 - Product code: intentionally premature
