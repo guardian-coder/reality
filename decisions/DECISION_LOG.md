@@ -51,3 +51,11 @@
 - **Decision:** Create a completely new repository under the `guardian-coder` account.
 - **Repository:** `guardian-coder/reality`
 - **Visibility:** Public, based on the user's earlier request for an open repository.
+
+## D-009 — Clarify the candidate primitive and the role of SMEs
+
+- **Status:** Decided as the current conceptual definition; empirical validity remains unproven
+- **Decision:** Define the candidate primitive as a repeatable, measurable evidence-to-state process that produces a defensible claim sufficient for a specified consequential decision.
+- **Decision:** Treat SME financial truth as the first laboratory, not as the company identity or assumed final market.
+- **Rationale:** The same abstract pattern may underlie SME underwriting, military actionable intelligence, health, and other domains: many signals must become a supported state claim before action. The process must be inspectable and not depend solely on one expert's intuition.
+- **Uncertainty:** Cross-domain portability is a hypothesis, not a demonstrated capability or market decision.
