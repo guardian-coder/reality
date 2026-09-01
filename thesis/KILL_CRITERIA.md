@@ -14,6 +14,16 @@ These criteria are provisional and must be made quantitative as validation produ
 
 Transaction-based risk prediction alone is no longer sufficient evidence for the wedge. Existing practice already demonstrates that capability. Survival now requires measurable incremental decision value from verified economic context beyond the lender's current scorecard and diligence process.
 
+## Kill or substantially revise the candidate invariant if
+
+1. Better models repeatedly make external verification unnecessary for consequential decisions.
+2. The dominant bottleneck in concrete workflows is authority, regulation, physical capacity, or distribution rather than establishing real-world state.
+3. Actors accept probabilistic prediction and will not pay or change behavior for greater defensibility.
+4. Incumbents already deliver sufficient verification cheaply using data and institutional access they control.
+5. Evidence-to-state methods remain too bespoke to standardize, reproduce, or improve across cases.
+6. The cost of verification consistently exceeds the expected cost of decision error.
+7. Apparent cross-domain recurrence reduces to superficial analogy rather than the same structural constraint.
+
 ## Revise the umbrella thesis if
 
 - AI-to-reality reliability does not emerge as a meaningful bottleneck in concrete, consequential workflows; or
