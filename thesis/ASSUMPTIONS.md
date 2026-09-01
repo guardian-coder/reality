@@ -14,6 +14,9 @@ Every item below is a hypothesis until evidence changes its status.
 | A-08 | Evidence → decision → outcome loops can compound into a proprietary asset. | Speculative | Define feedback data and test access/retention rights |
 | A-09 | SME finance is a strong first wedge into the wider reality problem. | Selected for testing | Compare with alternative wedges on structural importance and falsifiability |
 | A-10 | Trusted execution/delegated authority may be a deeper primitive than truth. | Unresolved | Architecture comparison using concrete workflows |
+| A-11 | State estimation and decision-grade verification remain scarce even as information extraction and inference improve sharply. | Critical unknown | Search for counterexamples and compare model-only inference with external verification |
+| A-12 | Actors bearing the cost of uncertainty will pay or commit resources for defensibility, not merely better prediction. | Critical unknown | Observe purchasing, workflow, or adoption commitments in concrete decisions |
+| A-13 | The evidence-to-state process can be standardized across cases enough to become infrastructure. | Unknown | Test reproducibility across reviewers, firms, and later unrelated domains |
 
 ## Assumptions explicitly rejected as planning rules
 
