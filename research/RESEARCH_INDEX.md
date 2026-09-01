@@ -6,6 +6,10 @@ This index records evidence, not conclusions by repetition. Add one dated artifa
 
 No research files are currently synced into this workspace. The referenced conversation described prior web research and mentioned an attached report, but the repository does not yet contain its source material or a verified bibliography. Therefore those claims are not treated here as independently audited evidence.
 
+## Repository research artifacts
+
+- [2026-09-01 — Trace Reconstruction Falsification: Test Design](../validation/2026-09-01_TRACE_RECONSTRUCTION_DESIGN.md) — Primary-source desk research finds transaction-based SME scoring already demonstrated; reframes the test around incremental decision value from verified economic context.
+
 ## Claims carried forward for validation
 
 | Claim | Status | Required evidence |
@@ -14,7 +18,7 @@ No research files are currently synced into this workspace. The referenced conve
 | Digital economic traces are increasing | Reported in prior conversation; sources not imported | Payment-system and platform primary data |
 | Traces are fragmented and semantically ambiguous | Working hypothesis | Sample datasets, workflow mapping, expert assessment |
 | Better truth changes lending or other decisions | Unproven | Decision-maker experiments and commitments |
-| Incumbents cannot reconstruct the same truth | Unproven and immediately falsifiable | Capability comparison and reconstruction benchmark |
+| Incumbents cannot reconstruct the same truth | Under pressure: incumbents and fintechs already use multi-source transaction data for risk scoring; full economic-state reconstruction remains unproven | Capability comparison and reconstruction benchmark |
 
 ## Next research artifact
 
@@ -27,4 +31,3 @@ Create `research/YYYY-MM-DD_TRACE_RECONSTRUCTION.md` covering:
 5. expert judgment and decision threshold;
 6. gaps, contradictions, and incumbent capabilities;
 7. citations to primary sources and clearly separated inference.
-
