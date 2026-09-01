@@ -9,6 +9,7 @@ No research files are currently synced into this workspace. The referenced conve
 ## Repository research artifacts
 
 - [2026-09-01 — Trace Reconstruction Falsification: Test Design](../validation/2026-09-01_TRACE_RECONSTRUCTION_DESIGN.md) — Primary-source desk research finds transaction-based SME scoring already demonstrated; reframes the test around incremental decision value from verified economic context.
+- [2026-09-01 — Validation Participant Recruitment Shortlist](../validation/2026-09-01_RECRUITMENT_SHORTLIST.md) — Ranked public introduction routes for SMEs, lenders, and qualified accountants; nobody contacted yet.
 
 ## Claims carried forward for validation
 
