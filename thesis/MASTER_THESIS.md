@@ -4,7 +4,7 @@
 
 Working thesis. Partially selected, not validated.
 
-## Thesis
+## Candidate thesis
 
 As AI intelligence becomes cheaper and more abundant, a growing bottleneck will be the infrastructure required to connect intelligence to reliable real-world decisions and outcomes.
 
@@ -12,7 +12,13 @@ The relevant system may include:
 
 > Intelligence → intent → authority → action → state change → evidence → outcome → accountability / learning
 
-The company should seek the scarce layer in this chain that AI capability alone does not commoditize.
+The company should seek the scarce layer in this chain that AI capability alone does not commoditize. This is a candidate invariant to falsify, not a conclusion to defend.
+
+Current careful formulation:
+
+> As machine intelligence becomes cheaper, the scarce capability may become establishing a defensible state of reality for consequential decisions.
+
+The distinction between information extraction, state estimation, and decision-grade verification is defined in [INVARIANT_TESTS.md](INVARIANT_TESTS.md).
 
 ## Candidate primitive A: Decision-Grade Truth
 
