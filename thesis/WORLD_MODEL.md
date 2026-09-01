@@ -6,6 +6,7 @@
 - Real-world action still crosses organizational, institutional, legal, financial, and physical boundaries.
 - Digital records can prove events without proving their meaning.
 - Consequential decisions require more than plausible inference: they may require provenance, permission, verification, contradiction handling, and accountability.
+- Evidence sufficiency is relative to a specified decision: larger, less reversible, or safety-critical decisions generally demand a stronger evidence chain.
 
 ## Hypotheses
 
@@ -16,6 +17,7 @@ The following are not established facts:
 - A recurring evidence → decision → outcome loop can create a compounding proprietary asset.
 - Independent Decision-Grade Truth can become infrastructure rather than a feature.
 - Autonomous agents acting across boundaries will create demand for delegated mandates and execution evidence.
+- A repeatable evidence-to-state framework may transfer across finance, intelligence, health, supply chains, and physical systems. This portability is unproven.
 
 ## SME financial-truth model
 
@@ -29,4 +31,3 @@ The proposed distinction is:
 - **Requires real-world evidence:** meaning dependent on contracts, inventory, delivery, counterparties, people, or physical events.
 
 Validation must test this model rather than assume it.
-
