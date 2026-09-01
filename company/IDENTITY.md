@@ -14,7 +14,7 @@ A scarce, defensible layer that helps a person, institution, or machine make con
 
 1. **Vision:** intelligent systems interact with reality reliably.
 2. **Candidate primitives:** Decision-Grade Truth and Trusted Execution / Delegated Authority.
-3. **Working wedge:** Decision-Grade Financial Truth for SMEs.
+3. **First laboratory:** Decision-Grade Financial Truth for SMEs.
 4. **Product:** unresolved.
 
 This hierarchy is provisional at levels 2–4.
@@ -24,5 +24,4 @@ This hierarchy is provisional at levels 2–4.
 - Company name and brand are not decided; “Reality” is the project/repository label.
 - Initial customer and payer are not decided.
 - Tanzania or any other geography is not selected as the permanent market.
-- The final company scope is not limited to SME finance.
-
+- The final company scope is not limited to SME finance; the SME case tests the primitive rather than defining the identity.
