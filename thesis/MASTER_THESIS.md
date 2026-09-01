@@ -16,7 +16,13 @@ The company should seek the scarce layer in this chain that AI capability alone 
 
 ## Candidate primitive A: Decision-Grade Truth
 
-Decision-Grade Truth is an evidence-backed representation of reality reliable enough to support a consequential decision. It is not raw data, a confident narrative, or a score without visible basis.
+Decision-Grade Truth is an evidence-backed claim about real-world state reliable enough to support a **specified** consequential decision. It is not raw data, a confident narrative, absolute truth, or a score without visible basis.
+
+The clarified candidate primitive is:
+
+> Signals → evidence → reconstructed state → confidence and contradictions → decision-grade claim
+
+It must be repeatable and expose provenance, interpretation, missing evidence, and what could change the conclusion. See [PRIMITIVE.md](PRIMITIVE.md).
 
 ## Candidate primitive B: Trusted Execution / Delegated Authority
 
@@ -37,15 +43,14 @@ No conclusion has been reached on whether:
 
 ## Working wedge
 
-Decision-Grade Financial Truth for SMEs: produce a defensible representation of the economic state of a business from fragmented traces plus any required verification and external evidence.
+Decision-Grade Financial Truth for SMEs: use a bounded SME decision as the first laboratory for producing a defensible representation of economic state from fragmented traces plus any required verification and external evidence.
 
 The intended output is closer to:
 
 > Estimated economic activity X, with confidence Y, supported by evidence A/B/C, contradicted by D, with uncertainties E/F.
 
-It is not presently defined as accounting software, a lending app, a credit score, or a dashboard.
+SMEs are the test environment, not the company identity or assumed final market. The work is not presently defined as accounting software, a lending app, a credit score, or a dashboard.
 
 ## Immediate falsification
 
 Determine whether existing digital traces plus modern AI can already reconstruct this truth reliably enough. If incumbents can obtain the same result through existing APIs and models, there may be no independent infrastructure layer.
-
