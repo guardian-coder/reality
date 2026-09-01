@@ -8,6 +8,14 @@ In compact form:
 
 > Signals → evidence → reconstructed state → confidence and contradictions → decision-grade claim
 
+This chain contains three distinct capabilities:
+
+1. **Information extraction:** finding relevant signals in large data flows.
+2. **State estimation:** determining what is probably true about reality.
+3. **Decision-grade verification:** establishing that the state claim is sufficiently defensible for a consequential action.
+
+They are related but not interchangeable. The primitive is not merely information extraction; the open thesis is whether state estimation and especially decision-grade verification remain difficult as AI improves. See [INVARIANT_TESTS.md](INVARIANT_TESTS.md).
+
 ## Decision-relative sufficiency
 
 Decision-Grade Truth is not absolute truth or a complete description of reality. It is evidence sufficient for a particular decision under that decision's cost of error and required standard.
@@ -58,4 +66,3 @@ Current working architecture:
 > Decision-grade state claim → authorized decision → constrained execution → evidence of resulting state
 
 Whether these form one protocol or separate layers remains unresolved.
-
