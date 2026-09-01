@@ -9,16 +9,19 @@ Then read, in order:
 1. `company/FOUNDING_MEMO.md`
 2. `thesis/MASTER_THESIS.md`
 3. `thesis/PRIMITIVE.md`
-4. `thesis/ASSUMPTIONS.md`
-5. `thesis/KILL_CRITERIA.md`
-6. `decisions/DECISION_LOG.md`
-7. `validation/VALIDATION_PLAN.md`
-8. `research/RESEARCH_INDEX.md`
+4. `thesis/INVARIANT_TESTS.md`
+5. `thesis/ASSUMPTIONS.md`
+6. `thesis/KILL_CRITERIA.md`
+7. `decisions/DECISION_LOG.md`
+8. `validation/VALIDATION_PLAN.md`
+9. `research/RESEARCH_INDEX.md`
 
 ## Authoritative current state
 
 - **Umbrella vision:** infrastructure that lets intelligent systems interact with reality reliably.
 - **Candidate primitive:** a repeatable, measurable process that transforms heterogeneous signals into an evidence-backed real-world state claim sufficient for a specified consequential decision, with provenance, contradictions, confidence, and uncertainty exposed. Read `thesis/PRIMITIVE.md`.
+- **Critical distinction:** information extraction, state estimation, and decision-grade verification are different. The project is not claiming extraction as the scarce primitive; it is testing whether estimation and especially defensible verification remain scarce as AI improves.
+- **Epistemic status:** “defensible reality for consequential decisions” is a candidate invariant, not a fact. Seek counterexamples and conditions under which it disappears.
 - **First laboratory:** Decision-Grade Financial Truth for SMEs.
 - **Laboratory status:** selected for falsification, not validated. SMEs test the primitive; they do not define the company identity or final market.
 - **Immediate falsification:** whether existing digital traces plus modern AI already reconstruct SME economic truth well enough. If yes, the wedge may be an analytics feature rather than infrastructure.
