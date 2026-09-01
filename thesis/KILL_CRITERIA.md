@@ -12,6 +12,8 @@ These criteria are provisional and must be made quantitative as validation produ
 6. The output cannot expose provenance, uncertainty, and contradictions well enough to meet the relevant decision standard.
 7. The wedge requires becoming a lender or assuming risk that is not intrinsic to the infrastructure thesis.
 
+Transaction-based risk prediction alone is no longer sufficient evidence for the wedge. Existing practice already demonstrates that capability. Survival now requires measurable incremental decision value from verified economic context beyond the lender's current scorecard and diligence process.
+
 ## Revise the umbrella thesis if
 
 - AI-to-reality reliability does not emerge as a meaningful bottleneck in concrete, consequential workflows; or
@@ -20,4 +22,3 @@ These criteria are provisional and must be made quantitative as validation produ
 ## Evidence standard
 
 A kill decision must cite observed evidence and the tested workflow. Absence of convenient access, solo-founder feasibility, or current capital is not by itself a kill criterion.
-
