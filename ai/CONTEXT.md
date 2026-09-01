@@ -8,19 +8,22 @@ Then read, in order:
 
 1. `company/FOUNDING_MEMO.md`
 2. `thesis/MASTER_THESIS.md`
-3. `thesis/ASSUMPTIONS.md`
-4. `thesis/KILL_CRITERIA.md`
-5. `decisions/DECISION_LOG.md`
-6. `validation/VALIDATION_PLAN.md`
-7. `research/RESEARCH_INDEX.md`
+3. `thesis/PRIMITIVE.md`
+4. `thesis/ASSUMPTIONS.md`
+5. `thesis/KILL_CRITERIA.md`
+6. `decisions/DECISION_LOG.md`
+7. `validation/VALIDATION_PLAN.md`
+8. `research/RESEARCH_INDEX.md`
 
 ## Authoritative current state
 
 - **Umbrella vision:** infrastructure that lets intelligent systems interact with reality reliably.
-- **Working wedge:** Decision-Grade Financial Truth for SMEs.
-- **Wedge status:** selected for falsification, not validated.
+- **Candidate primitive:** a repeatable, measurable process that transforms heterogeneous signals into an evidence-backed real-world state claim sufficient for a specified consequential decision, with provenance, contradictions, confidence, and uncertainty exposed. Read `thesis/PRIMITIVE.md`.
+- **First laboratory:** Decision-Grade Financial Truth for SMEs.
+- **Laboratory status:** selected for falsification, not validated. SMEs test the primitive; they do not define the company identity or final market.
 - **Immediate falsification:** whether existing digital traces plus modern AI already reconstruct SME economic truth well enough. If yes, the wedge may be an analytics feature rather than infrastructure.
 - **Architecture-level fork:** Decision-Grade Truth versus Trusted Execution / Delegated Authority. Their relationship is unresolved.
+- **Cross-domain hypothesis:** the primitive may apply to actionable intelligence, health, insurance, supply chains, robotics, and other domains. This is unproven and must not be presented as validated portability.
 - **Constraint:** do not optimize the thesis around solo execution, current skills, current capital, Tanzania, or any other assumed geography. These may inform entry only after structural importance is assessed.
 - **Product status:** no product, customer, payer, business model, or geography is selected.
 - **Implementation status:** substantial product code is premature.
