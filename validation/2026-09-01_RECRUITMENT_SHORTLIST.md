@@ -1,7 +1,7 @@
 # Validation Participant Recruitment Shortlist
 
 - **Date:** 2026-09-01
-- **Status:** Public-contact shortlist; nobody contacted yet
+- **Status:** First outreach wave sent on 2026-09-01; see [OUTREACH_LOG.md](OUTREACH_LOG.md)
 - **Geographic starting point:** Tanzania for validation access only; not a permanent market decision
 
 ## Recruitment target
@@ -153,5 +153,4 @@ Reality project — https://github.com/guardian-coder/reality
 
 ## Current uncertainty
 
-Public contact information does not establish willingness, suitability, independence, or availability. These routes are leads, not recruited participants.
-
+Public contact information does not establish willingness, suitability, independence, or availability. The first three routes have been contacted, but nobody is a recruited participant until they explicitly agree and pass screening.
