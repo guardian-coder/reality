@@ -59,3 +59,11 @@
 - **Decision:** Treat SME financial truth as the first laboratory, not as the company identity or assumed final market.
 - **Rationale:** The same abstract pattern may underlie SME underwriting, military actionable intelligence, health, and other domains: many signals must become a supported state claim before action. The process must be inspectable and not depend solely on one expert's intuition.
 - **Uncertainty:** Cross-domain portability is a hypothesis, not a demonstrated capability or market decision.
+
+## D-010 — Separate extraction, estimation, and verification
+
+- **Status:** Decided as analytical framework; scarcity thesis remains unproven
+- **Decision:** Treat information extraction, state estimation, and decision-grade verification as distinct capabilities.
+- **Decision:** Do not claim information extraction alone as the primitive; test whether scarcity persists in state estimation and especially defensible verification as AI improves.
+- **Decision:** Call “defensible reality for consequential decisions” a candidate invariant until it survives explicit counterexamples, willingness-to-pay tests, incumbent comparisons, and repeatability tests.
+- **Rationale:** A coherent, recurring idea is not evidence that the market needs it or that advancing models will not commoditize it.
