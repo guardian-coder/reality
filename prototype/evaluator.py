@@ -307,16 +307,34 @@ def _cross_claim_dependencies(claim_evaluations, evidence_records):
     the fact; it does not gate or change any disposition - the contract
     does not currently require cross-claim independence, and deciding
     whether it should is a separate, real design question, not
-    something to fold into a visibility fix."""
+    something to fold into a visibility fix.
+
+    Corrected same day (Codex's re-review of the first version): the
+    first pass only read failure_domains off the directly-referenced
+    evidence record, not its resolved roots. A claim whose only
+    qualifying evidence is a fused/derived record would have reported
+    that record's OWN domain (e.g. a fusion service's compute
+    dependency) while missing the real shared domain sitting on its
+    root observations - the same "derived record's own domain isn't
+    what matters, its roots' domains are" distinction A-06 already
+    established for independence counting, now applied consistently
+    here too. A record with unresolved ancestry contributes no domain
+    information, same fail-closed discipline as everywhere else."""
     evidence_by_id = {e["evidence_id"]: e for e in evidence_records}
+    ids_set = set(evidence_by_id.keys())
+    memo = {}
     domain_to_claims = {}
     for ce in claim_evaluations:
         referenced_ids = set(ce["supporting_evidence_ids"]) | set(ce["contradicting_evidence_ids"])
         domains_in_claim = set()
         for eid in referenced_ids:
-            record = evidence_by_id.get(eid)
-            if record:
-                domains_in_claim.update(record.get("failure_domains", []))
+            if eid not in evidence_by_id:
+                continue
+            roots = _resolve_roots(eid, evidence_by_id, ids_set, memo, set())
+            if roots is None:
+                continue
+            for root_id in roots:
+                domains_in_claim.update(evidence_by_id[root_id].get("failure_domains", []))
         for domain in domains_in_claim:
             domain_to_claims.setdefault(domain, set()).add(ce["claim_id"])
 

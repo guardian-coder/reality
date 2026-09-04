@@ -26,6 +26,7 @@ No research files are currently synced into this workspace. The referenced conve
 - [2026-09-04 — Extended Falsifier Results](../validation/2026-09-04_EXTENDED_FALSIFIER_RESULTS.md) — Separates unsafe-permission from false-refusal counts, passes partial-dependency and simultaneous-state cases, and exposes missing cross-claim dependency visibility and unreachable degraded-operation semantics.
 - [2026-09-04 — E-03 Fix: Cross-Claim Visibility](../validation/2026-09-04_CROSS_CLAIM_VISIBILITY.md) — Adds optional `cross_claim_dependencies` to ActionDisposition. Real finding, not just a passing test: the baseline "fully confirmed" scenario has all four non-stop-register claims resting on one shared camera, invisible until this fix.
 - [2026-09-04 — E-04 Degraded Mode Proposal](../validation/2026-09-04_DEGRADED_MODE_PROPOSAL.md) — Recommends deferring degraded-mode implementation (unlike E-03, it requires inventing new domain semantics no real case yet forces) — proposed via the collaboration handoff format, not built unilaterally.
+- [2026-09-04 — Cross-Claim Root Propagation Fix](../validation/2026-09-04_CROSS_CLAIM_ROOT_PROPAGATION_FIX.md) — Codex's re-verification found E-03 read failure domains off directly-referenced evidence only, missing a derived record's resolved roots. Fixed by reusing A-06's root-resolution logic; verified on a constructed case, not just the existing suites. `DEGRADE` now explicitly labeled reserved/unreachable in the schema.
 
 ## Claims carried forward for validation
 

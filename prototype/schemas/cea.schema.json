@@ -21,7 +21,8 @@
     },
     "Disposition": {
       "type": "string",
-      "enum": ["PERMIT", "DEGRADE", "REVALIDATE", "HUMAN_REVIEW", "REFUSE"]
+      "enum": ["PERMIT", "DEGRADE", "REVALIDATE", "HUMAN_REVIEW", "REFUSE"],
+      "description": "DEGRADE is reserved; no evaluator currently produces it. Its exact semantics (reduced operating envelope, which claims may substitute a lesser evidence standard, expiry, transition back to normal or refusal) are deliberately undefined until a real bounded scenario forces the design - see validation/2026-09-04_DEGRADED_MODE_PROPOSAL.md. Do not treat its presence in this enum as evidence the capability exists."
     },
     "ActionContract": {
       "type": "object",
