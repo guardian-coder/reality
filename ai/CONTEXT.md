@@ -25,6 +25,7 @@ Then read, in order:
 - **First industry:** Internet of Battlefield Things / connected battlefield systems. This is a decided industry direction, not merely a test environment.
 - **Industry problem:** maintain trustworthy correspondence between changing/adversarial physical reality and the world-state used by intelligent systems to decide and act.
 - **Candidate IoBT primitive:** Reality Coupling / evidence-to-state-to-action-to-outcome assurance. This is a problem formulation, not a validated product category.
+- **Narrow runtime candidate:** a Claim–Evidence–Action Contract that preserves provenance, freshness, dependencies, evidence independence, and `CONFIRMED / CONTRADICTED / UNKNOWN` semantics into runtime action disposition. Deep research found all components established and Barycenter Systems as a serious near-match; novelty survives only weakly to moderately. Read `research/2026-09-04_CLAIM_EVIDENCE_ACTION_NOVELTY.md`.
 - **Safety boundary:** work on assurance, resilience, provenance, uncertainty, state integrity, revalidation, and outcome verification—not weapon targeting or autonomous attack capability.
 - **Prior SME work:** Decision-Grade Financial Truth for SMEs remains relevant falsification evidence and may continue as a parallel experiment, but it is no longer the primary industry direction.
 - **100× AI test:** cross-domain desk research provisionally finds that stronger inference does not create missing observations or prove post-action state change. The surviving candidate concerns fit-for-purpose, provenance-bearing observation in dynamic, physical, identity-sensitive, or adversarial settings. Market value and horizontal repeatability remain unproven; read `research/2026-09-01_INVARIANT_FALSIFICATION.md`.
@@ -55,6 +56,6 @@ Then read, in order:
 
 ## Current next actions
 
-1. Produce an IoBT industry decomposition covering sensing, edge compute, communications, data fusion, assurance, command-and-control, autonomy, and post-action verification.
-2. Build an opportunity map showing known incumbents, current methods, failure modes, users, buyers, evidence of unmet need, and safe measurable entry points.
-3. Select one first capability only after testing whether Reality Coupling is genuinely unsolved rather than a new name for an existing IoBT function.
+1. Test the strongest near-match: determine whether Barycenter or another runtime already models claim-specific positive confirmation and common evidence dependencies.
+2. Map public autonomy-stack interfaces to identify exactly where uncertainty, provenance, freshness, and dependence are flattened before action.
+3. If the gap survives, implement the safe simulated Claim–Evidence–Action Contract comparator described in the novelty report; do not infer product demand from a successful prototype.

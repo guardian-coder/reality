@@ -8,6 +8,7 @@ No research files are currently synced into this workspace. The referenced conve
 
 ## Repository research artifacts
 
+- [2026-09-04 — Claim–Evidence–Action Contract: Novelty Falsification](2026-09-04_CLAIM_EVIDENCE_ACTION_NOVELTY.md) — Deep research finds every component established and one serious near-match, but no public evidence of a general deployed IoBT system combining claim prerequisites, evidence-dependency independence, explicit unknowns, and runtime action gating.
 - [2026-09-01 — Invariant Falsification: The 100× AI Test](2026-09-01_INVARIANT_FALSIFICATION.md) — Cross-domain attack finds that missing observations, identity binding, adversarial evidence, and post-action state changes survive stronger inference, while market value and horizontal repeatability remain unproven.
 - [2026-09-01 — Trace Reconstruction Falsification: Test Design](../validation/2026-09-01_TRACE_RECONSTRUCTION_DESIGN.md) — Primary-source desk research finds transaction-based SME scoring already demonstrated; reframes the test around incremental decision value from verified economic context.
 - [2026-09-01 — Validation Participant Recruitment Shortlist](../validation/2026-09-01_RECRUITMENT_SHORTLIST.md) — Ranked public introduction routes for SMEs, lenders, and qualified accountants; first outreach wave sent.
