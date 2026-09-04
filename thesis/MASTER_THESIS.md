@@ -47,16 +47,26 @@ No conclusion has been reached on whether:
 - both are separate but connected layers; or
 - both are expressions of a deeper AI-to-reality protocol.
 
-## Working wedge
+## First industry
 
-Decision-Grade Financial Truth for SMEs: use a bounded SME decision as the first laboratory for producing a defensible representation of economic state from fragmented traces plus any required verification and external evidence.
+Project Reality has selected the Internet of Battlefield Things / connected battlefield systems as its first industry. This is an industry decision, not merely a choice of testing environment.
 
-The intended output is closer to:
+The current problem statement is:
 
-> Estimated economic activity X, with confidence Y, supported by evidence A/B/C, contradicted by D, with uncertainties E/F.
+> Maintain a traceable, uncertainty-aware connection between physical observations and the world-state an intelligent system uses to decide and act.
 
-SMEs are the test environment, not the company identity or assumed final market. The work is not presently defined as accounting software, a lending app, a credit score, or a dashboard.
+Candidate system loop:
+
+> Physical reality → observations → evidence and provenance → state estimate → confidence and contradictions → decision threshold → authorized action → new observation → outcome verification → state update
+
+The exact IoBT layer, product, customer, and architecture are not yet selected. The next task is to decompose the industry and determine where this loop is materially unsolved rather than merely renaming sensor fusion, assurance, command-and-control, or autonomy.
+
+The current boundary is assurance and resilient decision infrastructure, not weapon targeting or autonomous attack capability.
+
+## Prior SME wedge
+
+Decision-Grade Financial Truth for SMEs remains a useful completed desk-research track and possible parallel empirical test. It no longer defines the first industry or primary build direction.
 
 ## Immediate falsification
 
-Determine whether existing digital traces plus modern AI can already reconstruct this truth reliably enough. If incumbents can obtain the same result through existing APIs and models, there may be no independent infrastructure layer.
+Map the IoBT stack—sensing, edge compute, communications, data fusion, assurance, command-and-control, autonomy, and post-action verification—and identify a specific failure where Reality Coupling is unsolved, operationally important, safely researchable, and measurable. Explicitly test whether the proposed layer is genuinely new or already solved by existing systems.

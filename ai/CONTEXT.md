@@ -22,14 +22,16 @@ Then read, in order:
 - **Candidate primitive:** a repeatable, measurable process that transforms heterogeneous signals into an evidence-backed real-world state claim sufficient for a specified consequential decision, with provenance, contradictions, confidence, and uncertainty exposed. Read `thesis/PRIMITIVE.md`.
 - **Critical distinction:** information extraction, state estimation, and decision-grade verification are different. The project is not claiming extraction as the scarce primitive; it is testing whether estimation and especially defensible verification remain scarce as AI improves.
 - **Epistemic status:** “defensible reality for consequential decisions” is a candidate invariant, not a fact. Seek counterexamples and conditions under which it disappears.
-- **First laboratory:** Decision-Grade Financial Truth for SMEs.
-- **Laboratory status:** selected for falsification, not validated. SMEs test the primitive; they do not define the company identity or final market.
-- **Immediate falsification:** whether existing digital traces plus modern AI already reconstruct SME economic truth well enough. If yes, the wedge may be an analytics feature rather than infrastructure.
+- **First industry:** Internet of Battlefield Things / connected battlefield systems. This is a decided industry direction, not merely a test environment.
+- **Industry problem:** maintain trustworthy correspondence between changing/adversarial physical reality and the world-state used by intelligent systems to decide and act.
+- **Candidate IoBT primitive:** Reality Coupling / evidence-to-state-to-action-to-outcome assurance. This is a problem formulation, not a validated product category.
+- **Safety boundary:** work on assurance, resilience, provenance, uncertainty, state integrity, revalidation, and outcome verification—not weapon targeting or autonomous attack capability.
+- **Prior SME work:** Decision-Grade Financial Truth for SMEs remains relevant falsification evidence and may continue as a parallel experiment, but it is no longer the primary industry direction.
 - **100× AI test:** cross-domain desk research provisionally finds that stronger inference does not create missing observations or prove post-action state change. The surviving candidate concerns fit-for-purpose, provenance-bearing observation in dynamic, physical, identity-sensitive, or adversarial settings. Market value and horizontal repeatability remain unproven; read `research/2026-09-01_INVARIANT_FALSIFICATION.md`.
 - **Architecture-level fork:** Decision-Grade Truth versus Trusted Execution / Delegated Authority. Their relationship is unresolved.
-- **Cross-domain hypothesis:** the primitive may apply to actionable intelligence, health, insurance, supply chains, robotics, and other domains. This is unproven and must not be presented as validated portability.
+- **Cross-domain hypothesis:** the primitive may later apply to health, insurance, supply chains, robotics, and other domains. This is unproven and must not distract from the chosen IoBT industry.
 - **Constraint:** do not optimize the thesis around solo execution, current skills, current capital, Tanzania, or any other assumed geography. These may inform entry only after structural importance is assessed.
-- **Product status:** no product, customer, payer, business model, or geography is selected.
+- **Product status:** no exact IoBT layer, product, customer, payer, procurement path, business model, or geography is selected.
 - **Implementation status:** substantial product code is premature.
 - **GitHub status:** published as the public repository `guardian-coder/reality`.
 
@@ -53,6 +55,6 @@ Then read, in order:
 
 ## Current next actions
 
-1. Recruit one consenting inventory-based SME, one accountable lender, and an independent accountant for the staged evidence test.
-2. Run the same lending case through transactions, accounting records, external evidence, and reconciled ground truth; measure when the lender is prepared to risk real capital.
-3. Use the pre-decision and post-action evidence requirements to compare Decision-Grade Truth with Trusted Execution / Delegated Authority; do not resolve the fork without observed evidence.
+1. Produce an IoBT industry decomposition covering sensing, edge compute, communications, data fusion, assurance, command-and-control, autonomy, and post-action verification.
+2. Build an opportunity map showing known incumbents, current methods, failure modes, users, buyers, evidence of unmet need, and safe measurable entry points.
+3. Select one first capability only after testing whether Reality Coupling is genuinely unsolved rather than a new name for an existing IoBT function.

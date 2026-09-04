@@ -67,3 +67,20 @@
 - **Decision:** Do not claim information extraction alone as the primitive; test whether scarcity persists in state estimation and especially defensible verification as AI improves.
 - **Decision:** Call “defensible reality for consequential decisions” a candidate invariant until it survives explicit counterexamples, willingness-to-pay tests, incumbent comparisons, and repeatability tests.
 - **Rationale:** A coherent, recurring idea is not evidence that the market needs it or that advancing models will not commoditize it.
+
+## D-011 — Enter the Internet of Battlefield Things industry
+
+- **Date recorded:** 2026-09-04
+- **Status:** Decided as strategic direction; exact product and customer remain unresolved
+- **Decision:** Select the Internet of Battlefield Things (IoBT) / connected battlefield systems as Project Reality's first industry.
+- **Decision:** Focus on reliable coupling between changing, adversarial battlefield reality and the intelligent systems that sense, interpret, decide, and act on it.
+- **Clarification:** IoBT is not merely a test environment. A simulated testbed may become an engineering method, but the mission is to build for the IoBT industry.
+- **Safety boundary:** Focus on assurance, resilience, provenance, uncertainty, state integrity, and outcome verification—not weapon targeting or autonomous attack capability.
+- **Rationale:** IoBT concentrates the hardest versions of the intelligence–reality problem: missing and stale observations, conflicting sources, deception, identity binding, degraded communications, uncertainty, time pressure, and post-action verification.
+- **Supersedes in priority:** D-006 and D-009 remain historical decisions and the SME experiment remains useful evidence, but SME financial truth is no longer the first industry or primary entry direction.
+- **Not decided:** Exact IoBT layer, product, buyer, procurement route, geography, technical architecture, or build specification.
+
+## O-002 — Identify the first IoBT capability
+
+- **Status:** Open
+- **Question:** Within sensing, edge compute, communications, data fusion, assurance, command-and-control, autonomy, and post-action verification, where is Reality Coupling both materially unsolved and valuable enough to support a first buildable capability?
