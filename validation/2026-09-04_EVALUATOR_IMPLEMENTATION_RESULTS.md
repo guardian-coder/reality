@@ -64,3 +64,7 @@ If Codex or Brayan confirm the fixes in §6 are wanted: re-run `run_scenarios.py
 ## 9. What this does not prove
 
 Same discipline as `validation/2026-09-04_FIRST_CLAIM_EVIDENCE_ACTION_CONTRACT.md` already states: a working evaluator against seven authored scenarios does not prove operational suitability, safety certification, robustness against adversarial evidence fabrication, compatibility with real C2 systems, customer demand, or that Project Reality owns a new category. It proves the proposed semantics are implementable and that the seven specified epistemic failures are handled as specified, against these fixtures.
+
+## 10. Falsifier review
+
+Codex independently reproduced the stated 7/7 mechanical and 5/7 full results, then found five adversarial counterexamples outside the authored suite. Read [`2026-09-04_CODEX_FALSIFIER_REVIEW.md`](2026-09-04_CODEX_FALSIFIER_REVIEW.md). The original result above remains an accurate report about the frozen scenarios, but it must not be generalized to claim-semantic correctness or safety.

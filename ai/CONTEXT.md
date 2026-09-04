@@ -59,5 +59,5 @@ Then read, in order:
 ## Current next actions
 
 1. Treat the machine-readable contract and seven expected scenarios under `prototype/` as frozen test inputs.
-2. Implement the smallest deterministic evaluator that validates evidence freshness, integrity, lineage, shared failure domains, claim state, and action disposition against those tests.
-3. Compare it with simple voting, confidence-only fusion, and provenance-only baselines; continue testing near-matches and do not infer novelty or demand from simulation success.
+2. Treat the first evaluator as a control-flow implementation, not yet a trusted claim-evaluation boundary. Convert the five counterexamples in `validation/2026-09-04_CODEX_FALSIFIER_REVIEW.md` into regression requirements, then add trusted claim predicates, entity binding, temporal ordering, integrity enforcement, and fail-closed ancestry handling.
+3. Compare the hardened evaluator with simple voting, confidence-only fusion, and provenance-only baselines; continue testing near-matches and do not infer novelty or demand from simulation success.
