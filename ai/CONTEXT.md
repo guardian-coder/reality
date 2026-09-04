@@ -56,6 +56,6 @@ Then read, in order:
 
 ## Current next actions
 
-1. Test the strongest near-match: determine whether Barycenter or another runtime already models claim-specific positive confirmation and common evidence dependencies.
-2. Map public autonomy-stack interfaces to identify exactly where uncertainty, provenance, freshness, and dependence are flattened before action.
-3. If the gap survives, implement the safe simulated Claim–Evidence–Action Contract comparator described in the novelty report; do not infer product demand from a successful prototype.
+1. Review and freeze the first contract in `validation/2026-09-04_FIRST_CLAIM_EVIDENCE_ACTION_CONTRACT.md`: a simulated decision about whether an autonomous logistics vehicle may cross a bridge.
+2. Define machine-readable schemas and convert the seven scenarios into executable tests before implementing evaluation logic.
+3. Continue testing the strongest near-match and public autonomy-stack interfaces; do not infer novelty or product demand from a successful simulation.

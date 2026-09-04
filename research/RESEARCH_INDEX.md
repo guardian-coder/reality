@@ -14,6 +14,10 @@ No research files are currently synced into this workspace. The referenced conve
 - [2026-09-01 — Validation Participant Recruitment Shortlist](../validation/2026-09-01_RECRUITMENT_SHORTLIST.md) — Ranked public introduction routes for SMEs, lenders, and qualified accountants; first outreach wave sent.
 - [Validation Outreach Log](../validation/OUTREACH_LOG.md) — Contact status and follow-up actions without personal contact details or private correspondence.
 
+## Active prototype specifications
+
+- [2026-09-04 — First Claim–Evidence–Action Contract](../validation/2026-09-04_FIRST_CLAIM_EVIDENCE_ACTION_CONTRACT.md) — Defines the first non-weaponized IoBT simulation decision, required claims, evidence independence rules, action dispositions, comparators, and falsification scenarios before code.
+
 ## Claims carried forward for validation
 
 | Claim | Status | Required evidence |
