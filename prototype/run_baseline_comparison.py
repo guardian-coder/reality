@@ -103,6 +103,14 @@ def run():
         matches = sum(row["match"] for row in rows)
         print(f"{system_name:18}  {matches}/7       {', '.join(failures) if failures else '-'}")
 
+    print("\nSafety/availability error split")
+    print("system              unsafe permits   false refusals")
+    print("------------------  --------------   --------------")
+    for system_name, rows in results.items():
+        unsafe_permits = sum(row["actual"] == "PERMIT" and row["expected"] != "PERMIT" for row in rows)
+        false_refusals = sum(row["actual"] != "PERMIT" and row["expected"] == "PERMIT" for row in rows)
+        print(f"{system_name:18}  {unsafe_permits:<14}   {false_refusals}")
+
     print("\nPer-scenario dispositions")
     for index, scenario in enumerate(suite["scenarios"]):
         values = ", ".join(
@@ -115,4 +123,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-
