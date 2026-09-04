@@ -137,6 +137,15 @@
       },
       "additionalProperties": false
     },
+    "CrossClaimDependency": {
+      "type": "object",
+      "required": ["failure_domain", "claim_ids"],
+      "properties": {
+        "failure_domain": { "type": "string" },
+        "claim_ids": { "type": "array", "minItems": 2, "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
     "ActionDisposition": {
       "type": "object",
       "required": ["action_id", "disposition", "claim_evaluations", "reason_codes"],
@@ -144,7 +153,8 @@
         "action_id": { "type": "string" },
         "disposition": { "$ref": "#/$defs/Disposition" },
         "claim_evaluations": { "type": "array", "items": { "$ref": "#/$defs/ClaimEvaluation" } },
-        "reason_codes": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+        "reason_codes": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "cross_claim_dependencies": { "type": "array", "items": { "$ref": "#/$defs/CrossClaimDependency" } }
       },
       "additionalProperties": false
     },
