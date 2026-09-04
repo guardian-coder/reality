@@ -2,41 +2,27 @@
 Claim-Evidence-Action Contract — deterministic evaluator.
 
 Built 2026-09-04 per COLLABORATION.md's current collaboration cycle
-step 2: "Claude steelmans the smallest deterministic evaluator and
-checks whether the contract is implementable without unnecessary
-complexity." Consumes the frozen contract
-(contracts/bridge-crossing.contract.json) and evidence fixtures
-without altering their expected outcomes, per prototype/README.md's
-"Next implementation rule."
+step 2. Hardened same day after Codex's adversarial falsifier review
+(validation/2026-09-04_CODEX_FALSIFIER_REVIEW.md) reproduced five real
+gaps (A-01 through A-05) - independently confirmed 5/5 before this
+rewrite. Full record of what changed and why:
+validation/2026-09-04_CONTRACT_HARDENING_RATIONALE.md (schema/contract
+change) and this file's own docstrings (evaluator-logic changes).
 
-Deliberate simplification, worth flagging back to Codex rather than
-silently assuming: the schema defines a separate DependencyGraph type
-(lineages + shared_failure_domains) as evaluator input. Every
-EvidenceRecord the schema requires already self-declares
-`parent_evidence_ids` and `failure_domains` directly. This evaluator
-derives lineage-sharing and failure-domain-sharing entirely from those
-per-record fields and does not require a separately-constructed
-DependencyGraph object at all - the smaller, sufficient version of
-"what does independence require." If DependencyGraph exists for a
-reason not visible from the frozen artifacts (e.g. cross-claim global
-lineage tracking spanning many contracts), that's a real question for
-Codex, not assumed away.
+Deliberate simplification, unchanged from the first version and still
+worth flagging back to Codex rather than silently assuming: the schema
+defines a separate DependencyGraph type. Every EvidenceRecord already
+self-declares `parent_evidence_ids` and `failure_domains`. This
+evaluator derives lineage-sharing and failure-domain-sharing entirely
+from those per-record fields.
 
-Stdlib only, no dependencies - the repository is explicitly "a
-knowledge repository for a company thesis, not primarily a codebase";
-the evaluator should be as inspectable as the documents around it.
+Stdlib only, no dependencies.
 """
 
 import datetime
 
 
 # ---- reason-code vocabulary --------------------------------------------
-# Small, mechanically-grounded set. See EVALUATOR_NOTES.md for the one
-# scenario (S-07) where the frozen suite's expected wording implies a
-# distinction (a previously-issued permit being invalidated by delay)
-# that a stateless evaluator - one with no memory of prior dispositions -
-# cannot make without additional input the schema does not currently
-# provide. That is surfaced as a proposal, not silently special-cased.
 
 REASON_ALL_CONFIRMED = "ALL_REQUIRED_CLAIMS_CONFIRMED"
 REASON_EVIDENCE_MISSING = "REQUIRED_POSITIVE_EVIDENCE_MISSING"
@@ -45,46 +31,95 @@ REASON_INSUFFICIENT_INDEPENDENCE = "INSUFFICIENT_INDEPENDENT_CONFIRMATION"
 REASON_CONTRADICTION_REFUSE = "SAFETY_CRITICAL_CONTRADICTION"
 REASON_CONTRADICTION_REVIEW = "UNRESOLVED_CONFLICT"
 REASON_INTEGRITY_FAILURE = "INTEGRITY_FAILURE"
-# Claim-specific override: C-05's statement is "no active stop condition
-# exists" - when the register can't be retrieved at all, naming the
-# domain state directly ("stop condition state unknown") is a more
-# precise label than the generic "evidence missing" reason would be,
-# and matches the frozen scenario's own vocabulary (S-06). A documented
-# per-claim override table, not a hidden special case.
 CLAIM_SPECIFIC_MISSING_REASON = {
     "C-05": "STOP_CONDITION_STATE_UNKNOWN",
 }
-
 
 def _parse_dt(s):
     return datetime.datetime.fromisoformat(s.replace("Z", "+00:00"))
 
 
-def _evidence_is_fresh_and_verified(ev, rule, decision_time):
+def _value_matches(evidence, predicate):
+    if predicate is None:
+        return None  # no predicate defined - caller decides the default
+    actual = evidence.get(predicate["field"])
+    if predicate["operator"] == "equals":
+        return actual == predicate["value"]
+    if predicate["operator"] == "not_equals":
+        return actual != predicate["value"]
+    raise ValueError(f"Unknown predicate operator: {predicate['operator']}")
+
+
+def _passes_temporal_ordering(ev, decision_time):
+    """Fix for A-03: reality must be observed before it's received, and
+    received before or at the moment a decision about it is made. A
+    record whose observation_time is after decision_time describes
+    something that, from the decision's own vantage point, hasn't
+    happened yet - it cannot justify an earlier decision no matter how
+    fresh it otherwise looks."""
+    obs_time = _parse_dt(ev["observation_time"])
+    received_time = _parse_dt(ev["received_time"])
+    if obs_time > received_time:
+        return False
+    if received_time > decision_time:
+        return False
+    if obs_time > decision_time:
+        return False
+    return True
+
+
+def _entity_matches(ev, claim):
+    subject = claim.get("subject_entity_id")
+    if subject is None:
+        return True  # claim doesn't declare a subject - no binding check applies
+    return ev["observed_entity_id"] == subject
+
+
+def _rule_admits(ev, rule, claim, decision_time):
+    """Type, freshness, integrity, temporal ordering, and entity binding
+    - the full set of checks an evidence record must pass to even be
+    considered for a given rule, confirming or contradicting."""
     if ev["evidence_type"] != rule["evidence_type"]:
+        return False
+    if not _entity_matches(ev, claim):
         return False
     required_integrity = rule.get("required_integrity_status")
     if required_integrity and ev["integrity_status"] != required_integrity:
         return False
-    obs_time = _parse_dt(ev["observation_time"])
+    if not _passes_temporal_ordering(ev, decision_time):
+        return False
     valid_until = _parse_dt(ev["valid_until"])
     if decision_time > valid_until:
         return False
     max_age = rule.get("maximum_age_seconds")
     if max_age is not None:
-        age_seconds = (decision_time - obs_time).total_seconds()
+        age_seconds = (decision_time - _parse_dt(ev["observation_time"])).total_seconds()
         if age_seconds > max_age:
             return False
     return True
 
 
 def _effective_independent_lineages(evidence_ids, evidence_by_id):
-    """Union-find over evidence_ids: two records merge into one
-    effective lineage if one derives from the other (parent_evidence_ids,
-    followed transitively) or if they share any failure_domain. Both
-    signals come directly off the EvidenceRecord objects themselves -
-    see the module docstring for why no separate DependencyGraph input
-    is used."""
+    """Union-find over evidence_ids. Two records merge into one
+    effective lineage if one derives from the other or they share a
+    failure domain.
+
+    Fix for A-05, corrected on first attempt: an initial version merged
+    every record with unresolvable ancestry into one shared bucket, but
+    a single such record still formed its own distinct group and still
+    counted toward independence - exactly the bug it was meant to
+    close, just relocated. If a record declares a parent that is NOT
+    among the evidence being evaluated, its ancestry cannot be verified
+    at all, so it must contribute ZERO lineages on its own: a group
+    counts as a legitimate independent lineage only if at least one of
+    its members has fully resolved (or absent) ancestry. A group made
+    entirely of unresolved-ancestry records - even several of them,
+    even sharing no failure domain with anything - proves nothing and
+    counts as nothing. This is the same "absence of disconfirming
+    information silently read as confirmation" failure shape documented
+    in docs/28 of the sibling real-life-gaming-platform repo's IoBT
+    Reality-Failure Atlas - this evaluator reproduced that exact
+    pattern itself (twice) before being hardened against it."""
     parent = {eid: eid for eid in evidence_ids}
 
     def find(x):
@@ -99,17 +134,15 @@ def _effective_independent_lineages(evidence_ids, evidence_by_id):
             parent[ra] = rb
 
     ids_set = set(evidence_ids)
+    unresolved_ids = set()
 
-    # Lineage sharing: an evidence record and any of its declared
-    # parents (if the parent is also in this evaluation's evidence set)
-    # are the same effective source.
     for eid in evidence_ids:
         for parent_id in evidence_by_id[eid].get("parent_evidence_ids", []):
             if parent_id in ids_set:
                 union(eid, parent_id)
+            else:
+                unresolved_ids.add(eid)
 
-    # Failure-domain sharing: any two records naming a common failure
-    # domain are not independent for the purposes of this claim.
     domain_to_ids = {}
     for eid in evidence_ids:
         for domain in evidence_by_id[eid].get("failure_domains", []):
@@ -118,43 +151,78 @@ def _effective_independent_lineages(evidence_ids, evidence_by_id):
         for i in range(1, len(ids)):
             union(ids[0], ids[i])
 
-    return len({find(eid) for eid in evidence_ids})
+    members_by_group = {}
+    for eid in evidence_ids:
+        members_by_group.setdefault(find(eid), []).append(eid)
+
+    legitimate_groups = sum(
+        1 for members in members_by_group.values()
+        if any(m not in unresolved_ids for m in members)
+    )
+    return legitimate_groups
+
+
+def _find_contradictions(claim, evidence_records, decision_time):
+    """Fix for the "contradiction bypasses contract rules" gap: a
+    record only counts as contradicting a claim if it is admissible
+    under an explicit rule - either a dedicated contradiction_rules
+    entry (e.g. a structural alarm for C-02), or a confirms_when/
+    contradicts_when value predicate on one of the claim's own
+    evidence_rules (e.g. C-05's stop register). A bare `stance:
+    CONTRADICTS` label is no longer trusted by itself - it must also
+    pass one of these two real admissibility checks."""
+    found = []
+    for rule in claim.get("contradiction_rules", []):
+        for ev in evidence_records:
+            if claim["claim_id"] not in ev["claim_ids"]:
+                continue
+            if _rule_admits(ev, rule, claim, decision_time):
+                found.append(ev)
+    for rule in claim["evidence_rules"]:
+        contradicts_when = rule.get("contradicts_when")
+        if contradicts_when is None:
+            continue
+        for ev in evidence_records:
+            if claim["claim_id"] not in ev["claim_ids"]:
+                continue
+            if _rule_admits(ev, rule, claim, decision_time) and _value_matches(ev, contradicts_when):
+                found.append(ev)
+    return found
 
 
 def evaluate_claim(claim, evidence_records, decision_time):
     """Returns a ClaimEvaluation dict matching cea.schema.json's shape."""
-    relevant = [e for e in evidence_records if claim["claim_id"] in e["claim_ids"]]
-    evidence_by_id = {e["evidence_id"]: e for e in relevant}
-
-    contradicting_fresh = [
-        e for e in relevant
-        if e.get("stance") == "CONTRADICTS"
-        and e["integrity_status"] == "VERIFIED"
-        and decision_time <= _parse_dt(e["valid_until"])
-    ]
-    if contradicting_fresh:
+    contradicting = _find_contradictions(claim, evidence_records, decision_time)
+    if contradicting:
         return {
             "claim_id": claim["claim_id"],
             "state": "CONTRADICTED",
             "effective_independent_lineages": 0,
             "supporting_evidence_ids": [],
-            "contradicting_evidence_ids": [e["evidence_id"] for e in contradicting_fresh],
-            "reasons": [f"Contradicting evidence present: {[e['evidence_id'] for e in contradicting_fresh]}"],
+            "contradicting_evidence_ids": sorted({e["evidence_id"] for e in contradicting}),
+            "reasons": [f"Admissible contradicting evidence present: "
+                        f"{sorted({e['evidence_id'] for e in contradicting})}"],
         }
 
-    supporting = [e for e in relevant if e.get("stance") != "CONTRADICTS"]
+    relevant = [e for e in evidence_records if claim["claim_id"] in e["claim_ids"]]
+    evidence_by_id = {e["evidence_id"]: e for e in relevant}
 
     unmet_rules = []
     all_qualifying_ids = []
     for rule in claim["evidence_rules"]:
-        qualifying = [e for e in supporting if _evidence_is_fresh_and_verified(e, rule, decision_time)]
+        admissible = [e for e in relevant if _rule_admits(e, rule, claim, decision_time)]
+        confirms_when = rule.get("confirms_when")
+        if confirms_when is not None:
+            qualifying = [e for e in admissible if _value_matches(e, confirms_when)]
+        else:
+            qualifying = admissible
         all_qualifying_ids.extend(e["evidence_id"] for e in qualifying)
         if len(qualifying) < rule["minimum_count"]:
-            candidates_of_type = [e for e in supporting if e["evidence_type"] == rule["evidence_type"]]
+            candidates_of_type = [e for e in relevant if e["evidence_type"] == rule["evidence_type"]]
             if not candidates_of_type:
                 unmet_rules.append((rule, "missing"))
             else:
-                unmet_rules.append((rule, "stale_or_unverified"))
+                unmet_rules.append((rule, "stale_unverified_unbound_or_wrong_value"))
 
     if unmet_rules:
         reasons = []
@@ -164,7 +232,7 @@ def evaluate_claim(claim, evidence_records, decision_time):
             else:
                 reasons.append(
                     f"Evidence of type {rule['evidence_type']} exists for {claim['claim_id']} "
-                    f"but none is fresh and integrity-verified as of decision time"
+                    f"but none is fresh, verified, correctly bound, and correctly valued as of decision time"
                 )
         return {
             "claim_id": claim["claim_id"],
@@ -204,14 +272,32 @@ def evaluate_claim(claim, evidence_records, decision_time):
 def evaluate_action(contract, evidence_records, decision_time_str, action_id="action-eval-1"):
     """Returns an ActionDisposition dict matching cea.schema.json's shape."""
     decision_time = _parse_dt(decision_time_str)
+
+    # Fix for A-04: integrity failure is a distinct, safety-relevant
+    # signal, not just "insufficient evidence." A record that failed
+    # its own integrity check existing anywhere in the evidence set for
+    # this action is a red flag about the channel or source itself, not
+    # merely a gap to fill by waiting - route straight to REFUSE per
+    # the contract's own disposition_policy.integrity_failure, before
+    # any claim-level evaluation runs.
+    failed_integrity = [e for e in evidence_records if e["integrity_status"] == "FAILED"]
+    if failed_integrity:
+        claim_evaluations = [
+            evaluate_claim(claim, [e for e in evidence_records if e["integrity_status"] != "FAILED"], decision_time)
+            for claim in contract["claims"]
+        ]
+        return {
+            "action_id": action_id,
+            "disposition": "REFUSE",
+            "claim_evaluations": claim_evaluations,
+            "reason_codes": [REASON_INTEGRITY_FAILURE],
+        }
+
     claim_evaluations = [
         evaluate_claim(claim, evidence_records, decision_time) for claim in contract["claims"]
     ]
-    by_claim_id = {ce["claim_id"]: ce for ce in claim_evaluations}
     claim_by_id = {c["claim_id"]: c for c in contract["claims"]}
 
-    # Contradiction check first - a safety-critical contradiction refuses
-    # regardless of any other claim's state.
     for ce in claim_evaluations:
         if ce["state"] == "CONTRADICTED":
             policy = claim_by_id[ce["claim_id"]]["contradiction_policy"]
@@ -232,8 +318,6 @@ def evaluate_action(contract, evidence_records, decision_time_str, action_id="ac
             "reason_codes": [REASON_ALL_CONFIRMED],
         }
 
-    # At least one claim is UNKNOWN and none are CONTRADICTED -> REVALIDATE,
-    # with a reason code reflecting why each unresolved claim is UNKNOWN.
     reason_codes = []
     for ce in claim_evaluations:
         if ce["state"] != "UNKNOWN":

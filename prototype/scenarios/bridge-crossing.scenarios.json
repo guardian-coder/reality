@@ -33,10 +33,11 @@
       "scenario_id": "S-04",
       "name": "gps-plus-independent-landmark-position",
       "given": ["Current verified satellite position exists", "Current verified visual-landmark position exists", "The two records do not share a relevant positioning failure domain"],
+      "focus": "Demonstrates C-04 reaching CONFIRMED via two genuinely independent lineages, not via the action-level reason code. A stateless evaluator cannot single out which of several confirmed claims is the scenario's narrative point - see claim_evaluations[C-04].reasons for the independence detail, and validation/2026-09-04_CODEX_FALSIFIER_REVIEW.md section 5 for why the action-level reason stays generic.",
       "expected_claim_states": { "C-04": "CONFIRMED" },
       "expected_effective_independent_lineages": { "C-04": 2 },
       "expected_disposition": "PERMIT",
-      "expected_reason_codes": ["POSITION_INDEPENDENTLY_CONFIRMED"]
+      "expected_reason_codes": ["ALL_REQUIRED_CLAIMS_CONFIRMED"]
     },
     {
       "scenario_id": "S-05",
@@ -58,9 +59,10 @@
       "scenario_id": "S-07",
       "name": "permit-invalidated-by-stale-path-observation",
       "given": ["All claims were previously confirmed", "Execution was delayed", "Full-path observation expired before execution"],
+      "focus": "A stateless current-state evaluator cannot distinguish first-time staleness from invalidation of a prior permit without a PermitRecord binding the exact prior contract version, evidence snapshot, and issue time (proposed, not yet built - see validation/2026-09-04_CODEX_FALSIFIER_REVIEW.md section 5). Until then this scenario mechanically tests C-03 staleness, same as S-02 tests C-02 staleness, and uses the same generic reason code.",
       "expected_claim_states": { "C-03": "UNKNOWN" },
       "expected_disposition": "REVALIDATE",
-      "expected_reason_codes": ["PERMIT_INVALIDATED_BY_EVIDENCE_EXPIRY"]
+      "expected_reason_codes": ["REQUIRED_POSITIVE_EVIDENCE_STALE"]
     }
   ]
 }

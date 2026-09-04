@@ -58,6 +58,6 @@ Then read, in order:
 
 ## Current next actions
 
-1. Treat the machine-readable contract and seven expected scenarios under `prototype/` as frozen test inputs.
-2. Treat the first evaluator as a control-flow implementation, not yet a trusted claim-evaluation boundary. Convert the five counterexamples in `validation/2026-09-04_CODEX_FALSIFIER_REVIEW.md` into regression requirements, then add trusted claim predicates, entity binding, temporal ordering, integrity enforcement, and fail-closed ancestry handling.
+1. Treat the machine-readable contract and scenarios under `prototype/` as frozen test inputs, now including the contract/schema hardening (`validation/2026-09-04_CONTRACT_HARDENING_RATIONALE.md`) and the S-04/S-07 reason-code corrections applied per Codex's own recommendation (`validation/2026-09-04_EVALUATOR_HARDENING_RESULTS.md`).
+2. The evaluator now blocks all five counterexamples from `validation/2026-09-04_CODEX_FALSIFIER_REVIEW.md` (`python prototype/run_adversarial_review.py` → 0/5 reproduced) and fully matches all seven original scenarios including reason codes (`python prototype/run_scenarios.py` → 7/7). It is still not a general trusted claim-evaluation boundary — see "What is explicitly still open" in `validation/2026-09-04_EVALUATOR_HARDENING_RESULTS.md`: dependency-metadata authentication, typed failure-domain semantics, runtime schema validation, `DEGRADE`/`HUMAN_REVIEW` reachability all remain unaddressed.
 3. Compare the hardened evaluator with simple voting, confidence-only fusion, and provenance-only baselines; continue testing near-matches and do not infer novelty or demand from simulation success.
