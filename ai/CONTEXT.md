@@ -4,6 +4,8 @@
 
 This file is the entry point for every AI agent working on Reality. Read it before proposing strategy, research, documents, or code.
 
+Codex and Claude use the two-lens review protocol in `COLLABORATION.md`. By default, Claude steelmans the opportunity as the optimistic builder and Codex attacks assumptions as the skeptical falsifier. Neither role may hide contrary evidence or convert agreement into validation.
+
 Then read, in order:
 
 1. `company/FOUNDING_MEMO.md`

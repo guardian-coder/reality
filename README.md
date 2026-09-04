@@ -1,5 +1,7 @@
 # Reality
 
+> **AI collaborators:** read [`ai/CONTEXT.md`](ai/CONTEXT.md) first. Claude should also read [`CLAUDE.md`](CLAUDE.md), and all agents should follow [`COLLABORATION.md`](COLLABORATION.md).
+
 Reality is a knowledge repository for a company thesis, not primarily a codebase.
 
 We are exploring infrastructure that lets intelligent systems interact with reality reliably. The candidate primitive is a repeatable evidence-to-state process that produces a defensible real-world claim sufficient for a specified consequential decision. Our first laboratory is **Decision-Grade Financial Truth for SMEs**.
