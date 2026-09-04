@@ -100,6 +100,33 @@ def main():
         result,
     ))
 
+    # A fused child citing two genuinely independent roots connects both roots
+    # in the current union-find. Derivation does not make the roots mutually
+    # dependent, so the evaluator should retain two effective root lineages.
+    evidence = copy.deepcopy(baseline)
+    evidence.append({
+        "evidence_id": "ev-c04-fused-independent",
+        "source_id": "fused-location-service-2",
+        "observed_entity_id": "logistics-vehicle-01",
+        "observation_time": "2026-09-04T11:59:55Z",
+        "received_time": "2026-09-04T11:59:56Z",
+        "valid_until": "2026-09-04T12:00:20Z",
+        "claim_ids": ["C-04"],
+        "evidence_type": "POSITION_OBSERVATION",
+        "value": {"lat": 0.00005, "lon": 0.00005},
+        "uncertainty": 0.05,
+        "parent_evidence_ids": ["ev-c04-gps", "ev-c04-landmark"],
+        "failure_domains": ["fusion-service-2"],
+        "integrity_status": "VERIFIED",
+    })
+    result = evaluate(evidence)
+    c04 = next(item for item in result["claim_evaluations"] if item["claim_id"] == "C-04")
+    checks.append((
+        "A-06 fused child collapses two independent roots into one lineage",
+        c04["state"] == "UNKNOWN" and c04["effective_independent_lineages"] == 1,
+        result,
+    ))
+
     reproduced = 0
     for name, exposed, result in checks:
         status = "EXPOSED" if exposed else "NOT REPRODUCED"
@@ -113,4 +140,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
