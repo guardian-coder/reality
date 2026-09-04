@@ -297,6 +297,36 @@ def evaluate_claim(claim, evidence_records, decision_time):
     }
 
 
+def _cross_claim_dependencies(claim_evaluations, evidence_records):
+    """Fix for E-03: independence is checked within each claim, but
+    nothing previously surfaced when several prerequisites secretly
+    share one physical dependency (e.g. one camera behind the identity
+    cue, the condition observation, and the position fix at once) -
+    each claim can look independently confirmed while the action as a
+    whole rests on fewer real sources than it appears to. This reports
+    the fact; it does not gate or change any disposition - the contract
+    does not currently require cross-claim independence, and deciding
+    whether it should is a separate, real design question, not
+    something to fold into a visibility fix."""
+    evidence_by_id = {e["evidence_id"]: e for e in evidence_records}
+    domain_to_claims = {}
+    for ce in claim_evaluations:
+        referenced_ids = set(ce["supporting_evidence_ids"]) | set(ce["contradicting_evidence_ids"])
+        domains_in_claim = set()
+        for eid in referenced_ids:
+            record = evidence_by_id.get(eid)
+            if record:
+                domains_in_claim.update(record.get("failure_domains", []))
+        for domain in domains_in_claim:
+            domain_to_claims.setdefault(domain, set()).add(ce["claim_id"])
+
+    return [
+        {"failure_domain": domain, "claim_ids": sorted(claim_ids)}
+        for domain, claim_ids in sorted(domain_to_claims.items())
+        if len(claim_ids) >= 2
+    ]
+
+
 def evaluate_action(contract, evidence_records, decision_time_str, action_id="action-eval-1"):
     """Returns an ActionDisposition dict matching cea.schema.json's shape."""
     decision_time = _parse_dt(decision_time_str)
@@ -310,8 +340,9 @@ def evaluate_action(contract, evidence_records, decision_time_str, action_id="ac
     # any claim-level evaluation runs.
     failed_integrity = [e for e in evidence_records if e["integrity_status"] == "FAILED"]
     if failed_integrity:
+        remaining_evidence = [e for e in evidence_records if e["integrity_status"] != "FAILED"]
         claim_evaluations = [
-            evaluate_claim(claim, [e for e in evidence_records if e["integrity_status"] != "FAILED"], decision_time)
+            evaluate_claim(claim, remaining_evidence, decision_time)
             for claim in contract["claims"]
         ]
         return {
@@ -319,12 +350,14 @@ def evaluate_action(contract, evidence_records, decision_time_str, action_id="ac
             "disposition": "REFUSE",
             "claim_evaluations": claim_evaluations,
             "reason_codes": [REASON_INTEGRITY_FAILURE],
+            "cross_claim_dependencies": _cross_claim_dependencies(claim_evaluations, remaining_evidence),
         }
 
     claim_evaluations = [
         evaluate_claim(claim, evidence_records, decision_time) for claim in contract["claims"]
     ]
     claim_by_id = {c["claim_id"]: c for c in contract["claims"]}
+    cross_claim_deps = _cross_claim_dependencies(claim_evaluations, evidence_records)
 
     for ce in claim_evaluations:
         if ce["state"] == "CONTRADICTED":
@@ -336,6 +369,7 @@ def evaluate_action(contract, evidence_records, decision_time_str, action_id="ac
                 "disposition": disposition,
                 "claim_evaluations": claim_evaluations,
                 "reason_codes": [reason],
+                "cross_claim_dependencies": cross_claim_deps,
             }
 
     if all(ce["state"] == "CONFIRMED" for ce in claim_evaluations):
@@ -344,6 +378,7 @@ def evaluate_action(contract, evidence_records, decision_time_str, action_id="ac
             "disposition": "PERMIT",
             "claim_evaluations": claim_evaluations,
             "reason_codes": [REASON_ALL_CONFIRMED],
+            "cross_claim_dependencies": cross_claim_deps,
         }
 
     reason_codes = []
@@ -365,4 +400,5 @@ def evaluate_action(contract, evidence_records, decision_time_str, action_id="ac
         "disposition": "REVALIDATE",
         "claim_evaluations": claim_evaluations,
         "reason_codes": reason_codes,
+        "cross_claim_dependencies": cross_claim_deps,
     }
