@@ -13,6 +13,7 @@
       "claim_id": "C-01",
       "statement": "Observed bridge identity is bridge-alpha.",
       "required_state": "CONFIRMED",
+      "subject_entity_id": "bridge-alpha",
       "evidence_rules": [
         { "evidence_type": "MAP_ASSOCIATION", "minimum_count": 1, "maximum_age_seconds": 86400, "required_integrity_status": "VERIFIED" },
         { "evidence_type": "INDEPENDENT_IDENTITY_CUE", "minimum_count": 1, "maximum_age_seconds": 300, "required_integrity_status": "VERIFIED" }
@@ -24,9 +25,13 @@
       "claim_id": "C-02",
       "statement": "Bridge is currently passable for this vehicle.",
       "required_state": "CONFIRMED",
+      "subject_entity_id": "bridge-alpha",
       "evidence_rules": [
         { "evidence_type": "LOAD_CAPACITY_RECORD", "minimum_count": 1, "maximum_age_seconds": 2592000, "required_integrity_status": "VERIFIED" },
         { "evidence_type": "PHYSICAL_CONDITION_OBSERVATION", "minimum_count": 1, "maximum_age_seconds": 300, "required_integrity_status": "VERIFIED" }
+      ],
+      "contradiction_rules": [
+        { "evidence_type": "STRUCTURAL_ALARM", "minimum_count": 1, "maximum_age_seconds": 900, "required_integrity_status": "VERIFIED" }
       ],
       "minimum_independent_lineages": 2,
       "contradiction_policy": "REFUSE"
@@ -35,6 +40,7 @@
       "claim_id": "C-03",
       "statement": "Approach and full crossing path are currently unobstructed.",
       "required_state": "CONFIRMED",
+      "subject_entity_id": "bridge-alpha-path",
       "evidence_rules": [
         { "evidence_type": "FULL_PATH_OBSERVATION", "minimum_count": 1, "maximum_age_seconds": 60, "required_integrity_status": "VERIFIED" }
       ],
@@ -45,6 +51,7 @@
       "claim_id": "C-04",
       "statement": "Vehicle and bridge positions are sufficiently trustworthy.",
       "required_state": "CONFIRMED",
+      "subject_entity_id": "logistics-vehicle-01",
       "evidence_rules": [
         { "evidence_type": "POSITION_OBSERVATION", "minimum_count": 2, "maximum_age_seconds": 30, "required_integrity_status": "VERIFIED" }
       ],
@@ -55,8 +62,11 @@
       "claim_id": "C-05",
       "statement": "No active authenticated stop condition exists.",
       "required_state": "CONFIRMED",
+      "subject_entity_id": "logistics-vehicle-01",
       "evidence_rules": [
-        { "evidence_type": "STOP_REGISTER_SNAPSHOT", "minimum_count": 1, "maximum_age_seconds": 15, "required_integrity_status": "VERIFIED" }
+        { "evidence_type": "STOP_REGISTER_SNAPSHOT", "minimum_count": 1, "maximum_age_seconds": 15, "required_integrity_status": "VERIFIED",
+          "confirms_when": { "field": "value", "operator": "equals", "value": "no_stop_active" },
+          "contradicts_when": { "field": "value", "operator": "not_equals", "value": "no_stop_active" } }
       ],
       "minimum_independent_lineages": 1,
       "contradiction_policy": "REFUSE"
