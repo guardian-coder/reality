@@ -99,28 +99,74 @@ def _rule_admits(ev, rule, claim, decision_time):
     return True
 
 
-def _effective_independent_lineages(evidence_ids, evidence_by_id):
-    """Union-find over evidence_ids. Two records merge into one
-    effective lineage if one derives from the other or they share a
-    failure domain.
+def _resolve_roots(evidence_id, evidence_by_id, ids_set, memo, visiting):
+    """Returns the frozenset of root evidence_ids that evidence_id
+    ultimately derives from, or None if ancestry cannot be fully
+    resolved (a declared parent is missing from the evaluated set, or
+    a cycle was detected) - fails closed, same discipline as A-05.
 
-    Fix for A-05, corrected on first attempt: an initial version merged
-    every record with unresolvable ancestry into one shared bucket, but
-    a single such record still formed its own distinct group and still
-    counted toward independence - exactly the bug it was meant to
-    close, just relocated. If a record declares a parent that is NOT
-    among the evidence being evaluated, its ancestry cannot be verified
-    at all, so it must contribute ZERO lineages on its own: a group
-    counts as a legitimate independent lineage only if at least one of
-    its members has fully resolved (or absent) ancestry. A group made
-    entirely of unresolved-ancestry records - even several of them,
-    even sharing no failure domain with anything - proves nothing and
-    counts as nothing. This is the same "absence of disconfirming
-    information silently read as confirmation" failure shape documented
-    in docs/28 of the sibling real-life-gaming-platform repo's IoBT
-    Reality-Failure Atlas - this evaluator reproduced that exact
-    pattern itself (twice) before being hardened against it."""
-    parent = {eid: eid for eid in evidence_ids}
+    A record with no parents IS a root (resolves to itself). A record
+    with parents resolves to the UNION of its parents' root sets - not
+    a merge of the parents WITH EACH OTHER. This is the fix for A-06:
+    plain union-find treated "child derives from A and B" as "A and B
+    are now the same thing," which silently destroys genuine
+    independence the moment two independent sources get fused into one
+    record. A fused record correctly contributes evidence for BOTH of
+    its roots without making those roots dependent on one another."""
+    if evidence_id in memo:
+        return memo[evidence_id]
+    if evidence_id in visiting:
+        memo[evidence_id] = None  # cycle - fail closed, same as unresolved ancestry
+        return None
+    parent_ids = evidence_by_id[evidence_id].get("parent_evidence_ids", [])
+    if not parent_ids:
+        result = frozenset([evidence_id])
+        memo[evidence_id] = result
+        return result
+    visiting.add(evidence_id)
+    roots = set()
+    for parent_id in parent_ids:
+        if parent_id not in ids_set:
+            visiting.discard(evidence_id)
+            memo[evidence_id] = None
+            return None
+        parent_roots = _resolve_roots(parent_id, evidence_by_id, ids_set, memo, visiting)
+        if parent_roots is None:
+            visiting.discard(evidence_id)
+            memo[evidence_id] = None
+            return None
+        roots |= parent_roots
+    visiting.discard(evidence_id)
+    result = frozenset(roots)
+    memo[evidence_id] = result
+    return result
+
+
+def _effective_independent_lineages(evidence_ids, evidence_by_id):
+    """Resolves every qualifying record to its root set (see
+    _resolve_roots), then groups only the ROOTS that share a declared
+    failure domain - read from the root records' own `failure_domains`,
+    never from a derived/fused record's own domain (a fusion service's
+    own compute dependency doesn't make the underlying observations it
+    fused correlated). A record whose ancestry can't be fully resolved
+    contributes no roots at all - fails closed, same as before.
+
+    Still explicitly untyped: any two roots sharing any failure-domain
+    STRING collapse, with no notion of which property that domain
+    actually threatens (a shared clock affecting freshness is treated
+    the same as a shared positioning source affecting a location claim
+    itself). Codex named this as a real, separate open gap in the
+    original falsifier review, section 4 - not fixed here, not claimed
+    fixed here."""
+    ids_set = set(evidence_ids)
+    memo = {}
+    all_roots = set()
+    for eid in evidence_ids:
+        roots = _resolve_roots(eid, evidence_by_id, ids_set, memo, set())
+        if roots is not None:
+            all_roots |= roots
+
+    parent = {r: r for r in all_roots}
 
     def find(x):
         while parent[x] != x:
@@ -133,33 +179,15 @@ def _effective_independent_lineages(evidence_ids, evidence_by_id):
         if ra != rb:
             parent[ra] = rb
 
-    ids_set = set(evidence_ids)
-    unresolved_ids = set()
+    domain_to_roots = {}
+    for r in all_roots:
+        for domain in evidence_by_id[r].get("failure_domains", []):
+            domain_to_roots.setdefault(domain, []).append(r)
+    for roots in domain_to_roots.values():
+        for i in range(1, len(roots)):
+            union(roots[0], roots[i])
 
-    for eid in evidence_ids:
-        for parent_id in evidence_by_id[eid].get("parent_evidence_ids", []):
-            if parent_id in ids_set:
-                union(eid, parent_id)
-            else:
-                unresolved_ids.add(eid)
-
-    domain_to_ids = {}
-    for eid in evidence_ids:
-        for domain in evidence_by_id[eid].get("failure_domains", []):
-            domain_to_ids.setdefault(domain, []).append(eid)
-    for ids in domain_to_ids.values():
-        for i in range(1, len(ids)):
-            union(ids[0], ids[i])
-
-    members_by_group = {}
-    for eid in evidence_ids:
-        members_by_group.setdefault(find(eid), []).append(eid)
-
-    legitimate_groups = sum(
-        1 for members in members_by_group.values()
-        if any(m not in unresolved_ids for m in members)
-    )
-    return legitimate_groups
+    return len({find(r) for r in all_roots})
 
 
 def _find_contradictions(claim, evidence_records, decision_time):
