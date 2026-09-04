@@ -56,6 +56,6 @@ Then read, in order:
 
 ## Current next actions
 
-1. Review and freeze the first contract in `validation/2026-09-04_FIRST_CLAIM_EVIDENCE_ACTION_CONTRACT.md`: a simulated decision about whether an autonomous logistics vehicle may cross a bridge.
-2. Define machine-readable schemas and convert the seven scenarios into executable tests before implementing evaluation logic.
-3. Continue testing the strongest near-match and public autonomy-stack interfaces; do not infer novelty or product demand from a successful simulation.
+1. Treat the machine-readable contract and seven expected scenarios under `prototype/` as frozen test inputs.
+2. Implement the smallest deterministic evaluator that validates evidence freshness, integrity, lineage, shared failure domains, claim state, and action disposition against those tests.
+3. Compare it with simple voting, confidence-only fusion, and provenance-only baselines; continue testing near-matches and do not infer novelty or demand from simulation success.

@@ -1,0 +1,66 @@
+{
+  "suite_id": "bridge-crossing-v1",
+  "contract_id": "bridge-crossing-v1",
+  "decision_time": "2026-09-04T12:00:00Z",
+  "suite_rule": "Unless a scenario states otherwise, claims not named in expected_claim_states are CONFIRMED with valid independent evidence. Each scenario isolates the named failure.",
+  "scenarios": [
+    {
+      "scenario_id": "S-01",
+      "name": "complete-independent-confirmation",
+      "given": ["All claim rules are met", "Required evidence is current and integrity-verified", "Minimum independent lineages are met", "No contradiction exists"],
+      "expected_claim_states": { "C-01": "CONFIRMED", "C-02": "CONFIRMED", "C-03": "CONFIRMED", "C-04": "CONFIRMED", "C-05": "CONFIRMED" },
+      "expected_disposition": "PERMIT",
+      "expected_reason_codes": ["ALL_REQUIRED_CLAIMS_CONFIRMED"]
+    },
+    {
+      "scenario_id": "S-02",
+      "name": "no-alarm-but-stale-inspection",
+      "given": ["No structural alarm is present", "Physical condition observation expired before decision time"],
+      "expected_claim_states": { "C-02": "UNKNOWN" },
+      "expected_disposition": "REVALIDATE",
+      "expected_reason_codes": ["REQUIRED_POSITIVE_EVIDENCE_STALE"]
+    },
+    {
+      "scenario_id": "S-03",
+      "name": "three-position-records-one-gps-dependency",
+      "given": ["Vehicle GPS and drone GPS agree", "Fused location derives from those GPS records", "All three share failure domain gps-signal-01"],
+      "expected_claim_states": { "C-04": "UNKNOWN" },
+      "expected_effective_independent_lineages": { "C-04": 1 },
+      "expected_disposition": "REVALIDATE",
+      "expected_reason_codes": ["INSUFFICIENT_INDEPENDENT_CONFIRMATION"]
+    },
+    {
+      "scenario_id": "S-04",
+      "name": "gps-plus-independent-landmark-position",
+      "given": ["Current verified satellite position exists", "Current verified visual-landmark position exists", "The two records do not share a relevant positioning failure domain"],
+      "expected_claim_states": { "C-04": "CONFIRMED" },
+      "expected_effective_independent_lineages": { "C-04": 2 },
+      "expected_disposition": "PERMIT",
+      "expected_reason_codes": ["POSITION_INDEPENDENTLY_CONFIRMED"]
+    },
+    {
+      "scenario_id": "S-05",
+      "name": "structural-alarm-contradicts-visual-condition",
+      "given": ["Current visual evidence supports passability", "Current authenticated structural sensor reports a critical condition"],
+      "expected_claim_states": { "C-02": "CONTRADICTED" },
+      "expected_disposition": "REFUSE",
+      "expected_reason_codes": ["SAFETY_CRITICAL_CONTRADICTION"]
+    },
+    {
+      "scenario_id": "S-06",
+      "name": "stop-register-unavailable",
+      "given": ["Current authenticated stop register cannot be retrieved", "No substitute positive confirmation is allowed"],
+      "expected_claim_states": { "C-05": "UNKNOWN" },
+      "expected_disposition": "REVALIDATE",
+      "expected_reason_codes": ["STOP_CONDITION_STATE_UNKNOWN"]
+    },
+    {
+      "scenario_id": "S-07",
+      "name": "permit-invalidated-by-stale-path-observation",
+      "given": ["All claims were previously confirmed", "Execution was delayed", "Full-path observation expired before execution"],
+      "expected_claim_states": { "C-03": "UNKNOWN" },
+      "expected_disposition": "REVALIDATE",
+      "expected_reason_codes": ["PERMIT_INVALIDATED_BY_EVIDENCE_EXPIRY"]
+    }
+  ]
+}

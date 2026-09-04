@@ -253,3 +253,13 @@ Before writing the engine, define machine-readable schemas for:
 6. `ActionDisposition`.
 
 Then freeze the seven scenarios as executable tests before implementing the evaluator.
+
+## Machine-readable specification
+
+Completed in:
+
+- [`prototype/schemas/cea.schema.json`](../prototype/schemas/cea.schema.json)
+- [`prototype/contracts/bridge-crossing.contract.json`](../prototype/contracts/bridge-crossing.contract.json)
+- [`prototype/scenarios/bridge-crossing.scenarios.json`](../prototype/scenarios/bridge-crossing.scenarios.json)
+
+The contract and expected results are now frozen before evaluator implementation. Changes must be committed separately with a written reason.

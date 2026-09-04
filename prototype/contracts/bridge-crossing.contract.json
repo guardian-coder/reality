@@ -1,0 +1,73 @@
+{
+  "$schema": "../schemas/cea.schema.json",
+  "contract": {
+    "contract_id": "bridge-crossing-v1",
+    "version": "1.0.0",
+    "action_type": "CROSS_BRIDGE",
+    "asset_id": "logistics-vehicle-01",
+    "subject_id": "bridge-alpha",
+    "description": "Decide whether a simulated autonomous logistics vehicle may cross bridge-alpha now."
+  },
+  "claims": [
+    {
+      "claim_id": "C-01",
+      "statement": "Observed bridge identity is bridge-alpha.",
+      "required_state": "CONFIRMED",
+      "evidence_rules": [
+        { "evidence_type": "MAP_ASSOCIATION", "minimum_count": 1, "maximum_age_seconds": 86400, "required_integrity_status": "VERIFIED" },
+        { "evidence_type": "INDEPENDENT_IDENTITY_CUE", "minimum_count": 1, "maximum_age_seconds": 300, "required_integrity_status": "VERIFIED" }
+      ],
+      "minimum_independent_lineages": 2,
+      "contradiction_policy": "REFUSE"
+    },
+    {
+      "claim_id": "C-02",
+      "statement": "Bridge is currently passable for this vehicle.",
+      "required_state": "CONFIRMED",
+      "evidence_rules": [
+        { "evidence_type": "LOAD_CAPACITY_RECORD", "minimum_count": 1, "maximum_age_seconds": 2592000, "required_integrity_status": "VERIFIED" },
+        { "evidence_type": "PHYSICAL_CONDITION_OBSERVATION", "minimum_count": 1, "maximum_age_seconds": 300, "required_integrity_status": "VERIFIED" }
+      ],
+      "minimum_independent_lineages": 2,
+      "contradiction_policy": "REFUSE"
+    },
+    {
+      "claim_id": "C-03",
+      "statement": "Approach and full crossing path are currently unobstructed.",
+      "required_state": "CONFIRMED",
+      "evidence_rules": [
+        { "evidence_type": "FULL_PATH_OBSERVATION", "minimum_count": 1, "maximum_age_seconds": 60, "required_integrity_status": "VERIFIED" }
+      ],
+      "minimum_independent_lineages": 1,
+      "contradiction_policy": "REFUSE"
+    },
+    {
+      "claim_id": "C-04",
+      "statement": "Vehicle and bridge positions are sufficiently trustworthy.",
+      "required_state": "CONFIRMED",
+      "evidence_rules": [
+        { "evidence_type": "POSITION_OBSERVATION", "minimum_count": 2, "maximum_age_seconds": 30, "required_integrity_status": "VERIFIED" }
+      ],
+      "minimum_independent_lineages": 2,
+      "contradiction_policy": "REFUSE"
+    },
+    {
+      "claim_id": "C-05",
+      "statement": "No active authenticated stop condition exists.",
+      "required_state": "CONFIRMED",
+      "evidence_rules": [
+        { "evidence_type": "STOP_REGISTER_SNAPSHOT", "minimum_count": 1, "maximum_age_seconds": 15, "required_integrity_status": "VERIFIED" }
+      ],
+      "minimum_independent_lineages": 1,
+      "contradiction_policy": "REFUSE"
+    }
+  ],
+  "disposition_policy": {
+    "all_required_confirmed": "PERMIT",
+    "unknown_resolvable": "REVALIDATE",
+    "unresolved_conflict": "HUMAN_REVIEW",
+    "critical_contradiction": "REFUSE",
+    "integrity_failure": "REFUSE"
+  }
+}
+
