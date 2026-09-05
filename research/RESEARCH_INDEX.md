@@ -31,6 +31,8 @@ No research files are currently synced into this workspace. The referenced conve
 - [2026-09-05 — FHWA Independent Reviewer Comparison](../validation/2026-09-05_INDEPENDENT_REVIEWER_COMPARISON.md) — Two isolated agent reviewers substantially converge on dependencies in a real bridge-monitoring architecture, but one identifies an AVW200 dependency and then drops it while translating findings into rules. This is an observed synthesis/compression failure; an unsafe permission is a conditional inference, not yet a mechanically executed real-system result.
 - [FHWA-HRT-09-040 source excerpt](2026-09-05_source_FHWA-HRT-09-040_excerpt.txt) — Stored Chapters 2 and 4 extraction with original PDF page markers and official FHWA URL; input shared with both reviewers.
 - [Reviewer A](2026-09-05_REVIEWER_A_report.md) and [Reviewer B](2026-09-05_REVIEWER_B_report.md) — Verbatim isolated-agent outputs retained so the comparison can be audited against the raw analyses.
+- [2026-09-05 — Reviewer C Coverage and AVW200 Mechanical Test](../validation/2026-09-05_AVW200_COVERAGE_AND_MECHANICAL_TEST_RESULTS.md) — A third isolated reviewer recovers A's omitted dependency from findings-only input and exposes another uncovered row. The evaluator separates A-style from B/C-style rules under a hypothetical `COMMON_BIAS` model, but not under the availability-only contrast closer to the documented incident; no real unsafe bridge action is established.
+- [Reviewer A findings-only input](2026-09-05_REVIEWER_A_findings_only_1-4.md) and [Reviewer C](2026-09-05_REVIEWER_C_report.md) — Auditable input and verbatim output for the coverage-table experiment.
 
 ## Claims carried forward for validation
 
