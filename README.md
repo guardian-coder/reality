@@ -23,6 +23,7 @@ Humans can begin with [the founding memo](company/FOUNDING_MEMO.md). AI agents m
 - `research/` — evidence index and future research artifacts
 - `decisions/` — decisions and their rationale
 - `validation/` — falsification and market-validation plans
+- `outreach/` — public collaboration brief, institution shortlist, and message drafts
 - `ai/` — onboarding and operating context for AI collaborators
 
 ## Current status
