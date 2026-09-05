@@ -4,6 +4,8 @@
 
 Reality is a knowledge repository for a company thesis, not primarily a codebase.
 
+**Public research website:** [reality-open-research.lub72009.chatgpt.site](https://reality-open-research.lub72009.chatgpt.site)
+
 We are exploring infrastructure that lets intelligent systems interact with reality reliably. The candidate primitive is a repeatable evidence-to-state process that produces a defensible real-world claim sufficient for a specified consequential decision.
 
 **First industry (decided 2026-09-04, `decisions/DECISION_LOG.md` D-011): Internet of Battlefield Things / connected battlefield systems** — maintaining trustworthy correspondence between changing, adversarial battlefield reality and the world-state intelligent systems use to decide and act. This is a decided industry direction, not a test environment. The safety boundary is assurance, resilience, provenance, and outcome verification — not weapon targeting or autonomous attack capability.
@@ -25,6 +27,7 @@ Humans can begin with [the founding memo](company/FOUNDING_MEMO.md). AI agents m
 - `validation/` — falsification and market-validation plans
 - `outreach/` — public collaboration brief, institution shortlist, and message drafts
 - `ai/` — onboarding and operating context for AI collaborators
+- `site/` — source for the public research website
 
 ## Current status
 
@@ -36,6 +39,7 @@ Humans can begin with [the founding memo](company/FOUNDING_MEMO.md). AI agents m
 - Architecture-level primitive: unresolved
 - First prototype: a non-weaponized bridge-crossing simulation (`prototype/`) — contract and seven scenarios frozen, evaluator built and mechanically passing all seven (`validation/2026-09-04_EVALUATOR_IMPLEMENTATION_RESULTS.md`)
 - GitHub repository: `guardian-coder/reality` (public)
+- Research website: first version published 2026-09-05
 
 ## Operating rule
 
