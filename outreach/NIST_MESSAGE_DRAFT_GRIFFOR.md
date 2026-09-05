@@ -1,7 +1,7 @@
 # NIST Outreach — Personalized Draft for Edward R. Griffor
 
 - **Date drafted:** 2026-09-05
-- **Status: DRAFT ONLY. NOT SENT.** For Brayan's review before any send decision.
+- **Status: SENT 2026-09-05.** Sent once after Brayan's explicit approval; any reply remains private until reviewed and appropriately summarized.
 - **Recipient identified:** Edward R. Griffor, National Institute of Standards and Technology (Engineering Laboratory).
 
 ## Why this specific person
