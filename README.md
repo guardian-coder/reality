@@ -4,7 +4,7 @@
 
 Reality is a knowledge repository for a company thesis, not primarily a codebase.
 
-**Public research website:** [reality-open-research.lub72009.chatgpt.site](https://reality-open-research.lub72009.chatgpt.site)
+**Research website:** [reality-open-research.lub72009.chatgpt.site](https://reality-open-research.lub72009.chatgpt.site) (currently owner-private while the first version is reviewed)
 
 We are exploring infrastructure that lets intelligent systems interact with reality reliably. The candidate primitive is a repeatable evidence-to-state process that produces a defensible real-world claim sufficient for a specified consequential decision.
 
@@ -39,7 +39,7 @@ Humans can begin with [the founding memo](company/FOUNDING_MEMO.md). AI agents m
 - Architecture-level primitive: unresolved
 - First prototype: a non-weaponized bridge-crossing simulation (`prototype/`) — contract and seven scenarios frozen, evaluator built and mechanically passing all seven (`validation/2026-09-04_EVALUATOR_IMPLEMENTATION_RESULTS.md`)
 - GitHub repository: `guardian-coder/reality` (public)
-- Research website: first version published 2026-09-05
+- Research website: first owner-private version published 2026-09-05
 
 ## Operating rule
 
