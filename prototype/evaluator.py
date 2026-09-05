@@ -31,6 +31,7 @@ REASON_INSUFFICIENT_INDEPENDENCE = "INSUFFICIENT_INDEPENDENT_CONFIRMATION"
 REASON_CONTRADICTION_REFUSE = "SAFETY_CRITICAL_CONTRADICTION"
 REASON_CONTRADICTION_REVIEW = "UNRESOLVED_CONFLICT"
 REASON_INTEGRITY_FAILURE = "INTEGRITY_FAILURE"
+REASON_JOINT_DEPENDENCY = "FORBIDDEN_JOINT_CLAIM_DEPENDENCY"
 CLAIM_SPECIFIC_MISSING_REASON = {
     "C-05": "STOP_CONDITION_STATE_UNKNOWN",
 }
@@ -142,7 +143,29 @@ def _resolve_roots(evidence_id, evidence_by_id, ids_set, memo, visiting):
     return result
 
 
-def _effective_independent_lineages(evidence_ids, evidence_by_id):
+def _domain_parts(domain):
+    """Normalize legacy strings and typed failure dependencies.
+
+    Legacy strings remain universally relevant (the previous fail-closed
+    behavior). Typed dependencies can be judged against the property a claim
+    actually asserts.
+    """
+    if isinstance(domain, str):
+        return domain, None, None
+    return domain["id"], set(domain["affected_properties"]), domain["failure_effect"]
+
+
+def _domain_relevant_to_claim(domain, assessed_property):
+    _, affected_properties, effect = _domain_parts(domain)
+    if affected_properties is None:
+        return True
+    if assessed_property not in affected_properties:
+        return False
+    # Loss of availability cannot correlate values that were already observed.
+    return effect != "UNAVAILABLE"
+
+
+def _effective_independent_lineages(evidence_ids, evidence_by_id, assessed_property=None):
     """Resolves every qualifying record to its root set (see
     _resolve_roots), then groups only the ROOTS that share a declared
     failure domain - read from the root records' own `failure_domains`,
@@ -182,7 +205,9 @@ def _effective_independent_lineages(evidence_ids, evidence_by_id):
     domain_to_roots = {}
     for r in all_roots:
         for domain in evidence_by_id[r].get("failure_domains", []):
-            domain_to_roots.setdefault(domain, []).append(r)
+            if _domain_relevant_to_claim(domain, assessed_property):
+                domain_id, _, _ = _domain_parts(domain)
+                domain_to_roots.setdefault(domain_id, []).append(r)
     for roots in domain_to_roots.values():
         for i in range(1, len(roots)):
             union(roots[0], roots[i])
@@ -272,7 +297,9 @@ def evaluate_claim(claim, evidence_records, decision_time):
         }
 
     unique_ids = sorted(set(all_qualifying_ids))
-    lineages = _effective_independent_lineages(unique_ids, evidence_by_id)
+    lineages = _effective_independent_lineages(
+        unique_ids, evidence_by_id, claim.get("assessed_property")
+    )
     required_lineages = claim["minimum_independent_lineages"]
     if lineages < required_lineages:
         return {
@@ -334,15 +361,31 @@ def _cross_claim_dependencies(claim_evaluations, evidence_records):
             if roots is None:
                 continue
             for root_id in roots:
-                domains_in_claim.update(evidence_by_id[root_id].get("failure_domains", []))
-        for domain in domains_in_claim:
-            domain_to_claims.setdefault(domain, set()).add(ce["claim_id"])
+                for domain in evidence_by_id[root_id].get("failure_domains", []):
+                    domain_id, _, effect = _domain_parts(domain)
+                    domains_in_claim.add((domain_id, effect))
+        for domain_key in domains_in_claim:
+            domain_to_claims.setdefault(domain_key, set()).add(ce["claim_id"])
 
     return [
-        {"failure_domain": domain, "claim_ids": sorted(claim_ids)}
-        for domain, claim_ids in sorted(domain_to_claims.items())
+        {"failure_domain": domain_id, "failure_effect": effect,
+         "claim_ids": sorted(claim_ids)}
+        for (domain_id, effect), claim_ids in sorted(
+            domain_to_claims.items(), key=lambda item: (item[0][0], item[0][1] or "")
+        )
         if len(claim_ids) >= 2
     ]
+
+
+def _joint_rule_violation(contract, cross_claim_deps):
+    for rule in contract.get("joint_claim_rules", []):
+        required_claims = set(rule["claim_ids"])
+        forbidden_effects = set(rule["forbidden_shared_effects"])
+        for dependency in cross_claim_deps:
+            if (required_claims.issubset(set(dependency["claim_ids"])) and
+                    dependency.get("failure_effect") in forbidden_effects):
+                return rule
+    return None
 
 
 def evaluate_action(contract, evidence_records, decision_time_str, action_id="action-eval-1"):
@@ -389,6 +432,18 @@ def evaluate_action(contract, evidence_records, decision_time_str, action_id="ac
                 "reason_codes": [reason],
                 "cross_claim_dependencies": cross_claim_deps,
             }
+
+    # Contradictions take precedence: a joint rule must never downgrade a
+    # safety-critical REFUSE (or conflict review) to REVALIDATE.
+    joint_violation = _joint_rule_violation(contract, cross_claim_deps)
+    if joint_violation:
+        return {
+            "action_id": action_id,
+            "disposition": joint_violation["on_violation"],
+            "claim_evaluations": claim_evaluations,
+            "reason_codes": [REASON_JOINT_DEPENDENCY],
+            "cross_claim_dependencies": cross_claim_deps,
+        }
 
     if all(ce["state"] == "CONFIRMED" for ce in claim_evaluations):
         return {

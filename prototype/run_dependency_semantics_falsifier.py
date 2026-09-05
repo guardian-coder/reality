@@ -21,14 +21,16 @@ def main():
     cases = []
 
     evidence = copy.deepcopy(build_scenario_evidence("S-01"))
-    record(evidence,"ev-c04-gps")["failure_domains"] = ["shared-power-bus-availability-only"]
-    record(evidence,"ev-c04-landmark")["failure_domains"] = ["shared-power-bus-availability-only"]
+    availability_domain = {"id": "shared-power-bus", "affected_properties": ["availability"], "failure_effect": "UNAVAILABLE"}
+    record(evidence,"ev-c04-gps")["failure_domains"] = [availability_domain]
+    record(evidence,"ev-c04-landmark")["failure_domains"] = [availability_domain]
     result = run_case("T-01", evidence)
     cases.append(("T-01 irrelevant shared domain", "PERMIT", result["disposition"], "GAP" if result["disposition"] != "PERMIT" else "PASS"))
 
     evidence = copy.deepcopy(build_scenario_evidence("S-01"))
-    record(evidence,"ev-c04-gps")["failure_domains"] = ["shared-georegistration-position-bias"]
-    record(evidence,"ev-c04-landmark")["failure_domains"] = ["shared-georegistration-position-bias"]
+    position_domain = {"id": "shared-georegistration", "affected_properties": ["position_accuracy"], "failure_effect": "COMMON_BIAS"}
+    record(evidence,"ev-c04-gps")["failure_domains"] = [position_domain]
+    record(evidence,"ev-c04-landmark")["failure_domains"] = [position_domain]
     result = run_case("T-02", evidence)
     cases.append(("T-02 relevant shared domain", "REVALIDATE", result["disposition"], "PASS" if result["disposition"] == "REVALIDATE" else "GAP"))
 
@@ -39,15 +41,25 @@ def main():
     cases.append(("X-01 informational cross-claim dependency", "PERMIT+VISIBLE", actual, "PASS" if actual == "PERMIT+VISIBLE" else "GAP"))
 
     evidence = copy.deepcopy(build_scenario_evidence("S-01"))
-    record(evidence,"ev-c01-cue")["failure_domains"] = ["shared-georegistration-binding-bias"]
-    record(evidence,"ev-c04-landmark")["failure_domains"] = ["shared-georegistration-binding-bias"]
-    result = run_case("X-02", evidence)
+    binding_domain = {"id": "shared-georegistration-binding", "affected_properties": ["identity_binding", "position_accuracy"], "failure_effect": "COMMON_BIAS"}
+    record(evidence,"ev-c01-cue")["failure_domains"] = [binding_domain]
+    record(evidence,"ev-c04-landmark")["failure_domains"] = [binding_domain]
+    contract = load_contract()
+    contract["joint_claim_rules"] = [{"claim_ids": ["C-01", "C-04"], "forbidden_shared_effects": ["COMMON_BIAS"], "on_violation": "REVALIDATE"}]
+    result = evaluate_action(contract, evidence, DECISION_TIME, action_id="X-02")
     cases.append(("X-02 blocking identity-position dependency", "REVALIDATE", result["disposition"], "GAP" if result["disposition"] == "PERMIT" else "PASS"))
+
+    evidence = copy.deepcopy(evidence)
+    alarm = copy.deepcopy(record(evidence, "ev-c02-cond"))
+    alarm.update({"evidence_id": "ev-c02-alarm-joint", "evidence_type": "STRUCTURAL_ALARM", "value": "critical", "stance": "CONTRADICTS"})
+    evidence.append(alarm)
+    result = evaluate_action(contract, evidence, DECISION_TIME, action_id="X-03")
+    cases.append(("X-03 contradiction outranks joint revalidation", "REFUSE", result["disposition"], "PASS" if result["disposition"] == "REFUSE" else "GAP"))
 
     for name, expected, actual, status in cases:
         print(f"[{status}] {name}: expected={expected} actual={actual}")
     print(f"\nForcing gaps exposed: {sum(status == 'GAP' for *_, status in cases)}/{len(cases)}")
-    print("T-01 and X-02 require new contract semantics; they are not frozen-contract regressions.")
+    print("T-01 and X-02 require new contract semantics; X-03 fixes their precedence.")
 
 if __name__ == "__main__":
     main()

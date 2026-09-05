@@ -14,6 +14,7 @@
       "statement": "Observed bridge identity is bridge-alpha.",
       "required_state": "CONFIRMED",
       "subject_entity_id": "bridge-alpha",
+      "assessed_property": "identity_binding",
       "evidence_rules": [
         { "evidence_type": "MAP_ASSOCIATION", "minimum_count": 1, "maximum_age_seconds": 86400, "required_integrity_status": "VERIFIED" },
         { "evidence_type": "INDEPENDENT_IDENTITY_CUE", "minimum_count": 1, "maximum_age_seconds": 300, "required_integrity_status": "VERIFIED" }
@@ -26,6 +27,7 @@
       "statement": "Bridge is currently passable for this vehicle.",
       "required_state": "CONFIRMED",
       "subject_entity_id": "bridge-alpha",
+      "assessed_property": "structural_passability",
       "evidence_rules": [
         { "evidence_type": "LOAD_CAPACITY_RECORD", "minimum_count": 1, "maximum_age_seconds": 2592000, "required_integrity_status": "VERIFIED" },
         { "evidence_type": "PHYSICAL_CONDITION_OBSERVATION", "minimum_count": 1, "maximum_age_seconds": 300, "required_integrity_status": "VERIFIED" }
@@ -41,6 +43,7 @@
       "statement": "Approach and full crossing path are currently unobstructed.",
       "required_state": "CONFIRMED",
       "subject_entity_id": "bridge-alpha-path",
+      "assessed_property": "path_obstruction",
       "evidence_rules": [
         { "evidence_type": "FULL_PATH_OBSERVATION", "minimum_count": 1, "maximum_age_seconds": 60, "required_integrity_status": "VERIFIED" }
       ],
@@ -52,6 +55,7 @@
       "statement": "Vehicle and bridge positions are sufficiently trustworthy.",
       "required_state": "CONFIRMED",
       "subject_entity_id": "logistics-vehicle-01",
+      "assessed_property": "position_accuracy",
       "evidence_rules": [
         { "evidence_type": "POSITION_OBSERVATION", "minimum_count": 2, "maximum_age_seconds": 30, "required_integrity_status": "VERIFIED" }
       ],
@@ -63,6 +67,7 @@
       "statement": "No active authenticated stop condition exists.",
       "required_state": "CONFIRMED",
       "subject_entity_id": "logistics-vehicle-01",
+      "assessed_property": "stop_authority_state",
       "evidence_rules": [
         { "evidence_type": "STOP_REGISTER_SNAPSHOT", "minimum_count": 1, "maximum_age_seconds": 15, "required_integrity_status": "VERIFIED",
           "confirms_when": { "field": "value", "operator": "equals", "value": "no_stop_active" },
