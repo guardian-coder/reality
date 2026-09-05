@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Reality — An Open Investigation',
-  description: 'An open investigation into the infrastructure intelligent systems may need to interact reliably with reality.',
+  description: 'An open investigation into what remains difficult as AI makes powerful capabilities accessible: establishing what is true before consequential action.',
 };
 
 export default function RootLayout({
