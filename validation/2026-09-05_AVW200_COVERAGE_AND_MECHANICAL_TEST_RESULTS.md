@@ -40,6 +40,14 @@ The two rulesets produce different evaluator dispositions on identical construct
 
 Codex added an availability-only contrast, closer to the documented incident. With the AVW200 dependency typed as `UNAVAILABLE`/availability rather than `COMMON_BIAS`/load magnitude, both A-style and B/C-style contracts return `PERMIT`; the common-bias-only joint rule does not separate them. The mechanical action-difference claim therefore remains conditional on failure-effect modeling.
 
+## Effect-transition gap exposed by the real incident
+
+Codex's availability-only contrast surfaced more than a modeling caveat. The source documents a **MUX-to-AVW200 wire fault**, not an AVW200 component failure: it produced unintelligible data, began intermittently, and ended in complete failure.
+
+The schema already contains two relevant labels: `INTEGRITY_LOSS` can represent the garbled phase, and `UNAVAILABLE` can represent the terminal phase. Therefore this is **not** a second instance of M-06's missing-label problem. It exposes a different limitation: one failure-dependency entry carries one `failure_effect`, with no way to express a sequence, phase transition, or multiple possible effects. The evaluator also does not connect a declared `INTEGRITY_LOSS` dependency to evidence-record integrity checking; `integrity_status` is supplied separately.
+
+The justified open question is whether effect transitions belong in dependency metadata at all, or whether runtime evidence integrity and availability observations should represent them independently. No schema extension is justified until a decision test shows that this distinction changes the required action.
+
 ## Assumptions
 
 - The mechanical test's contract and evidence are a minimal standalone model built to isolate this one disputed mechanism (the AVW200 pairing), not a full encoding of the I-35W system or an extension of the frozen bridge-crossing contract. It deliberately does not model MUX-level rules, calibration-reference rules, or any of the other 9 dependencies C and the reviewers named — those would each need their own claims/evidence to test in isolation the same way, and were out of scope for this specific, precise follow-up.
