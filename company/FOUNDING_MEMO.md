@@ -2,7 +2,7 @@
 
 ## The observation
 
-AI is making cognition, prediction, planning, and software action cheaper. Intelligence can form an intent, but intelligence alone cannot reliably cause an accountable change in the world.
+AI is making cognition, prediction, planning, and software action dramatically more capable and broadly accessible. As that capability spreads, work that once required scarce specialist expertise becomes cheaper and available to more people. But intelligence alone still cannot reliably cause an accountable change in the world.
 
 The working chain is:
 
@@ -42,4 +42,3 @@ Can existing digital traces plus modern AI already reconstruct SME economic trut
 - If no, and missing meaning requires new evidence, verification, reconciliation, or real-world context, the infrastructure thesis becomes stronger.
 
 No product, customer, payer, business model, or initial geography has yet been validated.
-

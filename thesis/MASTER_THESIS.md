@@ -6,7 +6,7 @@ Working thesis. Partially selected, not validated.
 
 ## Candidate thesis
 
-As AI intelligence becomes cheaper and more abundant, a growing bottleneck will be the infrastructure required to connect intelligence to reliable real-world decisions and outcomes.
+As AI intelligence becomes more powerful and broadly accessible, work that once required scarce expertise becomes cheaper and available to more people. A growing bottleneck may then be the infrastructure required to connect that intelligence to reliable real-world decisions and outcomes.
 
 The relevant system may include:
 
@@ -16,7 +16,7 @@ The company should seek the scarce layer in this chain that AI capability alone 
 
 Current careful formulation:
 
-> As machine intelligence becomes cheaper, the scarce capability may become establishing a defensible state of reality for consequential decisions.
+> As machine intelligence becomes more powerful and widely accessible, the scarce capability may become establishing a defensible state of reality for consequential decisions.
 
 The distinction between information extraction, state estimation, and decision-grade verification is defined in [INVARIANT_TESTS.md](INVARIANT_TESTS.md).
 
