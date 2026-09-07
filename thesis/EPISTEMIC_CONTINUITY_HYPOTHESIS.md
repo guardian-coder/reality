@@ -89,4 +89,3 @@ Narrow, rename, integrate, or abandon this hypothesis if:
 ## Current conclusion
 
 Project Reality has not discovered a finished solution. It has produced a stronger candidate explanation linking its prior evidence: **the bottleneck may be preventing action-relevant epistemic meaning from being lost across transformations**. The Epistemic Conservation Rule, Epistemic Compiler, and Epistemic Continuity Audit are names for testable possibilities, not claims of novelty.
-
