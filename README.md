@@ -4,7 +4,7 @@
 
 Reality is a knowledge repository for a company thesis, not primarily a codebase.
 
-**Research website:** [reality-open-research.lub72009.chatgpt.site](https://reality-open-research.lub72009.chatgpt.site) (currently owner-private while the first version is reviewed)
+**Research website:** [reality-open-research.lub72009.chatgpt.site](https://reality-open-research.lub72009.chatgpt.site) (public)
 
 We are exploring infrastructure that lets intelligent systems interact with reality reliably. The candidate primitive is a repeatable evidence-to-state process that produces a defensible real-world claim sufficient for a specified consequential decision.
 
@@ -25,6 +25,7 @@ Humans can begin with [the founding memo](company/FOUNDING_MEMO.md). AI agents m
 - `research/` — evidence index and future research artifacts
 - `decisions/` — decisions and their rationale
 - `validation/` — falsification and market-validation plans
+- `product/` — current product definition, phase map, and explicit build boundaries
 - `outreach/` — public collaboration brief, institution shortlist, and message drafts
 - `ai/` — onboarding and operating context for AI collaborators
 - `site/` — source for the public research website
@@ -33,13 +34,14 @@ Humans can begin with [the founding memo](company/FOUNDING_MEMO.md). AI agents m
 
 - Umbrella vision: selected
 - Candidate primitive: conceptually defined, not empirically validated
-- First industry: Internet of Battlefield Things (decided, D-011) — exact layer, product, and customer unresolved
+- Research pressure-test environment: Internet of Battlefield Things, within the non-weapon assurance boundary
+- First product-validation slice: [Reality Audit](product/REALITY_AUDIT.md), a shadow-mode decision-evidence auditor for IoT systems
 - SME laboratory: retained as prior research and a possible parallel experiment, not the primary direction
-- Customer, payer, product, geography, and business model: unresolved
+- Early-customer hypothesis: IoT and industrial-automation integrators; payer, demand, geography, and business model remain unvalidated
 - Architecture-level primitive: unresolved
 - First prototype: a non-weaponized bridge-crossing simulation (`prototype/`) — contract and seven scenarios frozen, evaluator built and mechanically passing all seven (`validation/2026-09-04_EVALUATOR_IMPLEMENTATION_RESULTS.md`)
 - GitHub repository: `guardian-coder/reality` (public)
-- Research website: first owner-private version published 2026-09-05
+- Research website: public narrative site published 2026-09-05; interactive audit workspace built locally on 2026-09-07 and awaiting deployment review
 
 ## Operating rule
 

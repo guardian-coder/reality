@@ -84,3 +84,15 @@
 
 - **Status:** Open
 - **Question:** Within sensing, edge compute, communications, data fusion, assurance, command-and-control, autonomy, and post-action verification, where is Reality Coupling both materially unsolved and valuable enough to support a first buildable capability?
+
+## D-012 — Build Reality Audit as the first product slice
+
+- **Date recorded:** 2026-09-07
+- **Status:** Decided for product validation; commercial demand remains unproven
+- **Decision:** Build Reality Audit, a decision-evidence audit workspace for IoT systems, before attempting a live runtime gate.
+- **First user journey:** Define one consequential action, map its required claims and evidence, expose freshness, identity, lineage, independence, and rule-coverage failures, then produce an inspectable disposition and diagnostic record.
+- **Architecture rule:** Divide the journey into named phases and categories. Every phase must leave memory and health signals so a failure can be localized instead of appearing only in the final report.
+- **Initial environment:** A public bridge-monitoring case is the first demonstration because it contains physical evidence, shared dependencies, and a documented findings-to-rules loss. It is a validation fixture, not proof of a bridge market.
+- **Commercial hypothesis:** IoT and industrial-automation integrators may be early buyers because one audit method could be reused across systems they commission. This is a hypothesis, not a customer commitment or validated willingness to pay.
+- **Long-term hypothesis:** Repeated offline audits may justify a runtime Reality Gate. Do not build the runtime product until the audit shows decision value and repeatability.
+- **Relationship to D-011:** IoBT remains a high-pressure research source for the underlying failure pattern and its safety boundary remains active. The current product experiment is broader, non-weapon IoT assurance.

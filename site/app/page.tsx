@@ -92,7 +92,7 @@ export default function Home() {
       <nav className="nav shell" aria-label="Primary navigation">
         <a className="wordmark" href="#top" aria-label="Reality home"><span className="signal-dot" />REALITY</a>
         <div className="nav-links"><a href="#thesis">Thesis</a><a href="#evidence">Evidence</a><a href="#now">Now</a></div>
-        <a className="repo-link" href="https://github.com/guardian-coder/reality" target="_blank" rel="noreferrer">Open repository <span aria-hidden="true">↗</span></a>
+        <a className="repo-link" href="/audit">Open Reality Audit <span aria-hidden="true">→</span></a>
       </nav>
 
       <section className="hero shell" id="top">
