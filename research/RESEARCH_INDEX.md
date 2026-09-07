@@ -16,6 +16,8 @@ No research files are currently synced into this workspace. The referenced conve
 
 ## Active prototype specifications
 
+- [Epistemic Continuity Hypothesis](../thesis/EPISTEMIC_CONTINUITY_HYPOTHESIS.md) — Abductive synthesis connecting loss of unknown state, shared dependencies, metadata fragility, findings-to-rules compression, and closed vocabularies. Proposes a falsifiable conservation rule, candidate compiler, possible audit service, and explicit kill conditions; makes no novelty claim.
+
 - [2026-09-04 — First Claim–Evidence–Action Contract](../validation/2026-09-04_FIRST_CLAIM_EVIDENCE_ACTION_CONTRACT.md) — Defines the first non-weaponized IoBT simulation decision, required claims, evidence independence rules, action dispositions, comparators, and falsification scenarios before code.
 - [2026-09-04 — Codex Falsifier Review](../validation/2026-09-04_CODEX_FALSIFIER_REVIEW.md) — Independently reproduces the evaluator's authored-scenario results, then demonstrates five semantic counterexamples involving values, entity binding, time, integrity, and missing ancestry.
 - [2026-09-04 — Evaluator Implementation Results](../validation/2026-09-04_EVALUATOR_IMPLEMENTATION_RESULTS.md) — Deterministic evaluator (`prototype/evaluator.py`) built against the frozen contract and scenarios: 7/7 mechanically correct (claim states, disposition, independent lineages), 5/7 fully correct including reason codes. Two reason-code mismatches (S-04, S-07) surfaced as an open spec question for Codex, not silently resolved. Also finds `DependencyGraph` may be unnecessary as a separate input — every field it would carry is already on each `EvidenceRecord`.

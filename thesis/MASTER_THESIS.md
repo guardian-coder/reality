@@ -20,6 +20,8 @@ Current careful formulation:
 
 The distinction between information extraction, state estimation, and decision-grade verification is defined in [INVARIANT_TESTS.md](INVARIANT_TESTS.md).
 
+An abductive synthesis of the failure atlas, evaluator falsifiers, and findings-to-rules experiment has produced a candidate [Epistemic Continuity Hypothesis](EPISTEMIC_CONTINUITY_HYPOTHESIS.md). Its proposed conservation rule says that a transformation must not increase action-relevant certainty without adding qualifying evidence. This is a testable engineering hypothesis, not a novelty claim or adopted architecture.
+
 ## Candidate primitive A: Decision-Grade Truth
 
 Decision-Grade Truth is an evidence-backed claim about real-world state reliable enough to support a **specified** consequential decision. It is not raw data, a confident narrative, absolute truth, or a score without visible basis.
