@@ -174,7 +174,7 @@ export default function RealityAudit() {
       <header className="audit-topbar">
         <Link href="/" className="audit-brand"><span />REALITY</Link>
         <div className="audit-context"><small>ACTIVE AUDIT</small><strong>FHWA Bridge Monitoring</strong><span>PUBLIC DEMONSTRATION</span></div>
-        <div className="audit-mode"><i /> SHADOW MODE</div>
+        <div className="audit-actions"><Link href="/audit/review" className="review-link">Review source file →</Link><div className="audit-mode"><i /> SHADOW MODE</div></div>
       </header>
 
       <div className="audit-layout">

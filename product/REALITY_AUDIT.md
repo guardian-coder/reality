@@ -50,3 +50,18 @@ The visible action gate, claim states, integrity sensors, failure locator, and a
 ## Next build threshold
 
 Do not add breadth merely to make the interface look complete. The next meaningful increment is one real document-to-report journey in shadow mode, used by an independent engineer. Their corrections, time spent, missed dependencies, and final decision differences become the evidence for what to build next.
+
+## Session checkpoint — 2026-09-07
+
+- The interactive vertical slice is complete and its production build passes.
+- The source and product decision are recorded on GitHub.
+- Public deployment completed successfully. The interactive workspace is live at `/audit` on the public research website.
+- The next increment is the source-review boundary: turn findings from the real FHWA document into explicitly reviewed `DOCUMENTED / INFERRED / UNKNOWN` records before they can reach an action rule.
+
+## Build checkpoint — 2026-09-08
+
+- The source-review boundary is implemented at `/audit/review` and passes the production build.
+- Four findings from FHWA-HRT-09-040 are preloaded: two documented, one inferred, and one unknown.
+- A reviewer must explicitly disposition every finding. Any remaining inference or unknown routes the downstream decision to `HUMAN REVIEW` rather than silently promoting it.
+- The reviewed ledger can be exported as JSON. Compatible AI clients can operate the same review state through structured browser actions.
+- This is still a curated source fixture, not general document ingestion and not independent-engineer validation.
