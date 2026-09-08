@@ -1,5 +1,7 @@
 # Research Index
 
+- [2026-09-08 — Reality Audit Three Green Lights Test](../validation/2026-09-08_THREE_GREEN_LIGHTS_TEST.md) — Adjacent paid markets exist in functional safety and IoT assurance, but the exact buyer, budget, and willingness to pay for Reality Audit remain unvalidated. Sets a 30-day behavioral validation gate before substantial feature expansion.
+
 This index records evidence, not conclusions by repetition. Add one dated artifact per meaningful research effort and link it here.
 
 ## Available project evidence
