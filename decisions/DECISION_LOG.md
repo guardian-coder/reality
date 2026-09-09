@@ -96,3 +96,15 @@
 - **Commercial hypothesis:** IoT and industrial-automation integrators may be early buyers because one audit method could be reused across systems they commission. This is a hypothesis, not a customer commitment or validated willingness to pay.
 - **Long-term hypothesis:** Repeated offline audits may justify a runtime Reality Gate. Do not build the runtime product until the audit shows decision value and repeatability.
 - **Relationship to D-011:** IoBT remains a high-pressure research source for the underlying failure pattern and its safety boundary remains active. The current product experiment is broader, non-weapon IoT assurance.
+
+## D-013 — Adopt a standing project operating constitution
+
+- **Date recorded:** 2026-09-09
+- **Status:** Decided
+- **Decision:** Use `ai/OPERATING_CONSTITUTION.md` as the standing reasoning, product, design, and engineering instruction for Project Reality.
+- **Standard:** Build toward the best credible version of the vision: sophisticated inside, understandable outside, grounded in reality, and honest about uncertainty.
+- **Required lenses:** Vision, abductive leap, grounding, product value, professional design, epistemic integrity, failure observability, and economy of action.
+- **Architecture consequence:** Material workflows must be divided into named phases with inspectable inputs, outputs, evidence, assumptions, health signals, and failure reasons.
+- **Product consequence:** “Agentic” means an agent performs useful investigative or decision-support work. It does not mean adding a chat surface or features for appearance.
+- **Governance:** Brayan owns strategic decisions. AI collaborators actively synthesize, challenge, design, and implement, but must not hide contradictory evidence or manufacture certainty.
+- **Current constraint:** The constitution does not override the market gate. Until external grounding exists, the next product increment must support understanding, artifact intake, guided investigation, or independent review—not unvalidated feature breadth.
