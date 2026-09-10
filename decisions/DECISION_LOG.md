@@ -108,3 +108,13 @@
 - **Product consequence:** “Agentic” means an agent performs useful investigative or decision-support work. It does not mean adding a chat surface or features for appearance.
 - **Governance:** Brayan owns strategic decisions. AI collaborators actively synthesize, challenge, design, and implement, but must not hide contradictory evidence or manufacture certainty.
 - **Current constraint:** The constitution does not override the market gate. Until external grounding exists, the next product increment must support understanding, artifact intake, guided investigation, or independent review—not unvalidated feature breadth.
+
+## D-014 — Make the Discovery Story the public narrative entry point
+
+- **Date recorded:** 2026-09-09
+- **Status:** Decided and implemented
+- **Decision:** The homepage must teach how the question changed before it introduces the thesis or Reality Audit.
+- **Narrative structure:** Original one-person-business question → capability shift → 100× AI test → IoT/IoBT failure pattern → Claim–Evidence–Action Contract → Epistemic Continuity hypothesis → Reality Audit → external grounding frontier.
+- **Reasoning structure:** Each chapter separates observation, inference, and the next unanswered question.
+- **Design standard:** Blend established product principles—clear entry, guided progression, visible state, governed agent behavior, and inspectable work history—into an original Reality identity. Do not copy another company’s layout or visual identity.
+- **Product boundary:** This narrative redesign does not expand the unvalidated Reality Audit feature set or override the three-signal market gate.

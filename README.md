@@ -1,5 +1,7 @@
 # Reality
 
+Start with [How We Arrived at Reality](company/DISCOVERY_STORY.md), the human-readable path from the original question to the current product experiment.
+
 > **AI collaborators:** read [`ai/CONTEXT.md`](ai/CONTEXT.md) first. Claude should also read [`CLAUDE.md`](CLAUDE.md), and all agents should follow [`COLLABORATION.md`](COLLABORATION.md).
 
 Reality is a knowledge repository for a company thesis, not primarily a codebase.

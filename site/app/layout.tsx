@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Reality — An Open Investigation',
-  description: 'An open investigation into what remains difficult as AI makes powerful capabilities accessible: establishing what is true before consequential action.',
+  title: 'Reality — The Discovery Story',
+  description: 'Follow the open investigation from one question about powerful AI to a testable hypothesis about evidence, uncertainty, and justified action.',
 };
 
 export default function RootLayout({
