@@ -127,6 +127,8 @@
 - **Core question:** What accepted outcome did an agent produce, what evidence supports it, and what models, tools, APIs, time, or human resources did it consume?
 - **Architecture:** Use the existing Reality evidence work as the substrate beneath an economic control plane. The shared graph connects claim → evidence → source → action → outcome → economic consequence.
 - **Palantir analogy:** Learn from the architectural separation between an operational information foundation and governed workflows above it. Do not claim equivalence to, affiliation with, or replication of Palantir.
-- **V1 boundary:** One simulated digital workflow with a predeclared task, success criteria, resource envelope, execution trace, outcome evidence, acceptance gate, and exportable economic record.
+- **V1 boundary:** A persistent, owner-gated integration workspace with separate authenticated ingress for agent execution events and external outcome evidence. The two streams must join through task and run identity before an economic record can close.
+- **Product position:** Do not build generic or vertical SaaS that stronger AI builders can reproduce. Build a cross-cutting control layer whose value grows with the number and autonomy of agent workflows.
+- **Interface rule:** Do not prefill a simulation and present it as a product. The first screen must establish real connections; operational records appear only after the system receives events.
 - **Supersedes in product priority:** Reality Audit remains the evidence foundation and a historical validation artifact. It is no longer the sole first-product direction.
-- **Not proven:** Buyer, willingness to pay, real task semantics, live integration, evidence authenticity, outcome-value measurement, or generality across agent workflows.
+- **Not proven:** Buyer, willingness to pay, real task semantics, evidence-source authenticity, outcome-value measurement, or generality across agent workflows.

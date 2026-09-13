@@ -18,6 +18,12 @@ The Reality work becomes the evidence substrate. Claims, provenance, freshness, 
 
 Palantir is an architectural analogy only: connect fragmented operational records into meaningful objects and relationships, then build governed operational workflows above them. Reality must not imitate Palantir's product, design, customer claims, or proprietary implementation.
 
+## Product boundary
+
+Agent Economics must not become generic or vertical SaaS that a stronger model can recreate. Its position is a cross-cutting control plane: as agent runs, model calls, tools, APIs, and autonomous workflows multiply, the need to connect resource consumption to externally evidenced outcomes grows with them.
+
+The V1 therefore integrates with the customer's runtime and outcome systems. It does not ask a human to retype execution data into a dashboard.
+
 ## V1 contract
 
 ```text
@@ -29,21 +35,22 @@ TASK
 → ECONOMIC RECORD
 ```
 
-The first slice uses one simulated digital invoice-dispute workflow. The task contract and success criteria exist before execution. Model, tool, and API costs are metered. An outcome is not accepted when the resource envelope is exceeded, required evidence is missing, or evidence is contradicted.
+The first functional slice accepts a task contract and resource events through an authenticated HTTP integration, then accepts outcome evidence through a separate endpoint. The shared task and run identifiers preserve the economic chain across both systems. An outcome is not accepted when the resource envelope is exceeded, required evidence is missing, or evidence is contradicted.
 
 ## Current implementation
 
-The interactive slice is available under `site/app/economics/` and uses a deterministic economic evaluator in `site/lib/economic-engine.ts`. A user can change the resource envelope, remove or restore evidence, evaluate the outcome, inspect phase-local failure signals, and export the machine-readable economic record.
+The integration console is available under `site/app/economics/`. It creates a persistent workspace, issues a one-time integration key stored only as a hash, exposes separate execution and outcome endpoints, records incoming events, and constructs a live economic record. The interface opens on the connection workflow rather than a prefilled result.
 
 ## Explicit limits
 
-- The workflow and costs are simulated.
+- The generic HTTP connector is real, but no provider-specific adapter is built yet.
 - Outcome value is a contract input, not independently verified.
 - Evidence identity and authenticity are not cryptographically verified.
-- There is no live OpenAI, Anthropic, billing, CRM, or customer integration.
-- There is no persistence, multi-user control, or proven buyer.
+- A bearer token authenticates ingestion, but the external source behind an event is not yet attested.
+- There is persistence and owner-gated workspace access, but no team authorization model.
+- There is no proven buyer or willingness to pay.
 - “Cost per verified accepted outcome” is a candidate control metric, not a validated universal measure of agent value.
 
 ## Next validation threshold
 
-The next build must not add broad dashboard features. First test whether an operator can define one real digital task, its success criteria, its evidence, and its resource envelope without the project inventing those semantics for them. Then compare the resulting record with the operator's current way of deciding whether the agent produced value.
+Connect one real agent run and one real business-system outcome webhook. Test whether the operator can define success criteria without the project inventing those semantics, and whether the resulting economic record changes a real stop, reroute, or scaling decision.
