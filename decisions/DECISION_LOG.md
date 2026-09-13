@@ -118,3 +118,15 @@
 - **Reasoning structure:** Each chapter separates observation, inference, and the next unanswered question.
 - **Design standard:** Blend established product principles—clear entry, guided progression, visible state, governed agent behavior, and inspectable work history—into an original Reality identity. Do not copy another company’s layout or visual identity.
 - **Product boundary:** This narrative redesign does not expand the unvalidated Reality Audit feature set or override the three-signal market gate.
+
+## D-015 — Select Agent Economics as the first business direction
+
+- **Date recorded:** 2026-09-13
+- **Status:** Decided for V1 build and validation; market demand remains unproven
+- **Decision:** Focus the first business-shaped product on outcome-linked resource accounting for AI agents, not a generic token dashboard or spending limit.
+- **Core question:** What accepted outcome did an agent produce, what evidence supports it, and what models, tools, APIs, time, or human resources did it consume?
+- **Architecture:** Use the existing Reality evidence work as the substrate beneath an economic control plane. The shared graph connects claim → evidence → source → action → outcome → economic consequence.
+- **Palantir analogy:** Learn from the architectural separation between an operational information foundation and governed workflows above it. Do not claim equivalence to, affiliation with, or replication of Palantir.
+- **V1 boundary:** One simulated digital workflow with a predeclared task, success criteria, resource envelope, execution trace, outcome evidence, acceptance gate, and exportable economic record.
+- **Supersedes in product priority:** Reality Audit remains the evidence foundation and a historical validation artifact. It is no longer the sole first-product direction.
+- **Not proven:** Buyer, willingness to pay, real task semantics, live integration, evidence authenticity, outcome-value measurement, or generality across agent workflows.

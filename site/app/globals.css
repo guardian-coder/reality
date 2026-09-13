@@ -6,6 +6,102 @@ html { scroll-behavior:smooth; }
 body { margin:0; background:var(--paper); color:var(--ink); font-family:Arial, Helvetica, sans-serif; }
 body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:50; background:repeating-linear-gradient(0deg, transparent 0 4px, rgb(21 23 20 / 1.5%) 5px); mix-blend-mode:multiply; }
 a { color:inherit; text-decoration:none; }
+
+/* Agent Economics V1 */
+.econ-app { min-height:100vh; background:#eef1f7; color:#10192b; font-family:var(--font-geist-sans),Arial,sans-serif; }
+.econ-topbar { min-height:74px; padding:0 28px; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; color:#f8fbff; background:#0b1324; border-bottom:1px solid #26334a; }
+.econ-brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.08em; }
+.econ-brand span { width:13px; height:13px; background:#4e7cff; border-radius:4px; box-shadow:0 0 0 5px rgb(78 124 255 / 14%); }
+.econ-product { display:flex; align-items:center; gap:12px; }
+.econ-product small,.econ-product i { font:10px var(--font-geist-mono),monospace; letter-spacing:.1em; color:#8290a9; font-style:normal; }
+.econ-product strong { font-size:15px; }
+.econ-product i { color:#ffbe5c; border:1px solid #635334; padding:5px 7px; }
+.econ-topbar nav { justify-self:end; display:flex; gap:22px; color:#aab5ca; font-size:13px; }
+.econ-topbar nav a:hover { color:#fff; }
+.econ-command { min-height:270px; padding:52px clamp(24px,4vw,68px) 42px; display:flex; align-items:end; justify-content:space-between; gap:40px; color:white; background:radial-gradient(circle at 72% 10%,#193e83 0,transparent 32%),linear-gradient(120deg,#0b1324 35%,#101f3a 100%); }
+.econ-command p,.econ-panel-label { font:11px var(--font-geist-mono),monospace; letter-spacing:.09em; }
+.econ-command p { color:#84a5ff; }
+.econ-command h1 { margin:15px 0 0; font-size:clamp(42px,5.6vw,78px); line-height:.92; letter-spacing:-.06em; }
+.econ-command h1 em { color:#8eb0ff; font-family:Georgia,serif; font-weight:400; }
+.econ-verdict { width:min(360px,100%); padding:22px; border:1px solid #47618d; background:rgb(7 15 31 / 65%); }
+.econ-verdict small { display:block; color:#8c9bb5; font:10px var(--font-geist-mono),monospace; letter-spacing:.12em; }
+.econ-verdict strong { display:block; margin:10px 0 8px; font-size:28px; }
+.econ-verdict span { font:11px/1.5 var(--font-geist-mono),monospace; color:#9fabbd; }
+.econ-verdict.accepted { border-color:#3cc892; box-shadow:inset 4px 0 #3cc892; }
+.econ-verdict.accepted strong { color:#62e4b4; }
+.econ-verdict.not-accepted { border-color:#f0a64a; box-shadow:inset 4px 0 #f0a64a; }
+.econ-verdict.not-accepted strong { color:#ffc36f; }
+.econ-verdict.stopped { border-color:#ef635d; box-shadow:inset 4px 0 #ef635d; }
+.econ-verdict.stopped strong { color:#ff8a85; }
+.econ-layout { display:grid; grid-template-columns:230px minmax(0,1fr) 320px; min-height:calc(100vh - 344px); }
+.econ-phase-rail,.econ-record-panel { background:#f8f9fc; padding:24px; }
+.econ-phase-rail { border-right:1px solid #d3d9e5; }
+.econ-record-panel { border-left:1px solid #d3d9e5; }
+.econ-panel-label { display:flex; justify-content:space-between; color:#667188; }
+.econ-panel-label b { color:#26324a; font-weight:600; }
+.econ-phase-rail ol { list-style:none; margin:26px 0; padding:0; }
+.econ-phase-rail li { position:relative; display:grid; grid-template-columns:34px 1fr; gap:8px; min-height:72px; padding-bottom:18px; }
+.econ-phase-rail li:not(:last-child)::after { content:''; position:absolute; left:14px; top:31px; bottom:5px; width:1px; background:#cad1df; }
+.econ-phase-rail li>span { width:29px; height:29px; display:grid; place-items:center; border:1px solid #b6c0d1; border-radius:8px; font:10px var(--font-geist-mono),monospace; background:white; }
+.econ-phase-rail li strong { font-size:14px; padding-top:2px; }
+.econ-phase-rail li i { grid-column:2; font:9px var(--font-geist-mono),monospace; color:#7b879d; font-style:normal; }
+.econ-phase-rail li.fault>span { border-color:#ed9b3c; color:#a9600f; background:#fff4e6; }
+.econ-phase-rail li.fault i { color:#a9600f; }
+.econ-export { width:100%; height:40px; border-color:#aab4c6!important; background:white!important; color:#1b2942!important; border-radius:4px!important; }
+.econ-workspace { padding:24px; display:grid; gap:18px; align-content:start; }
+.econ-workspace article { background:#fff; border:1px solid #d3d9e5; border-radius:12px; box-shadow:0 8px 26px rgb(34 48 75 / 5%); }
+.econ-contract-card,.econ-evidence-card { padding:24px; }
+.econ-contract-card h2 { margin:28px 0 8px; font-size:clamp(25px,2.5vw,38px); letter-spacing:-.04em; }
+.econ-contract-card>p { margin:0; color:#667188; max-width:720px; line-height:1.55; }
+.econ-contract-grid { margin-top:24px; display:grid; grid-template-columns:1fr 1fr; border:1px solid #dce1ea; border-radius:8px; overflow:hidden; }
+.econ-contract-grid>label,.econ-contract-grid>div { padding:18px; }
+.econ-contract-grid>label { border-right:1px solid #dce1ea; }
+.econ-contract-grid span,.econ-contract-grid small { display:block; color:#717d92; font:10px var(--font-geist-mono),monospace; letter-spacing:.08em; }
+.econ-contract-grid label>div { margin-top:10px; display:flex; align-items:center; gap:8px; }
+.econ-contract-grid input { max-width:130px; height:42px; border-color:#b7c1d1; border-radius:5px; font-size:21px; font-weight:700; }
+.econ-contract-grid strong { display:block; margin:9px 0 6px; font-size:24px; }
+.econ-meter-card { overflow:hidden; }
+.econ-meter-card>.econ-panel-label { padding:22px 24px; }
+.econ-resource-list>div { display:grid; grid-template-columns:48px 58px 1fr 60px; align-items:center; gap:10px; padding:13px 24px; border-top:1px solid #edf0f5; }
+.econ-resource-list code,.econ-evidence-list code { color:#71809b; font-size:11px; }
+.econ-resource-list span { font:9px var(--font-geist-mono),monospace; color:#3162d7; }
+.econ-resource-list p { margin:0; font-size:14px; }
+.econ-resource-list strong { text-align:right; }
+.econ-meter-card footer { padding:16px 24px; display:flex; align-items:baseline; gap:12px; color:white; background:#15233d; }
+.econ-meter-card footer span { margin-right:auto; font:10px var(--font-geist-mono),monospace; color:#98a8c3; }
+.econ-meter-card footer strong { font-size:24px; }
+.econ-meter-card footer i { color:#9aa8bc; font-size:12px; font-style:normal; }
+.econ-evidence-list { margin:24px -24px 20px; }
+.econ-evidence-list>div { display:grid; grid-template-columns:42px 45px 1fr auto; align-items:center; gap:8px; padding:14px 24px; border-top:1px solid #edf0f5; }
+.econ-evidence-list>div:last-child { border-bottom:1px solid #edf0f5; }
+.econ-evidence-list p { margin:0; }
+.econ-evidence-list p strong,.econ-evidence-list p small { display:block; }
+.econ-evidence-list p strong { font-size:14px; }
+.econ-evidence-list p small { margin-top:4px; color:#7e899d; }
+.econ-evidence-list>div>span { font:9px var(--font-geist-mono),monospace; padding:5px 7px; border-radius:4px; }
+.econ-evidence-list .verified { color:#087653; background:#e5f8f1; }
+.econ-evidence-list .unverified { color:#9b5f10; background:#fff1dc; }
+.econ-run { width:100%; height:46px!important; justify-content:space-between!important; padding:0 16px!important; border-radius:6px!important; background:#285ee8!important; color:white!important; }
+.econ-record-panel>.econ-panel-label { margin-bottom:24px; }
+.econ-metric { padding:18px 0; border-top:1px solid #dfe3eb; }
+.econ-metric span { display:block; color:#737f93; font:10px var(--font-geist-mono),monospace; letter-spacing:.08em; }
+.econ-metric strong { display:block; margin-top:7px; font-size:25px; }
+.econ-metric.primary { padding:25px 18px; margin-bottom:8px; color:white; background:#14223c; border:0; border-radius:8px; }
+.econ-metric.primary span { color:#91a4c4; }
+.econ-metric.primary strong { color:#8eb0ff; font-size:34px; }
+.econ-criteria { margin-top:24px; }
+.econ-criteria>span,.econ-honesty span { font:10px var(--font-geist-mono),monospace; letter-spacing:.08em; color:#6f7a8e; }
+.econ-criteria>div { display:grid; grid-template-columns:12px 1fr auto; align-items:center; gap:8px; padding:12px 0; border-bottom:1px solid #e1e5ec; }
+.econ-criteria i { width:8px; height:8px; border-radius:50%; background:#eca447; }
+.econ-criteria i.verified { background:#20b981; }
+.econ-criteria i.contradicted { background:#e85959; }
+.econ-criteria p { margin:0; font-size:13px; }
+.econ-criteria b { font:9px var(--font-geist-mono),monospace; color:#637087; }
+.econ-honesty { margin-top:25px; padding:16px; border:1px solid #d9b679; background:#fff8e9; }
+.econ-honesty span { color:#8c5d13; }
+.econ-honesty p { margin:8px 0 0; color:#675c49; font-size:12px; line-height:1.5; }
+@media (max-width:1100px) { .econ-layout { grid-template-columns:190px 1fr; }.econ-record-panel { grid-column:1/-1; border:1px solid #d3d9e5; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }.econ-record-panel>.econ-panel-label,.econ-criteria,.econ-honesty { grid-column:1/-1; }.econ-metric { padding:16px; border:1px solid #dfe3eb; }.econ-metric.primary { margin:0; } }
+@media (max-width:760px) { .econ-topbar { grid-template-columns:1fr auto; padding:14px 18px; }.econ-product { display:none; }.econ-topbar nav a:first-child { display:none; }.econ-command { min-height:auto; padding:38px 20px; align-items:stretch; flex-direction:column; }.econ-command h1 { font-size:44px; }.econ-layout { display:block; }.econ-phase-rail { border:0; }.econ-phase-rail ol { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }.econ-phase-rail li { display:block; min-height:0; padding:10px; border:1px solid #dce1ea; }.econ-phase-rail li::after { display:none; }.econ-phase-rail li strong,.econ-phase-rail li i { display:block; margin-top:7px; }.econ-workspace { padding:14px; }.econ-contract-grid { grid-template-columns:1fr; }.econ-contract-grid>label { border:0; border-bottom:1px solid #dce1ea; }.econ-resource-list>div { grid-template-columns:42px 1fr 50px; }.econ-resource-list span { display:none; }.econ-record-panel { display:block; }.econ-metric { margin-top:8px; }.econ-evidence-list>div { grid-template-columns:38px 1fr auto; }.econ-evidence-list code { display:none; } }
 .shell { width:min(1280px, calc(100% - 64px)); margin-inline:auto; }
 .nav { height:84px; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; border-bottom:1px solid var(--line); font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
 .wordmark { display:flex; align-items:center; gap:10px; font-weight:800; font-size:14px; }

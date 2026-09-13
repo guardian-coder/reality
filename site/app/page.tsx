@@ -145,7 +145,7 @@ export default function Home() {
       <nav className="story-nav" aria-label="Primary navigation">
         <a className="story-wordmark" href="#top" aria-label="Reality home"><span />REALITY</a>
         <div className="story-nav-center"><a href="#story">Discovery</a><a href="#evidence">Evidence</a><a href="#frontier">Frontier</a></div>
-        <a className="story-product-link" href="/audit">Open Reality Audit <span>↗</span></a>
+        <a className="story-product-link" href="/economics">Open Agent Economics V1 <span>↗</span></a>
       </nav>
 
       <section className="story-hero" id="top">
@@ -199,8 +199,8 @@ export default function Home() {
       </section>
 
       <section className="mechanism-section">
-        <div className="mechanism-copy"><span>THE WORKING MECHANISM</span><h2>From evidence<br />to permission.</h2><p>Not a better prediction engine. A contract that prevents epistemic meaning from silently disappearing before action.</p><a href="/audit">Enter the working prototype <b>↗</b></a></div>
-        <div className="mechanism-flow" aria-label="Claim Evidence Action flow">{['Action intent', 'Required claims', 'Evidence lineage', 'Dependency test', 'Epistemic state', 'Action gate'].map((item, index) => <div key={item}><i>{String(index + 1).padStart(2, '0')}</i><strong>{item}</strong><span>{index < 5 ? '↓' : 'PERMIT / REVALIDATE / REVIEW / REFUSE'}</span></div>)}</div>
+        <div className="mechanism-copy"><span>THE WORKING MECHANISM</span><h2>From evidence<br />to economic control.</h2><p>The evidence foundation now supports one sharper question: what accepted outcome did an agent produce with the resources it consumed?</p><a href="/economics">Enter Agent Economics V1 <b>↗</b></a></div>
+        <div className="mechanism-flow" aria-label="Outcome linked resource accounting flow">{['Task contract', 'Resource envelope', 'Execution trace', 'Outcome evidence', 'Acceptance gate', 'Economic record'].map((item, index) => <div key={item}><i>{String(index + 1).padStart(2, '0')}</i><strong>{item}</strong><span>{index < 5 ? '↓' : 'COST / ACCEPTED OUTCOME'}</span></div>)}</div>
       </section>
 
       <section className="frontier-section" id="frontier">
@@ -209,7 +209,7 @@ export default function Home() {
         <div className="frontier-gates"><div><span>01</span><strong>10 qualified conversations</strong><small>OPEN</small></div><div><span>02</span><strong>3 real decision artifacts</strong><small>OPEN</small></div><div><span>03</span><strong>3 shadow audits</strong><small>OPEN</small></div><div><span>04</span><strong>1 payment or procurement signal</strong><small>OPEN</small></div></div>
       </section>
 
-      <footer className="story-footer"><div><a className="story-wordmark" href="#top"><span />REALITY</a><p>Infrastructure for intelligent systems to interact with reality reliably.</p></div><div><a href="https://github.com/guardian-coder/reality" target="_blank" rel="noreferrer">Examine the open repository ↗</a><a href="/audit/review">Review the evidence boundary ↗</a></div><small>Developed in public by Brayan Lucas Mwangimba with AI collaborators · Tanzania · 2026</small></footer>
+      <footer className="story-footer"><div><a className="story-wordmark" href="#top"><span />REALITY</a><p>Infrastructure for intelligent systems to interact with reality reliably.</p></div><div><a href="https://github.com/guardian-coder/reality" target="_blank" rel="noreferrer">Examine the open repository ↗</a><a href="/audit">Open the Reality Audit foundation ↗</a></div><small>Developed in public by Brayan Lucas Mwangimba with AI collaborators · Tanzania · 2026</small></footer>
     </main>
   );
 }
