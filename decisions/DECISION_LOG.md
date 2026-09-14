@@ -132,3 +132,15 @@
 - **Interface rule:** Do not prefill a simulation and present it as a product. The first screen must establish real connections; operational records appear only after the system receives events.
 - **Supersedes in product priority:** Reality Audit remains the evidence foundation and a historical validation artifact. It is no longer the sole first-product direction.
 - **Not proven:** Buyer, willingness to pay, real task semantics, evidence-source authenticity, outcome-value measurement, or generality across agent workflows.
+
+## D-016 — Move V1 from spend observation to pre-action economic control
+
+- **Date recorded:** 2026-09-14
+- **Status:** Decided and implemented for V1; production behavior and customer value remain unvalidated
+- **Decision:** A resource envelope must be enforced before a paid agent action, not inferred after execution from a monitoring dashboard.
+- **Run integrity:** Freeze the task contract on the first authorization request for each task/run pair. Reject later attempts to change that contract within the same run.
+- **Authorization integrity:** Bind every permit to one workspace, task, run, action identity, category, label, and maximum cost. Reject missing, refused, mismatched, over-cost, or already-consumed authorization records.
+- **Economic record:** Evaluate outcomes on the server and persist the result with an explicit policy version; the browser displays the engine record rather than constructing the authoritative disposition itself.
+- **Rationale:** A control plane that only reports cost after execution does not control agent economics. Pre-action permission is the smallest working mechanism that can stop runaway spend while preserving the evidence-to-outcome chain.
+- **Not implemented:** Provider-specific adapters, authenticated evidence provenance, strict serialization of simultaneous reservations, policy optimization, automated rollback, or controlled self-correction.
+- **Next test:** Run one external agent through authorization → execution → external outcome evidence and measure false refusals, unsafe permissions, cost per accepted outcome, and whether the decision changes real resource allocation.

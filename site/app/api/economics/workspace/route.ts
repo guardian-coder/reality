@@ -5,7 +5,7 @@ export async function GET() {
   const user = await getChatGPTUser();
   if (!user) return Response.json({ error: 'Sign in required' }, { status: 401 });
   const workspace = await workspaceForOwner(user.userId);
-  if (!workspace) return Response.json({ workspace: null, tasks: [], events: [] });
+  if (!workspace) return Response.json({ workspace: null, tasks: [], runs: [], events: [], authorizations: [], records: [] });
   return Response.json({ workspace: { id: workspace.id, name: workspace.name, tokenPrefix: workspace.tokenPrefix }, ...(await loadOverview(workspace.id)) });
 }
 

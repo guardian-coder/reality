@@ -1,3 +1,5 @@
+export const ECONOMIC_POLICY_VERSION = 'reality.outcome-policy.v1' as const;
+
 export type EvidenceState = 'VERIFIED' | 'UNVERIFIED' | 'CONTRADICTED';
 
 export type SuccessCriterion = {
@@ -33,6 +35,8 @@ export type EconomicDisposition = 'ACCEPTED' | 'NOT ACCEPTED' | 'STOPPED';
 export type EconomicRecord = {
   recordVersion: 'reality.economic-record.v1';
   taskId: string;
+  runId: string;
+  policyVersion: typeof ECONOMIC_POLICY_VERSION;
   disposition: EconomicDisposition;
   reasonCodes: string[];
   budgetUsd: number;
@@ -48,10 +52,21 @@ export type EconomicRecord = {
 
 const money = (value: number) => Math.round((value + Number.EPSILON) * 10000) / 10000;
 
+export function evaluateResourceAuthorization(input: { budgetMicros: number; spentMicros: number; reservedMicros: number; proposedMicros: number }) {
+  const projectedMicros = input.spentMicros + input.reservedMicros + input.proposedMicros;
+  const permitted = projectedMicros <= input.budgetMicros;
+  return {
+    disposition: permitted ? 'PERMIT' as const : 'REFUSE' as const,
+    reasonCode: permitted ? 'WITHIN_RESOURCE_ENVELOPE' as const : 'RESOURCE_ENVELOPE_EXCEEDED' as const,
+    remainingMicros: Math.max(0, input.budgetMicros - projectedMicros),
+  };
+}
+
 export function evaluateEconomicOutcome(
   contract: EconomicTaskContract,
   resources: ResourceEvent[],
   evidence: OutcomeEvidence[],
+  runId = 'unspecified',
 ): EconomicRecord {
   const actualCostUsd = money(resources.reduce((sum, event) => sum + event.costUsd, 0));
   const overBudget = actualCostUsd > contract.budgetUsd;
@@ -86,6 +101,8 @@ export function evaluateEconomicOutcome(
   return {
     recordVersion: 'reality.economic-record.v1',
     taskId: contract.taskId,
+    runId,
+    policyVersion: ECONOMIC_POLICY_VERSION,
     disposition,
     reasonCodes,
     budgetUsd: money(contract.budgetUsd),
@@ -99,7 +116,6 @@ export function evaluateEconomicOutcome(
     resources,
     evidence,
     limitations: [
-      'This record evaluates a simulated digital workflow, not a live customer operation.',
       'Estimated outcome value is supplied by the task contract and is not independently verified.',
       'Evidence source identity and authenticity are not yet cryptographically verified.',
     ],
