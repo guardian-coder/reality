@@ -144,3 +144,13 @@
 - **Rationale:** A control plane that only reports cost after execution does not control agent economics. Pre-action permission is the smallest working mechanism that can stop runaway spend while preserving the evidence-to-outcome chain.
 - **Not implemented:** Provider-specific adapters, authenticated evidence provenance, strict serialization of simultaneous reservations, policy optimization, automated rollback, or controlled self-correction.
 - **Next test:** Run one external agent through authorization → execution → external outcome evidence and measure false refusals, unsafe permissions, cost per accepted outcome, and whether the decision changes real resource allocation.
+
+## D-017 — Define V1 by unaided integration, not engine existence
+
+- **Date recorded:** 2026-09-14
+- **Status:** Decided and implemented locally; external-runtime validation remains open
+- **Decision:** The website root opens Agent Economics. Discovery Story moves to a secondary route and remains the durable narrative of how the project changed.
+- **Completion rule:** V1 is not complete merely because its evaluator and APIs work. A new customer must be able to issue a credential, connect a runtime, define a policy, run a live verification, and inspect the outcome-linked economic record without project-team assistance.
+- **Guide:** Replace the named anime guide with an original animated robotic pet that provides contextual setup direction without becoming the product itself.
+- **Rationale:** The first V1 exposed working infrastructure through what behaved like a documentation page. That made the engine real but the customer product incomplete. The gap was discovered through direct use, not a theoretical review.
+- **Supersedes:** D-014 only on the public entry-point decision. Its narrative and reasoning structure remain active under `/discovery`.

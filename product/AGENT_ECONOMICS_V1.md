@@ -1,5 +1,21 @@
 # Agent Economics V1
 
+## Product completion correction — 2026-09-14
+
+The first working engine was necessary but not a usable customer product. It exposed live endpoints and records, yet a new user could not complete the integration path without outside explanation.
+
+V1 is now defined by an unaided journey:
+
+1. Create or open an integration workspace.
+2. Issue a server-side credential.
+3. Add the authorization hook to any agent runtime.
+4. Define a task budget, expected value, action cost, and required outcome evidence.
+5. Run the contract through the live gate.
+6. Persist execution only when a permit exists.
+7. Submit external outcome evidence and inspect the economic record.
+
+The public root route must open the working product. The Discovery Story remains a secondary, continuously updated project history. A contextual robotic guide explains the current setup step without replacing the underlying controls.
+
 ## Decision status
 
 This is the selected first product direction as of 2026-09-13. It is a build-and-validation decision, not evidence of market demand.

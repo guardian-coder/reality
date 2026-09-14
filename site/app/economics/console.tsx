@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Activity, ArrowRight, Check, CircleDot, Copy, Database, KeyRound, Network, Play, RefreshCw, ShieldCheck, Webhook } from 'lucide-react';
+import { Activity, ArrowRight, Bot, Braces, Check, CircleDot, Copy, Database, KeyRound, Network, Play, RefreshCw, RotateCcw, Settings2, ShieldCheck, Webhook } from 'lucide-react';
 
 type Workspace = { id: string; name: string; tokenPrefix: string };
 type Task = { externalId: string; objective: string; budgetMicros: number; estimatedValueMicros: number; criteriaJson: string; updatedAt: string };
@@ -11,6 +12,8 @@ type Event = { id: string; taskExternalId: string; runId: string; eventType: str
 type Authorization = { id: string; taskExternalId: string; runId: string; label: string; disposition: string; reasonCode: string; policyVersion: string; createdAt: string };
 type StoredRecord = { id: string; taskExternalId: string; runId: string; disposition: string; actualCostMicros: number; acceptedValueMicros: number; policyVersion: string; recordJson: string; updatedAt: string };
 type Overview = { workspace: Workspace | null; tasks: Task[]; runs: Run[]; events: Event[]; authorizations: Authorization[]; records: StoredRecord[] };
+type SetupStep = 'connect' | 'policy' | 'verify';
+type TestResult = { disposition: string; detail: string; runId?: string };
 
 const empty: Overview = { workspace: null, tasks: [], runs: [], events: [], authorizations: [], records: [] };
 
@@ -21,6 +24,17 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState('');
+  const [setupStep, setSetupStep] = useState<SetupStep>('connect');
+  const [testResult, setTestResult] = useState<TestResult | null>(null);
+  const [guideOpen, setGuideOpen] = useState(true);
+  const [contract, setContract] = useState({
+    objective: 'Resolve a duplicate customer charge',
+    budgetUsd: '1.00',
+    estimatedValueUsd: '14.00',
+    actionLabel: 'Issue customer refund',
+    actionCostUsd: '0.12',
+    successLabel: 'Refund is recorded in billing',
+  });
 
   const refresh = useCallback(async () => {
     const response = await fetch('/api/economics/workspace', { cache: 'no-store' });
@@ -45,27 +59,47 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
     await navigator.clipboard.writeText(value); setCopied(label); window.setTimeout(() => setCopied(''), 1600);
   };
 
+  const issueKey = async () => {
+    setBusy(true); setError(''); setTestResult(null);
+    try {
+      const response = await fetch('/api/economics/workspace', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ rotateToken: true }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'A new integration key could not be issued.');
+      setToken(result.token); await refresh();
+    } catch (e) { setError(e instanceof Error ? e.message : 'A new integration key could not be issued.'); }
+    finally { setBusy(false); }
+  };
+
   const runTest = async () => {
     if (!token) return;
-    setBusy(true); setError('');
+    setBusy(true); setError(''); setTestResult(null);
     const authorization = { authorization: `Bearer ${token}`, 'content-type': 'application/json' };
     try {
       const runId = `run-${Date.now()}`;
-      const task = { id: 'invoice-resolution-001', objective: 'Resolve a duplicate customer charge', budgetUsd: 1, estimatedValueUsd: 14, successCriteria: [{ id: 'refund-issued', label: 'Refund is recorded' }, { id: 'case-closed', label: 'Support case is closed' }] };
-      const actions = [{ id: crypto.randomUUID(), category: 'MODEL', label: 'Plan resolution', estimatedCostUsd: 0.08 }, { id: crypto.randomUUID(), category: 'API', label: 'Read invoice state', estimatedCostUsd: 0.03 }, { id: crypto.randomUUID(), category: 'TOOL', label: 'Issue refund', estimatedCostUsd: 0.12 }];
+      const taskId = `task-${Date.now()}`;
+      const task = { id: taskId, objective: contract.objective, budgetUsd: Number(contract.budgetUsd), estimatedValueUsd: Number(contract.estimatedValueUsd), successCriteria: [{ id: 'primary-outcome', label: contract.successLabel }] };
+      const actions = [{ id: crypto.randomUUID(), category: 'TOOL', label: contract.actionLabel, estimatedCostUsd: Number(contract.actionCostUsd) }];
       const permitted = [];
       for (const action of actions) {
         const response = await fetch('/api/economics/authorize', { method: 'POST', headers: authorization, body: JSON.stringify({ task, runId, action }) });
         const decision = await response.json();
-        if (!response.ok) throw new Error(decision.error || `Reality refused: ${decision.reasonCode}`);
+        if (!response.ok) {
+          if (decision.disposition === 'REFUSE') {
+            setTestResult({ disposition: 'REFUSED', detail: `Action blocked before execution: ${decision.reasonCode}`, runId });
+            await refresh(); return;
+          }
+          throw new Error(decision.error || `Reality refused: ${decision.reasonCode}`);
+        }
         permitted.push({ ...action, actionId: action.id, id: crypto.randomUUID(), costUsd: action.estimatedCostUsd, authorizationId: decision.authorizationId });
       }
       const execution = await fetch('/api/economics/ingest', { method: 'POST', headers: authorization, body: JSON.stringify({
         task, runId, events: permitted,
       }) });
       if (!execution.ok) throw new Error((await execution.json()).error || 'Execution event was rejected.');
-      const outcome = await fetch('/api/economics/outcome', { method: 'POST', headers: authorization, body: JSON.stringify({ taskId: 'invoice-resolution-001', runId, evidence: [{ id: crypto.randomUUID(), criterionId: 'refund-issued', label: 'Refund confirmation', source: 'Billing webhook', state: 'VERIFIED' }, { id: crypto.randomUUID(), criterionId: 'case-closed', label: 'Case status changed to closed', source: 'Support webhook', state: 'VERIFIED' }] }) });
+      const outcome = await fetch('/api/economics/outcome', { method: 'POST', headers: authorization, body: JSON.stringify({ taskId, runId, evidence: [{ id: crypto.randomUUID(), criterionId: 'primary-outcome', label: contract.successLabel, source: 'Connected outcome source', state: 'VERIFIED' }] }) });
       if (!outcome.ok) throw new Error((await outcome.json()).error || 'Outcome evidence was rejected.');
+      const outcomeResult = await outcome.json();
+      setTestResult({ disposition: outcomeResult.economicRecord?.disposition || 'ACCEPTED', detail: 'Live authorization, execution, and outcome evidence were persisted.', runId });
       await refresh();
     } catch (e) { setError(e instanceof Error ? e.message : 'The connection test failed.'); }
     finally { setBusy(false); }
@@ -83,18 +117,26 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
   const verified = criteria.filter((criterion) => outcomeEvents.some((event) => event.criterionId === criterion.id && event.evidenceState === 'VERIFIED')).length;
   const accepted = activeRecord?.disposition === 'ACCEPTED';
   const endpoint = typeof window === 'undefined' ? '' : window.location.origin;
+  const integrationSnippet = `const decision = await fetch('${endpoint}/api/economics/authorize', {\n  method: 'POST',\n  headers: { Authorization: 'Bearer ${token || 'YOUR_REALITY_KEY'}', 'Content-Type': 'application/json' },\n  body: JSON.stringify({ task, runId, action })\n});\n\nif (!decision.ok) return; // do not execute\nconst permit = await decision.json();`;
+  const guideCopy = setupStep === 'connect'
+    ? { title: 'Connect the system that spends.', body: 'Issue a credential, keep it on your server, then place the authorization hook immediately before an agent calls a paid model, tool, or API.' }
+    : setupStep === 'policy'
+      ? { title: 'Define what “worth it” means.', body: 'Set the task budget, expected value, action cost, and the external evidence that must exist before value can be counted.' }
+      : { title: 'Prove the chain is alive.', body: 'Run one controlled transaction. Reality should permit or refuse before execution, then create an economic record only after outcome evidence arrives.' };
 
   return (
     <main className="control-shell">
       <aside className="control-sidebar">
-        <Link href="/" className="control-wordmark"><span>R</span>Reality</Link>
+        <Link href="/economics" className="control-wordmark"><span>R</span>Reality</Link>
         <div className="control-context"><small>CONTROL PLANE</small><strong>Agent Economics</strong></div>
         <nav>
-          <a className="active"><Network size={17}/>Connections</a>
+          <a className="active" href="#connect"><Network size={17}/>Connect</a>
+          <a href="#policy"><Settings2 size={17}/>Policy</a>
           <a href="#live-runs"><Activity size={17}/>Live runs</a>
           <a href="#economic-record"><Database size={17}/>Economic records</a>
         </nav>
         <div className="control-foundation"><ShieldCheck size={18}/><p><b>Reality foundation</b><span>Evidence remains attached to action.</span></p></div>
+        <Link href="/discovery" className="control-secondary-link">Read Discovery Story <ArrowRight size={15}/></Link>
         <Link href="/audit" className="control-secondary-link">Open Reality Audit <ArrowRight size={15}/></Link>
       </aside>
 
@@ -112,15 +154,32 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
           </section>
         ) : (
           <>
-            <section className="control-statusbar"><div><i className="online"/><span>Pre-action gate active</span><b>{data.workspace.name}</b></div><button onClick={() => refresh()} aria-label="Refresh"><RefreshCw size={15}/></button></section>
+            <section className="control-statusbar"><div><i className="online"/><span>Economic gate online</span><b>{data.workspace.name}</b></div><button onClick={() => refresh()} aria-label="Refresh"><RefreshCw size={15}/></button></section>
 
-            <section className="control-connections">
-              <article><header><span><Activity size={19}/></span><div><small>CONTROL 01</small><h2>Agent runtime</h2></div><b className={taskAuthorizations.length ? 'connected' : ''}>{taskAuthorizations.length ? 'Gating' : 'Ready'}</b></header><p>Ask permission before each paid action. Only permitted execution events can enter the economic record.</p><code>POST {endpoint}/api/economics/authorize</code><code>POST {endpoint}/api/economics/ingest</code></article>
-              <div className="control-linkline"><span/><b>Reality task ID</b><span/></div>
-              <article><header><span><Webhook size={19}/></span><div><small>INGRESS 02</small><h2>Outcome source</h2></div><b className={outcomeEvents.length ? 'connected' : ''}>{outcomeEvents.length ? 'Receiving' : 'Ready'}</b></header><p>Send external evidence from the system that can confirm whether the task actually succeeded.</p><code>POST {endpoint}/api/economics/outcome</code></article>
+            <section className="integration-journey" id="connect">
+              <header className="journey-header"><div><small>WORKING INTEGRATION</small><h2>Put Reality inside one agent action.</h2><p>Complete the path once here, then use the same API contract in your runtime.</p></div><b>{testResult?.disposition === 'ACCEPTED' ? 'Connected' : 'Setup required'}</b></header>
+              <nav className="journey-steps" aria-label="Integration steps">
+                {([['connect','01','Connect'],['policy','02','Define policy'],['verify','03','Verify live']] as const).map(([id, number, label]) => <button key={id} onClick={() => setSetupStep(id)} className={setupStep === id ? 'active' : ''}><i>{number}</i><span>{label}</span>{id === 'connect' && token ? <Check size={15}/> : id === 'verify' && testResult?.disposition === 'ACCEPTED' ? <Check size={15}/> : null}</button>)}
+              </nav>
+
+              {setupStep === 'connect' && <div className="journey-panel connect-panel">
+                <div className="runtime-choice"><span><Braces size={20}/></span><div><small>UNIVERSAL REST</small><h3>Any agent runtime</h3><p>Works with custom agents, workflow tools, Python, JavaScript, or direct HTTP.</p></div><b>Selected</b></div>
+                <div className="credential-box"><header><div><KeyRound size={18}/><p><b>Integration credential</b><span>{token ? 'Ready. Copy it now; only its hash is stored.' : `Current key ${data.workspace.tokenPrefix} is hidden.`}</span></p></div>{token ? <button onClick={() => copy(token, 'key')}>{copied === 'key' ? <Check size={15}/> : <Copy size={15}/>} {copied === 'key' ? 'Copied' : 'Copy key'}</button> : <button onClick={issueKey} disabled={busy}><RotateCcw size={15}/>{busy ? 'Issuing…' : 'Issue new key'}</button>}</header>{token && <code>{token}</code>}<small>{token ? 'Keep this secret in your server environment.' : 'Issuing a new key will replace the hidden key.'}</small></div>
+                <div className="integration-code"><header><div><Bot size={18}/><b>Agent authorization hook</b></div><button onClick={() => copy(integrationSnippet, 'snippet')}><Copy size={14}/>{copied === 'snippet' ? 'Copied' : 'Copy code'}</button></header><pre>{integrationSnippet}</pre></div>
+                <button className="journey-next" onClick={() => setSetupStep('policy')}>Define the first policy <ArrowRight size={16}/></button>
+              </div>}
+
+              {setupStep === 'policy' && <div className="journey-panel policy-panel" id="policy">
+                <div className="policy-intro"><Settings2 size={21}/><div><h3>Freeze the decision before execution.</h3><p>This contract is sent to the live gate. Once a run begins, it cannot silently change.</p></div></div>
+                <div className="policy-form"><label className="wide"><span>Task objective</span><input value={contract.objective} onChange={(e) => setContract({...contract, objective:e.target.value})}/></label><label><span>Maximum budget · USD</span><input type="number" min="0" step="0.01" value={contract.budgetUsd} onChange={(e) => setContract({...contract, budgetUsd:e.target.value})}/></label><label><span>Expected value · USD</span><input type="number" min="0" step="0.01" value={contract.estimatedValueUsd} onChange={(e) => setContract({...contract, estimatedValueUsd:e.target.value})}/></label><label><span>Action to authorize</span><input value={contract.actionLabel} onChange={(e) => setContract({...contract, actionLabel:e.target.value})}/></label><label><span>Maximum action cost · USD</span><input type="number" min="0" step="0.01" value={contract.actionCostUsd} onChange={(e) => setContract({...contract, actionCostUsd:e.target.value})}/></label><label className="wide"><span>Evidence required to count success</span><input value={contract.successLabel} onChange={(e) => setContract({...contract, successLabel:e.target.value})}/></label></div>
+                <div className="policy-summary"><span><ShieldCheck size={17}/>The gate will refuse an action that exceeds the remaining budget.</span><button className="journey-next" onClick={() => setSetupStep('verify')}>Verify against live engine <ArrowRight size={16}/></button></div>
+              </div>}
+
+              {setupStep === 'verify' && <div className="journey-panel verify-panel">
+                <div className="verify-copy"><small>LIVE SYSTEM CHECK</small><h3>Send this contract through the real control plane.</h3><p>This is not a visual simulation. It requests a permit, records execution only if permitted, sends outcome evidence, and persists the economic result.</p><dl><div><dt>Budget</dt><dd>${Number(contract.budgetUsd || 0).toFixed(2)}</dd></div><div><dt>Action cost</dt><dd>${Number(contract.actionCostUsd || 0).toFixed(2)}</dd></div><div><dt>Success evidence</dt><dd>{contract.successLabel}</dd></div></dl></div>
+                <div className="verify-action">{!token ? <><KeyRound size={25}/><h4>An integration key is required.</h4><p>Return to Connect and issue a key before testing.</p><button onClick={() => setSetupStep('connect')}>Open connection setup</button></> : <><Play size={25}/><h4>Ready to execute one controlled run.</h4><p>The result will appear below in Live operations.</p><button onClick={runTest} disabled={busy}>{busy ? 'Running live chain…' : 'Run end-to-end test'}</button></>}{testResult && <div className={`test-result ${testResult.disposition.toLowerCase()}`}><b>{testResult.disposition}</b><span>{testResult.detail}</span></div>}{error && <em>{error}</em>}</div>
+              </div>}
             </section>
-
-            <section className="control-key-panel"><div><KeyRound size={18}/><p><b>Workspace integration key</b><span>{token ? 'Copy it now. It is shown once and stored only as a hash.' : `Connected with ${data.workspace.tokenPrefix}`}</span></p></div>{token ? <><code>{token}</code><button onClick={() => copy(token, 'key')}>{copied === 'key' ? <Check size={16}/> : <Copy size={16}/>} {copied === 'key' ? 'Copied' : 'Copy key'}</button><button className="test" onClick={runTest} disabled={busy}><Play size={15}/>{busy ? 'Sending…' : 'Send first connected run'}</button></> : <span className="control-key-safe"><ShieldCheck size={16}/>Secret hidden</span>}</section>
 
             <section className="control-runtime" id="live-runs">
               <div className="control-section-title"><div><small>LIVE OPERATIONS</small><h2>{activeTask ? activeTask.objective : 'Waiting for the first task'}</h2></div><span>{data.events.length} events received</span></div>
@@ -133,6 +192,8 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
           </>
         )}
       </section>
+      <button className="product-guide-trigger" onClick={() => setGuideOpen(!guideOpen)} aria-expanded={guideOpen}><CircleDot size={18}/><span>{guideOpen ? 'Close guide' : 'Guide me'}</span></button>
+      {guideOpen && <aside className={`product-guide pet-state-${setupStep}`} aria-live="polite"><header><span><i className="product-guide-pet" aria-hidden="true"><b className="pet-ear pet-ear-left"/><b className="pet-ear pet-ear-right"/><b className="pet-tail"/><Image src="/reality-pet.png" alt="" fill sizes="48px" /></i>ROBOTIC PET GUIDE</span><button onClick={() => setGuideOpen(false)} aria-label="Close guide">×</button></header><small>STEP {setupStep === 'connect' ? '01' : setupStep === 'policy' ? '02' : '03'} OF 03</small><h3>{guideCopy.title}</h3><p>{guideCopy.body}</p><button onClick={() => setupStep === 'connect' ? setSetupStep('policy') : setupStep === 'policy' ? setSetupStep('verify') : setGuideOpen(false)}>{setupStep === 'verify' ? 'Got it' : 'Next step'} <ArrowRight size={14}/></button></aside>}
     </main>
   );
 }

@@ -144,3 +144,28 @@ That is the current frontier:
 
 > Not proving that uncertainty exists, but testing whether preserving epistemic continuity can become a useful, repeatable, and economically valuable capability between intelligent systems and the world they act upon.
 
+## 11. The economic leap
+
+The next connection did not discard the evidence work. It asked what that foundation could govern as agents become more capable and act more often.
+
+Agents consume models, tools, APIs, money, time, and sometimes human attention. Ordinary dashboards can count those resources after they are consumed. The harder question is whether the spending produced an accepted outcome—and what independent evidence establishes that outcome.
+
+This produced the Agent Economics direction:
+
+> Before a paid agent action executes, evaluate it against a frozen task and resource contract. After execution, count value only when the required outcome evidence arrives.
+
+The first engine now freezes run contracts, issues action-bound permits, rejects missing, mismatched, reused, or over-cost permits, receives external outcome evidence, and persists a policy-versioned economic record.
+
+**Unknown:** This is a working control mechanism, not proof of customer demand, authentic outcome evidence, or correct economic value.
+
+## 12. The first product correction
+
+The first interface exposed the live engine through endpoints, connection status, and records. We called it V1 because the backend worked.
+
+Direct use exposed the mistake: a new customer could see the system but could not enter it without our explanation. There was no complete credential flow, editable policy journey, or visible end-to-end verification. The research story also occupied the public front door while the working product sat behind it.
+
+That failure changed the completion rule:
+
+> V1 means a customer can connect a runtime, define a policy, run a controlled action, provide outcome evidence, and inspect the economic record without project-team assistance.
+
+The public root now opens Agent Economics. Discovery Story remains available as the project’s continuously updated memory. A contextual robotic pet guides the setup steps. The next honest test is still external: connect a real agent runtime and a real outcome source, then measure whether the gate improves resource allocation without unsafe permissions or unnecessary refusals.

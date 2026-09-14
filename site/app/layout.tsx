@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Reality — The Discovery Story',
-  description: 'Follow the open investigation from one question about powerful AI to a testable hypothesis about evidence, uncertainty, and justified action.',
+  title: 'Reality — Agent Economics Control Plane',
+  description: 'Authorize agent spending before execution and connect resource use to evidence-backed outcomes.',
 };
 
 export default function RootLayout({

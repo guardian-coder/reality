@@ -22,6 +22,16 @@ export async function createWorkspace(ownerId: string, name: string) {
   return { workspace, token };
 }
 
+export async function rotateWorkspaceToken(ownerId: string) {
+  const db = getDb();
+  const workspace = (await db.select().from(workspaces).where(eq(workspaces.ownerId, ownerId)).limit(1))[0];
+  if (!workspace) throw new Error('Create an integration workspace first');
+  const token = `reality_live_${crypto.randomUUID().replaceAll('-', '')}`;
+  const updated = { ...workspace, tokenHash: await hashToken(token), tokenPrefix: `${token.slice(0, 17)}…` };
+  await db.update(workspaces).set({ tokenHash: updated.tokenHash, tokenPrefix: updated.tokenPrefix }).where(eq(workspaces.id, workspace.id));
+  return { workspace: updated, token };
+}
+
 export async function workspaceForOwner(ownerId: string) {
   return (await getDb().select().from(workspaces).where(eq(workspaces.ownerId, ownerId)).limit(1))[0] ?? null;
 }

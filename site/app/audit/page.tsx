@@ -224,7 +224,7 @@ export default function RealityAudit() {
             const state = scenario.health[key];
             return <article key={key} className={state.toLowerCase()}><div><i /><span>{state}</span></div><h3>{name}</h3><p>{description}</p></article>;
           })}</div>
-          <div className="sensor-note"><span>NURU // SYSTEM NOTE</span><p>A green claim is not enough. Trace what allowed it to become green.</p></div>
+          <div className="sensor-note"><span>ROBOTIC PET // SYSTEM NOTE</span><p>A green claim is not enough. Trace what allowed it to become green.</p></div>
         </aside>
       </div>
     </main>
