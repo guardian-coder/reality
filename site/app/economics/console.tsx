@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Activity, ArrowRight, Bot, Braces, Check, CircleDot, Copy, Database, KeyRound, Network, Play, RefreshCw, RotateCcw, Settings2, ShieldCheck, Webhook } from 'lucide-react';
+import { Activity, ArrowRight, Bot, Braces, Check, CircleDot, Copy, Database, FileCheck2, KeyRound, Network, Play, RefreshCw, RotateCcw, Settings2, ShieldCheck, Webhook } from 'lucide-react';
 
 type Workspace = { id: string; name: string; tokenPrefix: string };
 type Task = { externalId: string; objective: string; budgetMicros: number; estimatedValueMicros: number; criteriaJson: string; updatedAt: string };
@@ -96,7 +96,14 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
         task, runId, events: permitted,
       }) });
       if (!execution.ok) throw new Error((await execution.json()).error || 'Execution event was rejected.');
-      const outcome = await fetch('/api/economics/outcome', { method: 'POST', headers: authorization, body: JSON.stringify({ taskId, runId, evidence: [{ id: crypto.randomUUID(), criterionId: 'primary-outcome', label: contract.successLabel, source: 'Connected outcome source', state: 'VERIFIED' }] }) });
+      const claimId = `outcome-${runId}`;
+      const observedAt = new Date();
+      const claimResponse = await fetch('/api/data/claims', { method: 'POST', headers: authorization, body: JSON.stringify({
+        claim: { id: claimId, subject: taskId, assertion: contract.successLabel },
+        evidence: [{ id: crypto.randomUUID(), sourceName: 'Connected outcome source', sourceRef: `integration://${runId}/outcome`, relation: 'SUPPORTS', lineageId: 'connected-outcome-system', observedAt: observedAt.toISOString(), validUntil: new Date(observedAt.getTime() + 24 * 60 * 60 * 1000).toISOString(), integrityStatus: 'DOCUMENTED' }],
+      }) });
+      if (!claimResponse.ok) throw new Error((await claimResponse.json()).error || 'Outcome claim could not be evaluated.');
+      const outcome = await fetch('/api/economics/outcome', { method: 'POST', headers: authorization, body: JSON.stringify({ taskId, runId, evidence: [{ id: crypto.randomUUID(), criterionId: 'primary-outcome', label: contract.successLabel, claimId }] }) });
       if (!outcome.ok) throw new Error((await outcome.json()).error || 'Outcome evidence was rejected.');
       const outcomeResult = await outcome.json();
       setTestResult({ disposition: outcomeResult.economicRecord?.disposition || 'ACCEPTED', detail: 'Live authorization, execution, and outcome evidence were persisted.', runId });
@@ -129,6 +136,7 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
       <aside className="control-sidebar">
         <Link href="/economics" className="control-wordmark"><span>R</span>Reality</Link>
         <div className="control-context"><small>CONTROL PLANE</small><strong>Agent Economics</strong></div>
+        <nav className="control-pillar-nav"><Link href="/data"><FileCheck2 size={17}/>Reality Data</Link><Link className="active" href="/economics"><ShieldCheck size={17}/>Agent Economics</Link></nav>
         <nav>
           <a className="active" href="#connect"><Network size={17}/>Connect</a>
           <a href="#policy"><Settings2 size={17}/>Policy</a>
@@ -137,7 +145,6 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
         </nav>
         <div className="control-foundation"><ShieldCheck size={18}/><p><b>Reality foundation</b><span>Evidence remains attached to action.</span></p></div>
         <Link href="/discovery" className="control-secondary-link">Read Discovery Story <ArrowRight size={15}/></Link>
-        <Link href="/audit" className="control-secondary-link">Open Reality Audit <ArrowRight size={15}/></Link>
       </aside>
 
       <section className="control-main">
@@ -193,7 +200,7 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
         )}
       </section>
       <button className="product-guide-trigger" onClick={() => setGuideOpen(!guideOpen)} aria-expanded={guideOpen}><CircleDot size={18}/><span>{guideOpen ? 'Close guide' : 'Guide me'}</span></button>
-      {guideOpen && <aside className={`product-guide pet-state-${setupStep}`} aria-live="polite"><header><span><i className="product-guide-pet" aria-hidden="true"><b className="pet-ear pet-ear-left"/><b className="pet-ear pet-ear-right"/><b className="pet-tail"/><Image src="/reality-pet.png" alt="" fill sizes="48px" /></i>ROBOTIC PET GUIDE</span><button onClick={() => setGuideOpen(false)} aria-label="Close guide">×</button></header><small>STEP {setupStep === 'connect' ? '01' : setupStep === 'policy' ? '02' : '03'} OF 03</small><h3>{guideCopy.title}</h3><p>{guideCopy.body}</p><button onClick={() => setupStep === 'connect' ? setSetupStep('policy') : setupStep === 'policy' ? setSetupStep('verify') : setGuideOpen(false)}>{setupStep === 'verify' ? 'Got it' : 'Next step'} <ArrowRight size={14}/></button></aside>}
+      {guideOpen && <aside className={`product-guide pet-state-${setupStep}`} aria-live="polite"><header><span><i className="product-guide-pet" aria-hidden="true"><Image src="/reality-scout.png" alt="" fill sizes="58px" /></i>REALITY SCOUT</span><button onClick={() => setGuideOpen(false)} aria-label="Close guide">×</button></header><small>STEP {setupStep === 'connect' ? '01' : setupStep === 'policy' ? '02' : '03'} OF 03</small><h3>{guideCopy.title}</h3><p>{guideCopy.body}</p><button onClick={() => setupStep === 'connect' ? setSetupStep('policy') : setupStep === 'policy' ? setSetupStep('verify') : setGuideOpen(false)}>{setupStep === 'verify' ? 'Got it' : 'Next step'} <ArrowRight size={14}/></button></aside>}
     </main>
   );
 }

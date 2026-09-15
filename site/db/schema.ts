@@ -94,3 +94,38 @@ export const records = sqliteTable('economic_records', {
   uniqueIndex('idx_economic_records_run').on(table.workspaceId, table.taskExternalId, table.runId),
   index('idx_economic_records_workspace_updated').on(table.workspaceId, table.updatedAt),
 ]);
+
+export const realityClaims = sqliteTable('reality_claims', {
+  id: text('id').primaryKey(),
+  workspaceId: text('workspace_id').notNull().references(() => workspaces.id),
+  externalId: text('external_id').notNull(),
+  subject: text('subject').notNull(),
+  assertion: text('assertion').notNull(),
+  state: text('state').notNull(),
+  reasonCodesJson: text('reason_codes_json').notNull(),
+  evaluatedAt: text('evaluated_at').notNull(),
+  validUntil: text('valid_until'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+}, (table) => [
+  uniqueIndex('idx_reality_claims_workspace_external').on(table.workspaceId, table.externalId),
+  index('idx_reality_claims_workspace_updated').on(table.workspaceId, table.updatedAt),
+]);
+
+export const realityEvidence = sqliteTable('reality_evidence', {
+  id: text('id').primaryKey(),
+  workspaceId: text('workspace_id').notNull().references(() => workspaces.id),
+  claimExternalId: text('claim_external_id').notNull(),
+  sourceName: text('source_name').notNull(),
+  sourceRef: text('source_ref').notNull(),
+  relation: text('relation').notNull(),
+  lineageId: text('lineage_id').notNull(),
+  observedAt: text('observed_at').notNull(),
+  validUntil: text('valid_until'),
+  integrityStatus: text('integrity_status').notNull(),
+  rawJson: text('raw_json').notNull(),
+  createdAt: text('created_at').notNull(),
+}, (table) => [
+  index('idx_reality_evidence_workspace_claim').on(table.workspaceId, table.claimExternalId),
+  index('idx_reality_evidence_workspace_created').on(table.workspaceId, table.createdAt),
+]);

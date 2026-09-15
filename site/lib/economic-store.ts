@@ -1,7 +1,8 @@
 import { and, desc, eq } from 'drizzle-orm';
 import { getDb } from '@/db';
-import { authorizations, events, records, runs, tasks, workspaces } from '@/db/schema';
+import { authorizations, events, realityClaims, realityEvidence, records, runs, tasks, workspaces } from '@/db/schema';
 import { ECONOMIC_POLICY_VERSION, evaluateEconomicOutcome, evaluateResourceAuthorization, type EconomicTaskContract, type OutcomeEvidence, type ResourceEvent } from '@/lib/economic-engine';
+import { evaluateClaim, type RealityEvidenceInput } from '@/lib/evidence-engine';
 
 const now = () => new Date().toISOString();
 const moneyMicros = (value: unknown) => Math.max(0, Math.round(Number(value || 0) * 1_000_000));
@@ -38,6 +39,49 @@ export async function workspaceForOwner(ownerId: string) {
 
 export async function workspaceForToken(token: string) {
   return (await getDb().select().from(workspaces).where(eq(workspaces.tokenHash, await hashToken(token))).limit(1))[0] ?? null;
+}
+
+export async function evaluateAndStoreClaim(workspaceId: string, payload: any) {
+  if (!payload?.claim?.id || !payload?.claim?.subject || !payload?.claim?.assertion || !Array.isArray(payload?.evidence)) {
+    throw new Error('claim.id, claim.subject, claim.assertion, and evidence are required');
+  }
+  const db = getDb();
+  const stamp = now();
+  const externalId = String(payload.claim.id);
+  const normalizedEvidence: RealityEvidenceInput[] = payload.evidence.map((item: any) => ({
+    id: String(item.id || id('evidence')),
+    sourceName: String(item.sourceName || ''),
+    sourceRef: String(item.sourceRef || ''),
+    relation: item.relation === 'CONTRADICTS' ? 'CONTRADICTS' : 'SUPPORTS',
+    lineageId: String(item.lineageId || ''),
+    observedAt: String(item.observedAt || ''),
+    validUntil: item.validUntil ? String(item.validUntil) : undefined,
+    integrityStatus: item.integrityStatus === 'DOCUMENTED' ? 'DOCUMENTED' : 'UNVERIFIED',
+  }));
+  const evaluation = evaluateClaim(normalizedEvidence);
+  const current = (await db.select().from(realityClaims).where(and(eq(realityClaims.workspaceId, workspaceId), eq(realityClaims.externalId, externalId))).limit(1))[0];
+  const claim = {
+    id: current?.id ?? id('claim'), workspaceId, externalId,
+    subject: String(payload.claim.subject), assertion: String(payload.claim.assertion), state: evaluation.state,
+    reasonCodesJson: JSON.stringify(evaluation.reasonCodes), evaluatedAt: evaluation.evaluatedAt,
+    validUntil: evaluation.validUntil, createdAt: current?.createdAt ?? stamp, updatedAt: stamp,
+  };
+  if (current) await db.update(realityClaims).set(claim).where(eq(realityClaims.id, current.id));
+  else await db.insert(realityClaims).values(claim);
+  const evidenceRows = normalizedEvidence.map((item) => ({
+    id: item.id!, workspaceId, claimExternalId: externalId, sourceName: item.sourceName!, sourceRef: item.sourceRef!,
+    relation: item.relation!, lineageId: item.lineageId!, observedAt: item.observedAt!, validUntil: item.validUntil ?? null,
+    integrityStatus: item.integrityStatus!, rawJson: JSON.stringify(item), createdAt: stamp,
+  }));
+  if (evidenceRows.length) await db.batch(evidenceRows.map((row) => db.insert(realityEvidence).values(row).onConflictDoNothing({ target: realityEvidence.id })) as any);
+  return { claim: { ...claim, reasonCodes: evaluation.reasonCodes, independentLineages: evaluation.independentLineages }, evidence: evidenceRows };
+}
+
+export async function loadRealityData(workspaceId: string) {
+  return {
+    claims: await getDb().select().from(realityClaims).where(eq(realityClaims.workspaceId, workspaceId)).orderBy(desc(realityClaims.updatedAt)).limit(50),
+    evidence: await getDb().select().from(realityEvidence).where(eq(realityEvidence.workspaceId, workspaceId)).orderBy(desc(realityEvidence.createdAt)).limit(100),
+  };
 }
 
 async function upsertTask(workspaceId: string, task: any) {
@@ -113,7 +157,17 @@ export async function ingestOutcome(workspaceId: string, payload: any) {
   if (!payload.taskId || !payload.runId || !Array.isArray(payload.evidence)) throw new Error('taskId, runId, and evidence are required');
   const stamp = now();
   const db = getDb();
-  const inserts = payload.evidence.map((item: any) => db.insert(events).values({ id: String(item.id || id('ev')), workspaceId, taskExternalId: String(payload.taskId), runId: String(payload.runId), eventType: 'OUTCOME', label: String(item.label || 'Outcome evidence'), criterionId: String(item.criterionId || ''), evidenceState: String(item.state || 'UNVERIFIED'), source: String(item.source || 'External system'), occurredAt: String(item.occurredAt || stamp), receivedAt: stamp, rawJson: JSON.stringify(item) }).onConflictDoNothing({ target: events.id }));
+  const verifiedItems = [];
+  for (const item of payload.evidence) {
+    const claimId = String(item.claimId || '');
+    const claim = claimId ? (await db.select().from(realityClaims).where(and(eq(realityClaims.workspaceId, workspaceId), eq(realityClaims.externalId, claimId))).limit(1))[0] : null;
+    const fresh = claim?.validUntil ? new Date(claim.validUntil).getTime() > Date.now() : false;
+    const state = claim && fresh
+      ? claim.state === 'CONFIRMED' ? 'VERIFIED' : claim.state === 'CONTRADICTED' ? 'CONTRADICTED' : 'UNVERIFIED'
+      : 'UNVERIFIED';
+    verifiedItems.push({ ...item, state, source: claim ? `Reality claim ${claim.externalId}` : 'No verified Reality claim' });
+  }
+  const inserts = verifiedItems.map((item: any) => db.insert(events).values({ id: String(item.id || id('ev')), workspaceId, taskExternalId: String(payload.taskId), runId: String(payload.runId), eventType: 'OUTCOME', label: String(item.label || 'Outcome evidence'), criterionId: String(item.criterionId || ''), evidenceState: item.state, source: item.source, occurredAt: String(item.occurredAt || stamp), receivedAt: stamp, rawJson: JSON.stringify(item) }).onConflictDoNothing({ target: events.id }));
   if (inserts.length) await db.batch(inserts as any);
   const run = (await db.select().from(runs).where(and(eq(runs.workspaceId, workspaceId), eq(runs.taskExternalId, String(payload.taskId)), eq(runs.runId, String(payload.runId)))).limit(1))[0];
   if (!run) throw new Error('Frozen run contract was not found');

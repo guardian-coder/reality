@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Reality — Agent Economics Control Plane',
-  description: 'Authorize agent spending before execution and connect resource use to evidence-backed outcomes.',
+  title: 'Reality — Control Plane for Agent Action',
+  description: 'Verify the facts agents depend on, control resource commitments, and connect cost to evidence-backed outcomes.',
 };
 
 export default function RootLayout({
