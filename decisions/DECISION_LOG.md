@@ -154,3 +154,16 @@
 - **Guide:** Replace the named anime guide with an original animated robotic pet that provides contextual setup direction without becoming the product itself.
 - **Rationale:** The first V1 exposed working infrastructure through what behaved like a documentation page. That made the engine real but the customer product incomplete. The gap was discovered through direct use, not a theoretical review.
 - **Supersedes:** D-014 only on the public entry-point decision. Its narrative and reasoning structure remain active under `/discovery`.
+
+## D-018 — Unite Reality Data and Agent Economics on one evidence foundation
+
+- **Date recorded:** 2026-09-15
+- **Status:** Decided for product architecture; implementation pending
+- **Decision:** Build one Reality Control Plane with two visible pillars: Reality Data, derived from the AI Data Utility idea, and Agent Economics / AI Spending Control. Both use the shared graph `claim → evidence → source → action → outcome → economic consequence`.
+- **Internal verification:** Reality Audit is not a standalone product destination. Its claim-and-evidence checks become an internal process applied when real-world claims and outcomes enter the system. A supplied `VERIFIED` label is not sufficient by itself.
+- **Interface:** The pillars may use separate pages or workflows when that produces a clearer product. They must share identity, records, evidence, and outcome semantics.
+- **Functional standard:** Primary product surfaces must accept real input, run a real process, expose state, persist output, and offer a clear next action. A documentation page, populated simulation, or dashboard without an operating workflow does not satisfy V1.
+- **Public navigation:** Remove Reality Audit as a destination. Keep Discovery Story as the project-history route.
+- **Story rule:** Rewrite Discovery Story as a single chronological chain of questions and discoveries in plain English. Each discovery answers the previous question and opens the next; do not reveal the final answer before the history reaches it. Remove duplicated navigation and unnecessary breadth.
+- **Guide:** Use an original robotic pet with its own visual identity, movement, and personality. Do not revive, rename, or visually imitate the former guide.
+- **Not yet implemented:** Reality Data acquisition, internal verification of outcome evidence, a real paid-agent/API connection, and an independent outcome-source integration.
