@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Activity, ArrowRight, Bot, Braces, Check, CircleDot, Copy, Database, FileCheck2, KeyRound, Network, Play, RefreshCw, RotateCcw, Settings2, ShieldCheck, Webhook } from 'lucide-react';
@@ -134,9 +133,9 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
   return (
     <main className="control-shell">
       <aside className="control-sidebar">
-        <Link href="/economics" className="control-wordmark"><span>R</span>Reality</Link>
+        <a href="/economics" className="control-wordmark"><span>R</span>Reality</a>
         <div className="control-context"><small>CONTROL PLANE</small><strong>Agent Economics</strong></div>
-        <nav className="control-pillar-nav"><Link href="/data"><FileCheck2 size={17}/>Reality Data</Link><Link className="active" href="/economics"><ShieldCheck size={17}/>Agent Economics</Link></nav>
+        <nav className="control-pillar-nav"><a href="/data"><FileCheck2 size={17}/>Reality Data</a><a className="active" href="/economics"><ShieldCheck size={17}/>Agent Economics</a></nav>
         <nav>
           <a className="active" href="#connect"><Network size={17}/>Connect</a>
           <a href="#policy"><Settings2 size={17}/>Policy</a>
@@ -144,7 +143,7 @@ export default function EconomicsConsole({ displayName }: { displayName: string 
           <a href="#economic-record"><Database size={17}/>Economic records</a>
         </nav>
         <div className="control-foundation"><ShieldCheck size={18}/><p><b>Reality foundation</b><span>Evidence remains attached to action.</span></p></div>
-        <Link href="/discovery" className="control-secondary-link">Read Discovery Story <ArrowRight size={15}/></Link>
+        <a href="/discovery" className="control-secondary-link">Read Discovery Story <ArrowRight size={15}/></a>
       </aside>
 
       <section className="control-main">

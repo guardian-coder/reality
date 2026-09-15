@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowRight, Check, CircleHelp, Database, FileCheck2, Network, RefreshCw, ShieldCheck } from 'lucide-react';
 
@@ -61,11 +60,11 @@ export default function DataConsole({ displayName }: { displayName: string }) {
   const recentEvidence = useMemo(() => evidence.filter((item) => item.claimExternalId === claims[0]?.externalId), [claims, evidence]);
   return <main className="rcp-shell">
     <aside className="rcp-sidebar">
-      <Link href="/data" className="rcp-mark"><span>R</span>Reality</Link>
+      <a href="/data" className="rcp-mark"><span>R</span>Reality</a>
       <div className="rcp-product"><small>CONTROL PLANE</small><strong>Reality Data</strong></div>
-      <nav><Link className="active" href="/data"><FileCheck2 size={17}/>Reality Data</Link><Link href="/economics"><ShieldCheck size={17}/>Agent Economics</Link></nav>
+      <nav><a className="active" href="/data"><FileCheck2 size={17}/>Reality Data</a><a href="/economics"><ShieldCheck size={17}/>Agent Economics</a></nav>
       <div className="rcp-spine"><Network size={18}/><p><b>Evidence Graph</b><span>Claim → evidence → action → outcome</span></p></div>
-      <Link href="/discovery" className="rcp-secondary">Discovery Story <ArrowRight size={15}/></Link>
+      <a href="/discovery" className="rcp-secondary">Discovery Story <ArrowRight size={15}/></a>
     </aside>
     <section className="rcp-main">
       <header className="rcp-header"><div><small>REALITY / DATA UTILITY</small><h1>Verify a fact before a machine depends on it.</h1></div><div className="rcp-user"><i>{displayName.slice(0,1).toUpperCase()}</i><span>{displayName}</span></div></header>

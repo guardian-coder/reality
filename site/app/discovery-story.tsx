@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, Database, ShieldCheck } from 'lucide-react';
 
@@ -19,12 +18,12 @@ export default function DiscoveryStory() {
   const [step, setStep] = useState(0);
   const chapter = trail[step];
   return <main className="discovery-app">
-    <nav className="discovery-nav"><Link href="/data" className="discovery-mark"><span>R</span>Reality</Link><div><Link href="/data"><Database size={16}/>Reality Data</Link><Link href="/economics"><ShieldCheck size={16}/>Agent Economics</Link><Link className="active" href="/discovery"><BookOpen size={16}/>Discovery Story</Link></div><a href="https://github.com/guardian-coder/reality" target="_blank" rel="noreferrer">Open research ↗</a></nav>
+    <nav className="discovery-nav"><a href="/data" className="discovery-mark"><span>R</span>Reality</a><div><a href="/data"><Database size={16}/>Reality Data</a><a href="/economics"><ShieldCheck size={16}/>Agent Economics</a><a className="active" href="/discovery"><BookOpen size={16}/>Discovery Story</a></div><a href="https://github.com/guardian-coder/reality" target="_blank" rel="noreferrer">Open research ↗</a></nav>
     <section className="discovery-stage">
       <div className="discovery-progress"><span>DISCOVERY {String(step + 1).padStart(2,'0')} / {String(trail.length).padStart(2,'0')}</span><div>{trail.map((_,i)=><i key={i} className={i <= step ? 'active' : ''}/>)}</div></div>
       <article className="discovery-card" key={step}><small>{chapter.era}</small><h1>{chapter.title}</h1><div className="discovery-reveal"><section><span>WHAT WE SAW</span><p>{chapter.clue}</p></section><section><span>WHAT IT CHANGED</span><p>{chapter.answer}</p></section></div><div className="discovery-question"><span>THE NEXT QUESTION</span><p>{chapter.next}</p></div><footer><button disabled={step === 0} onClick={()=>setStep(step-1)}><ArrowLeft size={17}/>Back</button><button disabled={step === trail.length-1} onClick={()=>setStep(step+1)}>{step === trail.length-1 ? 'You are here' : 'Follow the clue'}<ArrowRight size={17}/></button></footer></article>
       <aside className="discovery-scout"><div><Image src="/reality-scout.png" alt="Reality Scout robotic companion" fill priority sizes="220px"/></div><p><b>{step === trail.length-1 ? 'The frontier is open.' : 'One answer opens the next question.'}</b><span>{step === trail.length-1 ? 'The next proof must come from a real external workflow.' : 'Move forward when the current discovery is clear.'}</span></p></aside>
     </section>
-    <section className="discovery-destination"><small>WHAT EXISTS NOW</small><h2>Two working pillars. One evidence spine.</h2><div><Link href="/data"><Database size={21}/><span><b>Reality Data</b><small>Turn external evidence into inspectable machine claims.</small></span><ArrowRight size={18}/></Link><Link href="/economics"><ShieldCheck size={21}/><span><b>Agent Economics</b><small>Control agent spend and count only verified outcomes.</small></span><ArrowRight size={18}/></Link></div></section>
+    <section className="discovery-destination"><small>WHAT EXISTS NOW</small><h2>Two working pillars. One evidence spine.</h2><div><a href="/data"><Database size={21}/><span><b>Reality Data</b><small>Turn external evidence into inspectable machine claims.</small></span><ArrowRight size={18}/></a><a href="/economics"><ShieldCheck size={21}/><span><b>Agent Economics</b><small>Control agent spend and count only verified outcomes.</small></span><ArrowRight size={18}/></a></div></section>
   </main>;
 }
