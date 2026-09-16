@@ -1,5 +1,7 @@
 # Research Index
 
+- [2026-09-16 — First Buyer / Problem Search](../validation/2026-09-16_FIRST_BUYER_PROBLEM_SEARCH.md) — Narrows the first commercial falsification to transactional customer-support agents, ranks ten public candidate organizations, defines the first three outreach targets, and sets interview, shadow-test, signal, and kill criteria. No buyer or demand is claimed.
+
 - [2026-09-08 — Reality Audit Three Green Lights Test](../validation/2026-09-08_THREE_GREEN_LIGHTS_TEST.md) — Adjacent paid markets exist in functional safety and IoT assurance, but the exact buyer, budget, and willingness to pay for Reality Audit remain unvalidated. Sets a 30-day behavioral validation gate before substantial feature expansion.
 
 This index records evidence, not conclusions by repetition. Add one dated artifact per meaningful research effort and link it here.
