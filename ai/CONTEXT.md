@@ -8,6 +8,8 @@ Then read `ai/OPERATING_CONSTITUTION.md`. It defines the standing quality and re
 
 For the human-readable path from the original question to the current thesis and product experiment, read `company/DISCOVERY_STORY.md`. It is the narrative entry point; the thesis, research, validation, and decision files remain the authoritative technical record.
 
+For a filtered founder-level map of the problem, product, evidence status, roadmap, and explanation practice, read `company/FOUNDER_MAP.md`. It is a teaching and orientation artifact, not a replacement for the authoritative technical record.
+
 Codex and Claude use the two-lens review protocol in `COLLABORATION.md`. By default, Claude steelmans the opportunity as the optimistic builder and Codex attacks assumptions as the skeptical falsifier. Neither role may hide contrary evidence or convert agreement into validation.
 
 Then read, in order:
