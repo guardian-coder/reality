@@ -5,6 +5,8 @@
 
 This is not a record of every conversation or experiment. It keeps only the ideas that changed the thesis, product, evidence, or next decision.
 
+The architecture origin in Step 11 was checked directly against the ChatGPT conversation titled **Example Conversation**, where AI Data Utility, Human Execution API, Agent Economics, the shared Claim/Evidence Ledger, Stakes Model, relying parties, proof policies, and the governor model were compared and refined.
+
 ---
 
 ## 1. Reality in one sentence
@@ -160,15 +162,67 @@ Agents spend model tokens, API charges, tool calls, time, and human attention. C
 
 This became the first business-shaped product direction.
 
-### Step 11 — One control plane, two pillars
+### Step 11 — The Example Conversation selected and connected the directions
 
-The AI Data Utility idea and Agent Economics were joined into one architecture:
+The conversation titled **Example Conversation** was not merely a later explanation of the product. It was where the present architecture crystallized.
+
+Three directions had survived the broader search:
+
+1. **AI Data Utility** — permissioned access to fresh, fragmented reality expressed as machine-readable claims with evidence.
+2. **Human Execution API** — bounded physical work that returns evidence a machine can evaluate, rather than a human merely saying “done.”
+3. **Agent Economics / Spend Control** — connecting an agent’s resource consumption to an accepted outcome, not merely reporting token or API spend.
+
+Brayan selected Agent Economics as the strongest first business direction. The AI-side selection was AI Data Utility. Human Execution did not need to remain a third pillar: it could become one way Reality Data acquires evidence from the physical world.
+
+The conversation then produced the deeper connection:
+
+- a world-state statement and an agent-outcome statement have the same underlying shape;
+- both are claims that require evidence, provenance, freshness, and a validity boundary;
+- therefore the pillars should not become two disconnected engines;
+- they should share one evidence substrate while remaining separately useful capabilities.
+
+The resulting core was described as a **Claim/Evidence Ledger** with different ontologies or workflows above it:
+
+- **Reality Data:** What is true in the world now, according to which evidence?
+- **Agent Economics:** What did the agent do, what did it cost, and did an accepted outcome occur?
+
+The conversation also added several pieces that the simplified six-node graph does not show:
+
+- **verification cost:** the resources spent proving an outcome are part of the true outcome cost;
+- **Stakes Model:** evidence sufficiency depends on what being wrong would cost, including reversibility, legal, safety, financial, and reputational effects;
+- **relying parties:** one stable claim and evidence trail may be judged by several parties with different proof requirements;
+- **proof policy:** each relying party defines what evidence is sufficient for its decision;
+- **external governor:** the acting agent should not be the only authority deciding that its own evidence is sufficient;
+- **two kinds of independence:** computational independence can separate an agent from its evaluator inside one organization, while institutional independence may be required when an outside counterparty or regulator must trust the result.
+
+This produced the fuller architecture:
+
+```text
+signal / event
+-> evidence
+-> claim
+-> stakes
+-> relying parties
+-> proof policies
+-> ALLOW / REQUIRE MORE EVIDENCE / DENY
+-> action
+-> outcome evidence
+-> economic record
+-> feedback
+```
+
+Agent spending was selected as the first narrow test of this architecture—not as the definition of the entire company. It was the first cylinder of the larger engine because it could exercise evidence, stakes, authority, action, outcome, and economics in one loop.
+
+### Step 12 — One control plane, two visible pillars
+
+The two selected directions were therefore joined into one product architecture:
 
 - **Reality Data:** acquire current, specific, machine-readable claims with sources and evidence.
-- **Agent Economics:** authorize resources before action and connect actual cost to an accepted outcome.
-- **Internal verification:** inspect the evidence throughout both workflows.
+- **Agent Economics:** authorize resources before action and connect actual cost, including appropriate verification cost, to an accepted outcome.
+- **Internal verification:** inspect evidence throughout both workflows.
+- **Governance:** apply stakes-aware proof policies before consequential action.
 
-The shared chain is:
+The present repository uses this simpler shared graph as its official top-level representation:
 
 ```text
 claim
@@ -179,6 +233,8 @@ claim
 -> economic consequence
 ```
 
+The fuller Example Conversation graph explains what must eventually sit inside the transitions. The current V1 has not yet implemented every object from that fuller graph.
+
 ## 5. What was filtered out—and why
 
 | Item | Current treatment | Reason |
@@ -187,6 +243,7 @@ claim
 | SME financial truth | Historical laboratory | It exposed the truth problem but did not validate the market. |
 | Bridge monitoring | Test fixture | It demonstrated transformation loss; it is not proof of a bridge product. |
 | Reality Audit | Internal verification process | Useful mechanism, but not the public product identity. |
+| Human Execution API as a third standalone pillar | Evidence-acquisition method inside Reality Data | Its durable value was machine-evaluable proof that bounded physical work occurred. |
 | “Epistemic Continuity is a new law” | Rejected claim | It remains a falsifiable engineering hypothesis. |
 | “AI can never solve this” | Rejected claim | Better AI may solve parts or all of the problem; we must test the boundary. |
 | Generic cost dashboard | Rejected product | It observes spending after action but does not connect authorization, evidence, outcome, and cost. |
@@ -228,6 +285,21 @@ For every important claim or outcome, the system should ask:
 - What remains unknown?
 
 The caller cannot make an outcome true simply by labeling it `VERIFIED`.
+
+### Shared governance model
+
+The deeper architecture from the Example Conversation asks four additional questions before consequential action:
+
+1. **Stakes:** What is the cost of being wrong, and how reversible is the action?
+2. **Relying parties:** Who must be able to trust this claim?
+3. **Proof policy:** What does each relying party require before accepting the claim for this decision?
+4. **Independence:** Is the evaluator sufficiently separate from the agent, operator, or counterparty whose claim is being judged?
+
+The intended invariant is:
+
+> One stable claim, one stable evidence trail, and multiple relying parties applying their own explicit proof policies without rewriting the underlying evidence.
+
+These are foundation-level design insights. They are not all first-class implemented objects in the present V1.
 
 ### Pillar B — Agent Economics
 
@@ -297,6 +369,8 @@ This example is explanatory. We have not yet connected and validated this exact 
 - no provider-specific agent adapter exists;
 - no real paid-agent/API and independent outcome source have been validated end to end;
 - Reality Data acquisition is not complete;
+- the Stakes Model, relying-party set, and per-party proof policies are not implemented as complete first-class product objects;
+- institutional independence is not established merely because an internal evaluator is separate from the acting agent;
 - source identity and authenticity are not independently attested;
 - outcome value is supplied by the contract rather than independently established;
 - strict concurrent reservation behavior is not proven under production load;
@@ -497,7 +571,7 @@ You understand it when each step answers one question and creates the next.
 
 ### Session 3 — Draw the architecture from memory
 
-Draw:
+Draw the simplified product view:
 
 ```text
 Reality Data
@@ -509,6 +583,21 @@ task -> authorization -> action -> outcome -> economic consequence
 ```
 
 Then explain where internal evidence verification operates.
+
+Next, draw the fuller decision view:
+
+```text
+claim + evidence
+-> stakes
+-> relying parties
+-> proof policies
+-> allow / more evidence / deny
+-> action
+-> verified outcome
+-> economics
+```
+
+Explain why the claim and evidence remain stable while different relying parties may require different proof.
 
 ### Session 4 — Separate truth levels
 
