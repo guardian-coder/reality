@@ -1,6 +1,6 @@
 import { and, desc, eq } from 'drizzle-orm';
 import { getDb } from '@/db';
-import { authorizations, events, realityClaims, realityEvidence, records, runs, tasks, workspaces } from '@/db/schema';
+import { authorizations, events, realityClaims, realityEvidence, realitySources, records, runs, tasks, workspaces } from '@/db/schema';
 import { ECONOMIC_POLICY_VERSION, evaluateEconomicOutcome, evaluateResourceAuthorization, type EconomicTaskContract, type OutcomeEvidence, type ResourceEvent } from '@/lib/economic-engine';
 import { evaluateClaim, type RealityEvidenceInput } from '@/lib/evidence-engine';
 
@@ -41,6 +41,65 @@ export async function workspaceForToken(token: string) {
   return (await getDb().select().from(workspaces).where(eq(workspaces.tokenHash, await hashToken(token))).limit(1))[0] ?? null;
 }
 
+const sourceToken = () => `reality_source_${crypto.randomUUID().replaceAll('-', '')}`;
+
+export async function createRealitySource(workspaceId: string, payload: any) {
+  const name = String(payload?.name || '').trim();
+  const category = String(payload?.category || '').trim().toUpperCase();
+  const freshnessMinutes = Math.round(Number(payload?.freshnessMinutes));
+  if (!name) throw new Error('Source name is required');
+  if (!['PAYMENTS', 'CRM', 'INVENTORY', 'TICKETING', 'SENSOR', 'DATABASE', 'CUSTOM'].includes(category)) throw new Error('Choose a supported source category');
+  if (!Number.isFinite(freshnessMinutes) || freshnessMinutes < 1 || freshnessMinutes > 43_200) throw new Error('Freshness must be between 1 and 43,200 minutes');
+  const token = sourceToken();
+  const stamp = now();
+  const source = {
+    id: id('source'), workspaceId, name, category, mode: 'WEBHOOK',
+    lineageId: id('lineage'), tokenHash: await hashToken(token), tokenPrefix: `${token.slice(0, 19)}…`,
+    freshnessMinutes, status: 'WAITING', lastEventAt: null, createdAt: stamp, updatedAt: stamp,
+  };
+  await getDb().insert(realitySources).values(source);
+  return { source, token };
+}
+
+export async function realitySourcesForWorkspace(workspaceId: string) {
+  return getDb().select({
+    id: realitySources.id, name: realitySources.name, category: realitySources.category, mode: realitySources.mode,
+    lineageId: realitySources.lineageId, tokenPrefix: realitySources.tokenPrefix, freshnessMinutes: realitySources.freshnessMinutes,
+    status: realitySources.status, lastEventAt: realitySources.lastEventAt, createdAt: realitySources.createdAt, updatedAt: realitySources.updatedAt,
+  }).from(realitySources).where(eq(realitySources.workspaceId, workspaceId)).orderBy(desc(realitySources.updatedAt)).limit(50);
+}
+
+export async function realitySourceForToken(token: string) {
+  return (await getDb().select().from(realitySources).where(eq(realitySources.tokenHash, await hashToken(token))).limit(1))[0] ?? null;
+}
+
+export async function ingestRealitySourceEvidence(source: typeof realitySources.$inferSelect, payload: any) {
+  const subject = String(payload?.subject || '').trim();
+  const assertion = String(payload?.assertion || '').trim();
+  const sourceRef = String(payload?.sourceRef || '').trim();
+  const relation = String(payload?.relation || '').toUpperCase();
+  const observedAt = String(payload?.observedAt || '').trim();
+  const observation = new Date(observedAt);
+  if (!subject || !assertion || !sourceRef || !observedAt) throw new Error('subject, assertion, sourceRef, and observedAt are required');
+  if (relation !== 'SUPPORTS' && relation !== 'CONTRADICTS') throw new Error('relation must be SUPPORTS or CONTRADICTS');
+  if (Number.isNaN(observation.getTime())) throw new Error('observedAt must be a valid ISO date');
+  const eventFingerprint = (await hashToken(`${source.id}:${sourceRef}:${assertion}`)).slice(0, 24);
+  const claimId = String(payload?.claimId || `claim_${eventFingerprint}`);
+  const testEvent = payload?.test === true;
+  const validUntil = new Date(observation.getTime() + source.freshnessMinutes * 60_000).toISOString();
+  const result = await evaluateAndStoreClaim(source.workspaceId, {
+    claim: { id: claimId, subject, assertion },
+    evidence: [{
+      id: String(payload?.evidenceId || `evidence_${eventFingerprint}`), sourceName: source.name, sourceRef, relation: relation as 'SUPPORTS' | 'CONTRADICTS',
+      lineageId: source.lineageId, observedAt: observation.toISOString(), validUntil, integrityStatus: 'DOCUMENTED',
+      sourceId: source.id, sourceCategory: source.category, ingestionMode: testEvent ? 'CONTROLLED_TEST' : 'AUTHENTICATED_WEBHOOK',
+    }],
+  });
+  const stamp = now();
+  await getDb().update(realitySources).set({ status: testEvent ? 'TESTED' : 'LIVE', lastEventAt: stamp, updatedAt: stamp }).where(eq(realitySources.id, source.id));
+  return { ...result, source: { id: source.id, name: source.name, status: testEvent ? 'TESTED' : 'LIVE', lastEventAt: stamp }, ingestionMode: testEvent ? 'CONTROLLED_TEST' : 'AUTHENTICATED_WEBHOOK' };
+}
+
 export async function evaluateAndStoreClaim(workspaceId: string, payload: any) {
   if (!payload?.claim?.id || !payload?.claim?.subject || !payload?.claim?.assertion || !Array.isArray(payload?.evidence)) {
     throw new Error('claim.id, claim.subject, claim.assertion, and evidence are required');
@@ -57,6 +116,9 @@ export async function evaluateAndStoreClaim(workspaceId: string, payload: any) {
     observedAt: String(item.observedAt || ''),
     validUntil: item.validUntil ? String(item.validUntil) : undefined,
     integrityStatus: item.integrityStatus === 'DOCUMENTED' ? 'DOCUMENTED' : 'UNVERIFIED',
+    sourceId: item.sourceId ? String(item.sourceId) : undefined,
+    sourceCategory: item.sourceCategory ? String(item.sourceCategory) : undefined,
+    ingestionMode: item.ingestionMode === 'CONTROLLED_TEST' || item.ingestionMode === 'AUTHENTICATED_WEBHOOK' ? item.ingestionMode : 'DIRECT',
   }));
   const evaluation = evaluateClaim(normalizedEvidence);
   const current = (await db.select().from(realityClaims).where(and(eq(realityClaims.workspaceId, workspaceId), eq(realityClaims.externalId, externalId))).limit(1))[0];
@@ -79,6 +141,7 @@ export async function evaluateAndStoreClaim(workspaceId: string, payload: any) {
 
 export async function loadRealityData(workspaceId: string) {
   return {
+    sources: await realitySourcesForWorkspace(workspaceId),
     claims: await getDb().select().from(realityClaims).where(eq(realityClaims.workspaceId, workspaceId)).orderBy(desc(realityClaims.updatedAt)).limit(50),
     evidence: await getDb().select().from(realityEvidence).where(eq(realityEvidence.workspaceId, workspaceId)).orderBy(desc(realityEvidence.createdAt)).limit(100),
   };

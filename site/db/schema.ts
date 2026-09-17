@@ -129,3 +129,22 @@ export const realityEvidence = sqliteTable('reality_evidence', {
   index('idx_reality_evidence_workspace_claim').on(table.workspaceId, table.claimExternalId),
   index('idx_reality_evidence_workspace_created').on(table.workspaceId, table.createdAt),
 ]);
+
+export const realitySources = sqliteTable('reality_sources', {
+  id: text('id').primaryKey(),
+  workspaceId: text('workspace_id').notNull().references(() => workspaces.id),
+  name: text('name').notNull(),
+  category: text('category').notNull(),
+  mode: text('mode').notNull(),
+  lineageId: text('lineage_id').notNull(),
+  tokenHash: text('token_hash').notNull(),
+  tokenPrefix: text('token_prefix').notNull(),
+  freshnessMinutes: integer('freshness_minutes').notNull(),
+  status: text('status').notNull(),
+  lastEventAt: text('last_event_at'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+}, (table) => [
+  uniqueIndex('idx_reality_sources_token_hash').on(table.tokenHash),
+  index('idx_reality_sources_workspace_updated').on(table.workspaceId, table.updatedAt),
+]);

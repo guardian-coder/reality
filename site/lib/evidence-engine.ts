@@ -10,6 +10,9 @@ export type RealityEvidenceInput = {
   observedAt?: string;
   validUntil?: string;
   integrityStatus?: 'DOCUMENTED' | 'UNVERIFIED';
+  sourceId?: string;
+  sourceCategory?: string;
+  ingestionMode?: 'CONTROLLED_TEST' | 'AUTHENTICATED_WEBHOOK' | 'DIRECT';
 };
 
 export type ClaimEvaluation = {

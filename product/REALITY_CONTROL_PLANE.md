@@ -70,5 +70,8 @@ The story may feel adventurous, but it must not invent events, certainty, custom
 
 ## Current boundary
 
-The current Agent Economics engine already supports credentials, pre-action authorization, execution ingestion, outcome ingestion, and persisted economic records. The complete control plane described here is not implemented yet. In particular, Reality Data acquisition and the internal verification of externally supplied outcome evidence are still missing. A real external agent, paid API, and independent outcome source have not yet been connected and validated.
+The current Agent Economics engine supports credentials, pre-action authorization, execution ingestion, outcome ingestion, and persisted economic records.
 
+Reality Data now has a first real acquisition boundary: an owner can register a named source category, choose a freshness window, receive a one-time source key, and send authenticated evidence through a generic HTTPS webhook. Reality derives the source lineage and freshness bound, evaluates the claim, persists the source, evidence, and claim, and exposes `WAITING / TESTED / LIVE` source states. A controlled in-product test is explicitly labeled as a connection test rather than proof of an external production integration.
+
+This is a **partial workflow**, not universal plug-and-play integration. It works only for systems that can send the documented webhook contract. Provider-specific OAuth adapters, field mapping, secret rotation and revocation, signed provider attestations, multiple-source claim policies, and an independently operated production evidence source remain unimplemented or unvalidated. A real external agent, paid API, and independent outcome source have not yet been connected and validated together.
